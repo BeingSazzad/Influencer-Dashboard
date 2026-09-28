@@ -9,38 +9,26 @@ import {
   updateTicketStatus,
   updateTicketPriority,
 } from '@/store/slices/ticketsSlice';
-import { SupportTicket, TicketPriority, TicketStatus, TicketType } from '@/types/admin.types';
+import { SupportTicket, TicketPriority, TicketStatus } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { StatCard } from '@/components/shared/StatCard';
 import { Card } from '@/components/ui/Card';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/Table';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
-import { Dropdown } from '@/components/ui/Dropdown';
 import {
   LifeBuoy,
   Search,
-  AlertTriangle,
   CheckCircle2,
-  Clock,
   Send,
-  User,
-  Building,
   ShieldAlert,
-  ShieldCheck,
-  ExternalLink,
-  MessageSquare,
-  FileText,
-  Flag,
-  RotateCcw,
 } from 'lucide-react';
 
 export const TicketsPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { tickets, searchQuery, statusFilter, typeFilter, selectedTicketId } = useAppSelector(
+  const { tickets, searchQuery, statusFilter, typeFilter } = useAppSelector(
     (state) => state.tickets
   );
   const currentUser = useAppSelector((state) => state.auth.currentUser);
@@ -84,12 +72,11 @@ export const TicketsPage: React.FC = () => {
       replyToTicket({
         ticketId: activeTicket.id,
         message: replyMessage.trim(),
-        adminName: currentUser?.name || 'Admin HQ',
+        adminName: currentUser?.name || 'Admin',
         adminAvatar: currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
       })
     );
 
-    // Refresh active ticket from latest state
     const updated = tickets.find((t) => t.id === activeTicket.id);
     if (updated) {
       setActiveTicket({
@@ -98,7 +85,7 @@ export const TicketsPage: React.FC = () => {
           ...updated.messages,
           {
             id: `MSG-${Date.now()}`,
-            senderName: `${currentUser?.name || 'Admin HQ'} (Admin)`,
+            senderName: `${currentUser?.name || 'Admin'} (Admin)`,
             senderRole: 'admin',
             senderAvatar: currentUser?.avatar || '',
             message: replyMessage.trim(),
@@ -127,54 +114,26 @@ export const TicketsPage: React.FC = () => {
   const renderPriorityBadge = (priority: TicketPriority) => {
     switch (priority) {
       case 'urgent':
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30 animate-pulse">
-            Urgent
-          </span>
-        );
+        return <Badge variant="danger" size="sm">Urgent</Badge>;
       case 'high':
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
-            High
-          </span>
-        );
+        return <Badge variant="warning" size="sm">High</Badge>;
       case 'normal':
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-black uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            Normal
-          </span>
-        );
+        return <Badge variant="neutral" size="sm">Normal</Badge>;
       default:
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-neutral-500/10 text-neutral-400">
-            Low
-          </span>
-        );
+        return <Badge variant="neutral" size="sm">Low</Badge>;
     }
   };
 
   const renderStatusBadge = (status: TicketStatus) => {
     switch (status) {
       case 'open':
-        return (
-          <Badge variant="warning" className="font-extrabold text-[11px] uppercase tracking-wider">
-            Open
-          </Badge>
-        );
+        return <Badge variant="warning" size="sm" dot>Open</Badge>;
       case 'in_progress':
-        return (
-          <Badge variant="default" className="font-extrabold text-[11px] uppercase tracking-wider bg-blue-500/20 text-blue-400 border border-blue-500/30">
-            In Progress
-          </Badge>
-        );
+        return <Badge variant="default" size="sm" dot>In Progress</Badge>;
       case 'resolved':
-        return (
-          <Badge variant="success" className="font-extrabold text-[11px] uppercase tracking-wider">
-            Resolved
-          </Badge>
-        );
+        return <Badge variant="success" size="sm" dot>Resolved</Badge>;
       default:
-        return <Badge variant="neutral">{status}</Badge>;
+        return <Badge variant="neutral" size="sm">{status}</Badge>;
     }
   };
 
@@ -183,67 +142,55 @@ export const TicketsPage: React.FC = () => {
       case 'fraud_scam':
         return 'Fake Metrics / Bot Scam';
       case 'billing_escrow':
-        return 'Billing & Escrow Settlement';
+        return 'Billing & Escrow';
       case 'order_delivery':
-        return 'Order Revision / Delivery';
+        return 'Order Revision';
       case 'copyright_ip':
-        return 'Copyright / License Breach';
+        return 'Copyright / License';
       case 'account_access':
-        return 'Account Access & Security';
+        return 'Account Access';
       default:
         return 'General Support';
     }
   };
 
   return (
-    <div className="space-y-6 pb-16">
+    <div className="space-y-6">
       {/* Page Header */}
       <PageHeader
         title="Support"
         subtitle="Customer tickets and reported platform issues."
         badge={
-          <Badge variant="default" size="sm" className="bg-[#FF2D78]/10 text-[#FF2D78] border border-[#FF2D78]/20 font-black">
+          <Badge variant="default" size="sm">
             {openCount} Open
           </Badge>
         }
       />
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Open Tickets"
-          value={openCount.toString()}
-          icon={<LifeBuoy className="w-5 h-5" />}
-          change={-2}
-          accentColor="pink"
-          changePeriod="vs last month"
-        />
-        <StatCard
-          title="Reports"
-          value={reportCount.toString()}
-          icon={<ShieldAlert className="w-5 h-5" />}
-          accentColor="amber"
-        />
-        <StatCard
-          title="Urgent"
-          value={urgentCount.toString()}
-          icon={<AlertTriangle className="w-5 h-5" />}
-          change={urgentCount > 0 ? -1 : undefined}
-          accentColor="black"
-        />
-        <StatCard
-          title="In Progress"
-          value={inProgressCount.toString()}
-          icon={<Clock className="w-5 h-5" />}
-          accentColor="emerald"
-        />
+      {/* KPI Minimal Bar */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          { label: 'Open Tickets', value: openCount.toString() },
+          { label: 'Reports', value: reportCount.toString() },
+          { label: 'Urgent', value: urgentCount.toString() },
+          { label: 'In Progress', value: inProgressCount.toString() },
+        ].map((item) => (
+          <Card key={item.label} className="p-3.5">
+            <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block">
+              {item.label}
+            </span>
+            <div className="text-base font-bold text-neutral-900 dark:text-white mt-1 tabular-nums">
+              {item.value}
+            </div>
+          </Card>
+        ))}
       </div>
 
       {/* Filter Tabs & Search */}
-      <Card className="p-4 border-[#E7E7E2] dark:border-white/10">
+      <Card className="p-4">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Status & Type Pills */}
-          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
+          <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/5 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             <button
               onClick={() => {
                 dispatch(setTicketStatusFilter('all'));
@@ -251,8 +198,8 @@ export const TicketsPage: React.FC = () => {
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'all' && typeFilter === 'all'
-                  ? 'bg-white text-neutral-900 shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900'
+                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
               }`}
             >
               All ({tickets.length})
@@ -261,8 +208,8 @@ export const TicketsPage: React.FC = () => {
               onClick={() => dispatch(setTicketTypeFilter('user_report'))}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
                 typeFilter === 'user_report'
-                  ? 'bg-rose-50 text-rose-700 border border-rose-200 shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900'
+                  ? 'bg-white dark:bg-neutral-800 text-rose-700 dark:text-rose-400 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
               }`}
             >
               <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
@@ -272,8 +219,8 @@ export const TicketsPage: React.FC = () => {
               onClick={() => dispatch(setTicketStatusFilter('open'))}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'open'
-                  ? 'bg-amber-50 text-amber-800 border border-amber-200 shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900'
+                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
               }`}
             >
               Open ({openCount})
@@ -282,8 +229,8 @@ export const TicketsPage: React.FC = () => {
               onClick={() => dispatch(setTicketStatusFilter('in_progress'))}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'in_progress'
-                  ? 'bg-blue-50 text-blue-800 border border-blue-200 shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900'
+                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
               }`}
             >
               In Progress ({inProgressCount})
@@ -292,8 +239,8 @@ export const TicketsPage: React.FC = () => {
               onClick={() => dispatch(setTicketStatusFilter('resolved'))}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'resolved'
-                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900'
+                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
               }`}
             >
               Resolved ({tickets.filter((t) => t.status === 'resolved').length})
@@ -308,117 +255,106 @@ export const TicketsPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => dispatch(setTicketSearchQuery(e.target.value))}
               placeholder="Search tickets..."
-              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 font-medium text-neutral-900"
+              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 font-medium text-neutral-900 dark:text-white"
             />
           </div>
         </div>
       </Card>
 
       {/* Tickets List Table */}
-      <Card className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-neutral-50 text-neutral-500 text-xs border-b border-neutral-200 font-semibold">
-              <tr>
-                <th className="py-3 px-5">Ticket</th>
-                <th className="py-3 px-5">User</th>
-                <th className="py-3 px-5">Category</th>
-                <th className="py-3 px-5">Priority</th>
-                <th className="py-3 px-5">Status</th>
-                <th className="py-3 px-5">Updated</th>
-                <th className="py-3 px-5 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100 bg-white">
-              {filteredTickets.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="py-12 text-center text-neutral-400">
-                    <LifeBuoy className="w-10 h-10 mx-auto mb-2 opacity-30 text-neutral-500" />
-                    <p className="text-sm font-bold">No tickets match the selected filters.</p>
-                  </td>
-                </tr>
-              ) : (
-                filteredTickets.map((ticket) => (
-                  <tr
-                    key={ticket.id}
-                    onClick={() => handleOpenTicket(ticket)}
-                    className="hover:bg-neutral-50/70 transition-colors cursor-pointer"
-                  >
-                    {/* Ticket ID & Subject */}
-                    <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-neutral-900">{ticket.id}</span>
-                        {ticket.type === 'user_report' ? (
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1">
-                            <Flag className="w-3 h-3 text-rose-500" />
-                            Report
-                          </span>
-                        ) : (
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1">
-                            <LifeBuoy className="w-3 h-3 text-blue-500" />
-                            Support
-                          </span>
-                        )}
-                      </div>
-                      <p className="font-semibold text-neutral-900 text-xs line-clamp-1 max-w-[280px] mt-1" title={ticket.subject}>
-                        {ticket.subject}
-                      </p>
-                    </td>
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Ticket</TableHead>
+              <TableHead>Subject</TableHead>
+              <TableHead>User</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Priority</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Updated</TableHead>
+              <TableHead className="text-right">Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredTickets.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className="py-12 text-center text-neutral-400 font-medium">
+                  No tickets match the selected filters.
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredTickets.map((ticket) => (
+                <TableRow
+                  key={ticket.id}
+                  onClick={() => handleOpenTicket(ticket)}
+                  className="cursor-pointer"
+                >
+                  {/* Ticket ID */}
+                  <TableCell>
+                    <span className="font-mono text-xs font-bold text-neutral-900 dark:text-white">
+                      {ticket.id}
+                    </span>
+                  </TableCell>
 
-                    {/* Inquiring Party */}
-                    <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-2.5">
-                        <Avatar src={ticket.userAvatar} name={ticket.userName} size="sm" />
-                        <div className="max-w-[140px]">
-                          <p className="text-xs font-bold text-neutral-900 truncate">{ticket.userName}</p>
-                          <span className="text-[10px] text-neutral-400 capitalize font-medium block">
-                            {ticket.userRole}
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-
-                    {/* Category */}
-                    <td className="py-3.5 px-5">
-                      <span className="text-xs font-semibold text-neutral-800 block">
-                        {getCategoryLabel(ticket.category)}
-                      </span>
-                      {ticket.reportedUser && (
-                        <span className="text-[11px] text-rose-600 font-medium block mt-0.5">
-                          Reported: {ticket.reportedUser.name}
+                  {/* Subject */}
+                  <TableCell>
+                    <div className="flex items-center gap-1.5 max-w-[240px]">
+                      {ticket.type === 'user_report' && (
+                        <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-200 dark:border-rose-900/40">
+                          Report
                         </span>
                       )}
-                    </td>
+                      <span className="text-xs font-semibold text-neutral-900 dark:text-white truncate" title={ticket.subject}>
+                        {ticket.subject}
+                      </span>
+                    </div>
+                  </TableCell>
 
-                    {/* Priority */}
-                    <td className="py-3.5 px-5">{renderPriorityBadge(ticket.priority)}</td>
+                  {/* User */}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Avatar src={ticket.userAvatar} name={ticket.userName} size="sm" />
+                      <span className="text-xs font-bold text-neutral-900 dark:text-white truncate max-w-[120px]">
+                        {ticket.userName}
+                      </span>
+                    </div>
+                  </TableCell>
 
-                    {/* Status */}
-                    <td className="py-3.5 px-5">{renderStatusBadge(ticket.status)}</td>
+                  {/* Category */}
+                  <TableCell>
+                    <span className="text-xs text-neutral-600 dark:text-neutral-300">
+                      {getCategoryLabel(ticket.category)}
+                    </span>
+                  </TableCell>
 
-                    {/* Updated */}
-                    <td className="py-3.5 px-5 text-xs text-neutral-500 font-medium">
-                      {ticket.lastUpdated}
-                    </td>
+                  {/* Priority */}
+                  <TableCell>{renderPriorityBadge(ticket.priority)}</TableCell>
 
-                    {/* Actions */}
-                    <td className="py-3.5 px-5 text-right" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleOpenTicket(ticket)}
-                        >
-                          View
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                  {/* Status */}
+                  <TableCell>{renderStatusBadge(ticket.status)}</TableCell>
+
+                  {/* Updated */}
+                  <TableCell className="text-xs text-neutral-500 whitespace-nowrap">
+                    {ticket.lastUpdated}
+                  </TableCell>
+
+                  {/* Actions */}
+                  <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs h-7 px-2.5 font-bold"
+                      onClick={() => handleOpenTicket(ticket)}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </Card>
 
       {/* TICKET DETAILS & REPLY MODAL */}
@@ -426,16 +362,16 @@ export const TicketsPage: React.FC = () => {
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          title={`Inquiry Dossier: ${activeTicket.id}`}
-          maxWidth="xl"
+          title={`Ticket ${activeTicket.id}`}
+          maxWidth="lg"
           footer={
-            <div className="flex items-center justify-between w-full">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-neutral-400 font-bold">Set Status:</span>
+                <span className="text-xs text-neutral-500 font-semibold">Status:</span>
                 <select
                   value={activeTicket.status}
                   onChange={(e) => handleStatusChange(e.target.value as TicketStatus)}
-                  className="bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white"
+                  className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg px-2.5 py-1 text-xs text-neutral-800 dark:text-neutral-200 font-medium outline-none"
                 >
                   <option value="open">Open</option>
                   <option value="in_progress">In Progress</option>
@@ -443,11 +379,11 @@ export const TicketsPage: React.FC = () => {
                   <option value="closed">Closed</option>
                 </select>
 
-                <span className="text-xs text-neutral-400 font-bold ml-2">Priority:</span>
+                <span className="text-xs text-neutral-500 font-semibold ml-2">Priority:</span>
                 <select
                   value={activeTicket.priority}
                   onChange={(e) => handlePriorityChange(e.target.value as TicketPriority)}
-                  className="bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white"
+                  className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg px-2.5 py-1 text-xs text-neutral-800 dark:text-neutral-200 font-medium outline-none"
                 >
                   <option value="urgent">Urgent</option>
                   <option value="high">High</option>
@@ -456,7 +392,7 @@ export const TicketsPage: React.FC = () => {
                 </select>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-end gap-2">
                 {activeTicket.status !== 'resolved' && (
                   <Button
                     variant="accent"
@@ -464,144 +400,152 @@ export const TicketsPage: React.FC = () => {
                     onClick={() => handleStatusChange('resolved')}
                     className="text-xs font-bold"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
+                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
                     Mark Resolved
                   </Button>
                 )}
-                <Button variant="secondary" size="sm" onClick={() => setIsModalOpen(false)}>
-                  Done
+                <Button variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
+                  Close
                 </Button>
               </div>
             </div>
           }
         >
-          <div className="space-y-6">
+          <div className="space-y-5 text-xs">
             {/* Header Subject Banner */}
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-base font-black text-white">{activeTicket.subject}</span>
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <span className="text-sm font-extrabold text-neutral-900 dark:text-white">
+                    {activeTicket.subject}
+                  </span>
                   {renderPriorityBadge(activeTicket.priority)}
                   {renderStatusBadge(activeTicket.status)}
                 </div>
-                <p className="text-xs text-neutral-400">
-                  Category: <span className="text-white font-bold">{getCategoryLabel(activeTicket.category)}</span> • Created on {activeTicket.createdAt}
+                <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
+                  Category: <span className="font-semibold text-neutral-800 dark:text-neutral-200">{getCategoryLabel(activeTicket.category)}</span> • Created on {activeTicket.createdAt}
                 </p>
               </div>
 
-              <div className="text-right shrink-0">
-                <span className="text-[11px] text-neutral-400 block font-semibold">Assigned Admin</span>
-                <span className="text-xs font-bold text-[#FF2D78]">
+              <div className="sm:text-right shrink-0">
+                <span className="text-[10px] text-neutral-400 uppercase font-bold tracking-wider block">
+                  Assigned
+                </span>
+                <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200">
                   {activeTicket.assignedAdmin || 'Unassigned'}
                 </span>
               </div>
             </div>
 
-            {/* Inquiring User & Reported Target (if user_report) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Inquiring User & Reported Target */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Inquirer */}
-              <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
-                <span className="text-[11px] font-black uppercase text-neutral-400 tracking-wider block">
-                  Reported / Submitted By
+              <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 space-y-2">
+                <span className="text-[10px] font-bold uppercase text-neutral-400 tracking-wider block">
+                  Submitted By
                 </span>
                 <div className="flex items-center gap-3">
-                  <Avatar src={activeTicket.userAvatar} alt={activeTicket.userName} size="md" />
+                  <Avatar src={activeTicket.userAvatar} name={activeTicket.userName} size="md" />
                   <div>
-                    <p className="font-extrabold text-white text-sm">{activeTicket.userName}</p>
-                    <p className="text-xs text-neutral-400">{activeTicket.userEmail}</p>
-                    <span className="text-[10px] text-[#FF2D78] font-bold uppercase mt-0.5 block">
-                      Registered {activeTicket.userRole}
-                    </span>
+                    <p className="font-extrabold text-neutral-900 dark:text-white text-xs">{activeTicket.userName}</p>
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400">{activeTicket.userEmail}</p>
+                    <Badge variant="neutral" size="sm" className="mt-1 capitalize">
+                      {activeTicket.userRole}
+                    </Badge>
                   </div>
                 </div>
               </div>
 
               {/* Reported User (if applicable) */}
               {activeTicket.reportedUser ? (
-                <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 space-y-2">
+                <div className="p-3.5 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/30 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-black uppercase text-rose-400 tracking-wider flex items-center gap-1.5">
+                    <span className="text-[10px] font-bold uppercase text-rose-700 dark:text-rose-400 tracking-wider flex items-center gap-1">
                       <ShieldAlert className="w-3.5 h-3.5" />
-                      Reported Marketplace Account
+                      Reported Account
                     </span>
-                    <Badge variant="danger" className="text-[10px]">Under Review</Badge>
+                    <Badge variant="danger" size="sm">Under Review</Badge>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Avatar src={activeTicket.reportedUser.avatar} alt={activeTicket.reportedUser.name} size="md" />
+                    <Avatar src={activeTicket.reportedUser.avatar} name={activeTicket.reportedUser.name} size="md" />
                     <div>
-                      <p className="font-extrabold text-white text-sm">{activeTicket.reportedUser.name}</p>
+                      <p className="font-extrabold text-neutral-900 dark:text-white text-xs">
+                        {activeTicket.reportedUser.name}
+                      </p>
                       {activeTicket.reportedUser.handle && (
-                        <p className="text-xs text-[#FF2D78] font-bold">{activeTicket.reportedUser.handle}</p>
+                        <p className="text-[11px] text-rose-600 font-bold">{activeTicket.reportedUser.handle}</p>
                       )}
-                      <p className="text-[11px] text-rose-300 mt-1 italic">
+                      <p className="text-[11px] text-neutral-600 dark:text-neutral-300 mt-1 italic leading-relaxed">
                         "{activeTicket.reportedUser.reason}"
                       </p>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center text-center p-4">
-                  <div className="space-y-1">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 mx-auto" />
-                    <p className="text-xs font-bold text-neutral-300">Standard Inquiry</p>
-                    <p className="text-[11px] text-neutral-500">No account sanction or penalty reported.</p>
+                <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 flex items-center justify-center text-center">
+                  <div className="space-y-0.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
+                    <p className="text-xs font-bold text-neutral-800 dark:text-white">Standard Inquiry</p>
+                    <p className="text-[11px] text-neutral-400">No account sanction reported.</p>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Conversation Messages */}
-            <div className="space-y-3">
-              <span className="text-xs font-black uppercase text-neutral-400 tracking-wider block">
-                Communication History ({activeTicket.messages.length} messages)
+            <div className="space-y-2.5">
+              <span className="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider block">
+                Messages ({activeTicket.messages.length})
               </span>
 
-              <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+              <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                 {activeTicket.messages.map((msg) => (
                   <div
                     key={msg.id}
-                    className={`p-3.5 rounded-xl border text-xs space-y-1.5 ${
+                    className={`p-3 rounded-xl border text-xs space-y-1 ${
                       msg.isAdminReply
-                        ? 'bg-[#FF2D78]/10 border-[#FF2D78]/20 ml-6'
-                        : 'bg-white/[0.02] border-white/10 mr-6'
+                        ? 'bg-neutral-900 text-white border-neutral-800 ml-6 dark:bg-neutral-800 dark:text-white'
+                        : 'bg-neutral-50 dark:bg-white/5 border-neutral-200/80 dark:border-white/10 mr-6 text-neutral-800 dark:text-neutral-200'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Avatar src={msg.senderAvatar} alt={msg.senderName} size="xs" />
-                        <span className={`font-bold ${msg.isAdminReply ? 'text-[#FF2D78]' : 'text-white'}`}>
+                        <Avatar src={msg.senderAvatar} name={msg.senderName} size="xs" />
+                        <span className="font-bold">
                           {msg.senderName}
                         </span>
                       </div>
-                      <span className="text-[10px] text-neutral-500 font-semibold">{msg.timestamp}</span>
+                      <span className={`text-[10px] ${msg.isAdminReply ? 'text-neutral-400' : 'text-neutral-400'}`}>
+                        {msg.timestamp}
+                      </span>
                     </div>
-                    <p className="text-neutral-300 leading-relaxed pl-6">{msg.message}</p>
+                    <p className="leading-relaxed pl-6">{msg.message}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Reply Composer */}
-            <form onSubmit={handleSendReply} className="space-y-3 pt-3 border-t border-white/10">
-              <label className="text-xs font-bold text-neutral-300 block">
-                Send Official Admin Response
+            <form onSubmit={handleSendReply} className="space-y-2.5 pt-3 border-t border-neutral-200/80 dark:border-white/10">
+              <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300 block">
+                Reply to User
               </label>
               <Textarea
                 value={replyMessage}
                 onChange={(e) => setReplyMessage(e.target.value)}
-                placeholder="Type your response to the user. This will notify them via email and platform inbox..."
-                className="text-xs min-h-[80px]"
+                placeholder="Type your response to the user..."
+                className="text-xs min-h-[70px]"
               />
               <div className="flex items-center justify-end">
                 <Button
                   type="submit"
-                  variant="primary"
+                  variant="accent"
                   size="sm"
                   disabled={!replyMessage.trim()}
                   className="text-xs font-bold"
                 >
                   <Send className="w-3.5 h-3.5 mr-1.5" />
-                  Dispatch Response
+                  Send Reply
                 </Button>
               </div>
             </form>
