@@ -40,7 +40,7 @@ export const StatCard: React.FC<StatCardProps> = ({
             {title}
           </p>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl sm:text-[26px] font-bold tracking-tight text-neutral-900 tabular-nums font-sans">
+            <span className="text-2xl sm:text-[28px] font-black tracking-tight text-neutral-950 tabular-nums">
               {value}
             </span>
           </div>
