@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
-import { UserPlus, Trash2, Search } from 'lucide-react';
+import { UserPlus, Trash2, Search, ChevronDown } from 'lucide-react';
 
 export const TeamPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -227,14 +227,17 @@ export const TeamPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600">
                 Role
               </label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value as AdminRole)}
-                className="w-full h-10 px-3 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink"
-              >
-                <option value="admin">Admin</option>
-                <option value="super_admin">Super Admin</option>
-              </select>
+              <div className="relative">
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as AdminRole)}
+                  className="w-full h-10 pl-3 pr-8 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink appearance-none cursor-pointer text-neutral-800 font-semibold"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="super_admin">Super Admin</option>
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
           </form>
         </Modal>

@@ -33,6 +33,7 @@ import {
   ArrowUp,
   ArrowDown,
   X,
+  ChevronDown,
 } from 'lucide-react';
 
 type SortOption =
@@ -249,37 +250,42 @@ export const UsersPage: React.FC = () => {
             </div>
 
             {/* Sort Dropdown */}
-            <select
-              value={sortBy}
-              onChange={(e) => {
-                setSortBy(e.target.value as SortOption);
-                setCurrentPage(1);
-              }}
-              className="h-9 px-3 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer"
-              title="Sort directory"
-            >
-              <option value="recent">Sort: Recently Joined</option>
-              <option value="oldest">Sort: Oldest Joined</option>
-              <option value="volume_desc">Sort: Highest Volume (€)</option>
-              <option value="volume_asc">Sort: Lowest Volume (€)</option>
-              <option value="deals_desc">Sort: Most Campaigns</option>
-              <option value="name_asc">Sort: Name (A → Z)</option>
-            </select>
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value as SortOption);
+                  setCurrentPage(1);
+                }}
+                className="h-9 pl-3 pr-8 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer appearance-none shadow-2xs"
+                title="Sort directory"
+              >
+                <option value="recent">Sort: Recently Joined</option>
+                <option value="oldest">Sort: Oldest Joined</option>
+                <option value="volume_desc">Sort: Highest Volume (€)</option>
+                <option value="volume_asc">Sort: Lowest Volume (€)</option>
+                <option value="deals_desc">Sort: Most Campaigns</option>
+                <option value="name_asc">Sort: Name (A → Z)</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
 
             {/* Status Dropdown Filter */}
-            <select
-              value={statusFilter}
-              onChange={(e) => {
-                dispatch(setStatusFilter(e.target.value as any));
-                setCurrentPage(1);
-              }}
-              className="h-9 px-3 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer"
-            >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="suspended">Suspended</option>
-              <option value="banned">Banned</option>
-            </select>
+            <div className="relative">
+              <select
+                value={statusFilter}
+                onChange={(e) => {
+                  dispatch(setStatusFilter(e.target.value as any));
+                  setCurrentPage(1);
+                }}
+                className="h-9 pl-3 pr-8 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer appearance-none shadow-2xs"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="suspended">Suspended</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
           </div>
         </div>
 
@@ -426,13 +432,8 @@ export const UsersPage: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <Avatar src={user.avatar} name={user.name} size="sm" />
                       <div>
-                        <div className="font-extrabold text-neutral-950 flex items-center gap-1.5 text-sm">
-                          <span>{user.name}</span>
-                          {user.role === 'creator' && user.rating && (
-                            <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60">
-                              ★ {user.rating}
-                            </span>
-                          )}
+                        <div className="font-extrabold text-neutral-950 text-sm">
+                          {user.name}
                         </div>
                         <div className="text-xs text-neutral-600 font-semibold">@{user.handle} • {user.email}</div>
                       </div>
@@ -450,20 +451,14 @@ export const UsersPage: React.FC = () => {
 
                   <TableCell>
                     <Badge
-                      variant={
-                        user.status === 'active'
-                          ? 'success'
-                          : user.status === 'suspended'
-                          ? 'warning'
-                          : 'danger'
-                      }
+                      variant={user.status === 'active' ? 'success' : 'warning'}
                       size="sm"
                       dot
                     >
-                      {user.status}
+                      {user.status === 'active' ? 'Active' : 'Suspended'}
                     </Badge>
                     {user.banReason && (
-                      <p className="text-[10px] text-rose-600 font-bold mt-0.5 max-w-[200px] truncate" title={user.banReason}>
+                      <p className="text-[10px] text-amber-700 font-bold mt-0.5 max-w-[200px] truncate" title={user.banReason}>
                         {user.banReason}
                       </p>
                     )}
@@ -496,17 +491,17 @@ export const UsersPage: React.FC = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="text-rose-600 border-rose-200 hover:bg-rose-50"
+                          className="text-amber-700 border-amber-200 hover:bg-amber-50 font-bold text-xs"
                           onClick={() => handleOpenModeration(user)}
                         >
                           <Ban className="w-3.5 h-3.5 mr-1" />
-                          Moderate
+                          Suspend
                         </Button>
                       ) : (
                         <Button
                           variant="secondary"
                           size="sm"
-                          className="text-emerald-700 bg-emerald-50 hover:bg-emerald-100"
+                          className="text-emerald-700 bg-emerald-50 hover:bg-emerald-100 font-bold text-xs"
                           onClick={() => handleReactivate(user.id)}
                         >
                           <RotateCcw className="w-3.5 h-3.5 mr-1" />
@@ -539,13 +534,13 @@ export const UsersPage: React.FC = () => {
         </div>
       </Card>
 
-      {/* Moderation Action Modal (Ban / Suspend) */}
+      {/* Suspend Account Modal */}
       {selectedUserForModeration && (
         <Modal
           isOpen={true}
           onClose={() => setSelectedUserForModeration(null)}
-          title={`Moderate Account: @${selectedUserForModeration.handle}`}
-          description={`Take targeted disciplinary or compliance action against ${selectedUserForModeration.name}.`}
+          title={`Suspend Account: @${selectedUserForModeration.handle}`}
+          description={`Temporarily restrict platform access and pause active escrow payouts for ${selectedUserForModeration.name}.`}
           maxWidth="md"
           footer={
             <>
@@ -557,101 +552,58 @@ export const UsersPage: React.FC = () => {
                 Cancel
               </Button>
               <Button
-                variant={actionType === 'permanent' ? 'danger' : 'accent'}
+                variant="danger"
                 size="sm"
+                className="font-bold"
                 onClick={handleExecuteModeration}
               >
-                Confirm {actionType === 'permanent' ? 'Permanent Ban' : 'Account Suspension'}
+                Confirm Suspension
               </Button>
             </>
           }
         >
           <div className="space-y-4">
-            {/* Action Type Selector */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600">
-                Action Severity
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setActionType('warning')}
-                  className={`p-3 rounded-xl border text-center transition-all ${
-                    actionType === 'warning'
-                      ? 'border-brand-black bg-neutral-900 text-white font-bold'
-                      : 'border-neutral-200 bg-neutral-50 text-neutral-700'
-                  }`}
-                >
-                  <div className="text-xs">Warning</div>
-                  <div className="text-[10px] opacity-70">Log strike only</div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActionType('temporary')}
-                  className={`p-3 rounded-xl border text-center transition-all ${
-                    actionType === 'temporary'
-                      ? 'border-amber-600 bg-amber-500 text-white font-bold'
-                      : 'border-neutral-200 bg-neutral-50 text-neutral-700'
-                  }`}
-                >
-                  <div className="text-xs">Temporary</div>
-                  <div className="text-[10px] opacity-70">14-Day Freeze</div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActionType('permanent')}
-                  className={`p-3 rounded-xl border text-center transition-all ${
-                    actionType === 'permanent'
-                      ? 'border-rose-600 bg-rose-600 text-white font-bold'
-                      : 'border-neutral-200 bg-neutral-50 text-neutral-700'
-                  }`}
-                >
-                  <div className="text-xs">Permanent</div>
-                  <div className="text-[10px] opacity-70">Full Blacklist</div>
-                </button>
-              </div>
-            </div>
-
             {/* Violation Reason */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600">
+              <label className="text-xs font-bold uppercase tracking-wider text-neutral-700">
                 Primary Reason / Policy Violation
               </label>
-              <select
-                value={banReason}
-                onChange={(e) => setBanReason(e.target.value)}
-                className="w-full h-10 px-3 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink"
-              >
-                <option value="Attempted off-platform WhatsApp payment to circumvent 15% escrow fee.">
-                  Escrow Fee Circumvention (Off-platform deal attempt)
-                </option>
-                <option value="Repeated non-delivery of deliverables within deadline.">
-                  Delinquent Deliverable Default (Breach of Campaign SLA)
-                </option>
-                <option value="Fabricated portfolio metrics and fraudulent follower graph.">
-                  Fraudulent Metrics / Bot Engagement
-                </option>
-                <option value="Abusive or defamatory communication with counterpart.">
-                  Harassment & Unprofessional Conduct
-                </option>
-                <option value="Unauthorized brand asset disclosure before embargo release.">
-                  Confidentiality & NDA Breach
-                </option>
-              </select>
+              <div className="relative">
+                <select
+                  value={banReason}
+                  onChange={(e) => setBanReason(e.target.value)}
+                  className="w-full h-10 pl-3 pr-8 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink appearance-none cursor-pointer text-neutral-800 font-semibold"
+                >
+                  <option value="Attempted off-platform WhatsApp payment to circumvent 15% escrow fee.">
+                    Escrow Fee Circumvention (Off-platform deal attempt)
+                  </option>
+                  <option value="Repeated non-delivery of deliverables within deadline.">
+                    Delinquent Deliverable Default (Breach of Campaign SLA)
+                  </option>
+                  <option value="Fabricated portfolio metrics and fraudulent follower graph.">
+                    Fraudulent Metrics / Bot Engagement
+                  </option>
+                  <option value="Abusive or defamatory communication with counterpart.">
+                    Harassment & Unprofessional Conduct
+                  </option>
+                  <option value="Unauthorized brand asset disclosure before embargo release.">
+                    Confidentiality & NDA Breach
+                  </option>
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
 
             {/* Escrow Disposition */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600">
+              <label className="text-xs font-bold uppercase tracking-wider text-neutral-700">
                 Current Escrow Funds Handling
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setEscrowDisposition('hold')}
-                  className={`p-2.5 rounded-lg border text-left text-xs transition-colors ${
+                  className={`p-2.5 rounded-lg border text-left text-xs transition-colors cursor-pointer ${
                     escrowDisposition === 'hold'
                       ? 'border-brand-pink bg-pink-50 text-neutral-900 font-bold'
                       : 'border-neutral-200 bg-white text-neutral-600'
@@ -662,7 +614,7 @@ export const UsersPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setEscrowDisposition('refund')}
-                  className={`p-2.5 rounded-lg border text-left text-xs transition-colors ${
+                  className={`p-2.5 rounded-lg border text-left text-xs transition-colors cursor-pointer ${
                     escrowDisposition === 'refund'
                       ? 'border-brand-pink bg-pink-50 text-neutral-900 font-bold'
                       : 'border-neutral-200 bg-white text-neutral-600'
@@ -726,13 +678,13 @@ export const UsersPage: React.FC = () => {
             </div>
 
             {inspectedUser.banReason && (
-              <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-1">
-                <span className="text-xs font-bold text-rose-800 uppercase tracking-wide">
-                  Active Moderation Sanction
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
+                <span className="text-xs font-bold text-amber-800 uppercase tracking-wide">
+                  Account Suspension Notice
                 </span>
-                <p className="text-xs text-rose-700">{inspectedUser.banReason}</p>
+                <p className="text-xs text-amber-700">{inspectedUser.banReason}</p>
                 {inspectedUser.notes && (
-                  <p className="text-[11px] text-rose-600 italic mt-2">
+                  <p className="text-[11px] text-amber-600 italic mt-2">
                     Internal notes: {inspectedUser.notes}
                   </p>
                 )}

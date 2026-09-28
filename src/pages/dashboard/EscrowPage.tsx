@@ -25,6 +25,7 @@ import {
   Undo2,
   Lock,
   FileText,
+  ChevronDown,
 } from 'lucide-react';
 
 export const EscrowPage: React.FC = () => {
@@ -341,21 +342,24 @@ export const EscrowPage: React.FC = () => {
                 <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600">
                   Custom Split Allocation
                 </label>
-                <select
-                  value={splitRatio}
-                  onChange={(e) => setSplitRatio(e.target.value)}
-                  className="w-full h-10 px-3 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink"
-                >
-                  <option value="50% Brand / 50% Creator">
-                    50% Brand Refund (€600) / 50% Creator Payout (€600)
-                  </option>
-                  <option value="75% Creator / 25% Brand">
-                    75% Creator Payout (€900) / 25% Brand Refund (€300)
-                  </option>
-                  <option value="75% Brand / 25% Creator">
-                    75% Brand Refund (€900) / 25% Creator Payout (€300)
-                  </option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={splitRatio}
+                    onChange={(e) => setSplitRatio(e.target.value)}
+                    className="w-full h-10 pl-3 pr-8 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink appearance-none cursor-pointer text-neutral-800 font-semibold"
+                  >
+                    <option value="50% Brand / 50% Creator">
+                      50% Brand Refund (€600) / 50% Creator Payout (€600)
+                    </option>
+                    <option value="75% Creator / 25% Brand">
+                      75% Creator Payout (€900) / 25% Brand Refund (€300)
+                    </option>
+                    <option value="75% Brand / 25% Creator">
+                      75% Brand Refund (€900) / 25% Creator Payout (€300)
+                    </option>
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
               </div>
             )}
 

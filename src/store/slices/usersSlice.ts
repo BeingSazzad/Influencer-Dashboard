@@ -46,7 +46,7 @@ export const usersSlice = createSlice({
     ) => {
       const user = state.users.find((u) => u.id === action.payload.userId);
       if (user) {
-        user.status = action.payload.actionType === 'permanent' ? 'banned' : 'suspended';
+        user.status = 'suspended';
         user.banActionType = action.payload.actionType;
         user.banReason = action.payload.reason;
         user.escrowDisposition = action.payload.escrowDisposition || 'hold';

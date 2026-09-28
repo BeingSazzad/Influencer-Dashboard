@@ -28,6 +28,7 @@ import {
   Clock,
   AlertCircle,
   X,
+  ChevronDown,
 } from 'lucide-react';
 
 export const TicketsPage: React.FC = () => {
@@ -525,28 +526,34 @@ export const TicketsPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-neutral-500 font-semibold">Status:</span>
-                <select
-                  value={activeTicket.status}
-                  onChange={(e) => handleStatusChange(e.target.value as TicketStatus)}
-                  className="bg-neutral-50 border border-neutral-200 rounded-lg px-2.5 py-1 text-xs text-neutral-900 font-bold outline-none cursor-pointer"
-                >
-                  <option value="open">Open</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="resolved">Resolved</option>
-                  <option value="closed">Closed</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={activeTicket.status}
+                    onChange={(e) => handleStatusChange(e.target.value as TicketStatus)}
+                    className="bg-neutral-50 border border-neutral-200 rounded-lg pl-2.5 pr-7 py-1 text-xs text-neutral-900 font-bold outline-none cursor-pointer appearance-none shadow-2xs"
+                  >
+                    <option value="open">Open</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
 
                 <span className="text-xs text-neutral-500 font-semibold ml-2">Priority:</span>
-                <select
-                  value={activeTicket.priority}
-                  onChange={(e) => handlePriorityChange(e.target.value as TicketPriority)}
-                  className="bg-neutral-50 border border-neutral-200 rounded-lg px-2.5 py-1 text-xs text-neutral-900 font-bold outline-none cursor-pointer"
-                >
-                  <option value="urgent">Urgent</option>
-                  <option value="high">High</option>
-                  <option value="normal">Normal</option>
-                  <option value="low">Low</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={activeTicket.priority}
+                    onChange={(e) => handlePriorityChange(e.target.value as TicketPriority)}
+                    className="bg-neutral-50 border border-neutral-200 rounded-lg pl-2.5 pr-7 py-1 text-xs text-neutral-900 font-bold outline-none cursor-pointer appearance-none shadow-2xs"
+                  >
+                    <option value="urgent">Urgent</option>
+                    <option value="high">High</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Low</option>
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
               </div>
 
               <div className="flex items-center justify-end gap-2">

@@ -42,6 +42,7 @@ import {
   Bell,
   Lock,
   Check,
+  ChevronDown,
 } from 'lucide-react';
 
 export const OrdersPage: React.FC = () => {
@@ -887,16 +888,19 @@ export const OrdersPage: React.FC = () => {
             <label className="text-xs font-bold text-neutral-700 block mb-1">
               Additional Days to Add
             </label>
-            <select
-              value={extendDays}
-              onChange={(e) => setExtendDays(e.target.value)}
-              className="w-full h-9 px-3 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-900 outline-none focus:border-brand-pink cursor-pointer"
-            >
-              <option value="2">+2 Days (Standard Shipping Delay)</option>
-              <option value="3">+3 Days (Sample Reshipment)</option>
-              <option value="5">+5 Days (Complex Shoot Extension)</option>
-              <option value="7">+7 Days (Medical / Force Majeure)</option>
-            </select>
+            <div className="relative">
+              <select
+                value={extendDays}
+                onChange={(e) => setExtendDays(e.target.value)}
+                className="w-full h-9 pl-3 pr-8 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-900 outline-none focus:border-brand-pink appearance-none cursor-pointer"
+              >
+                <option value="2">+2 Days (Standard Shipping Delay)</option>
+                <option value="3">+3 Days (Sample Reshipment)</option>
+                <option value="5">+5 Days (Complex Shoot Extension)</option>
+                <option value="7">+7 Days (Medical / Force Majeure)</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
           </div>
           <div>
             <label className="text-xs font-bold text-neutral-700 block mb-1">

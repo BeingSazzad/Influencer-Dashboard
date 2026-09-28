@@ -12,7 +12,7 @@ export interface AdminUser {
   createdAt?: string;
 }
 
-export type UserStatus = 'active' | 'pending_verification' | 'suspended' | 'banned';
+export type UserStatus = 'active' | 'pending_verification' | 'suspended';
 
 export interface MarketplaceUser {
   id: string;

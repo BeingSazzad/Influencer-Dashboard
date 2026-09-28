@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   setTransactionSearchQuery,
-  setTransactionTypeFilter,
   setTransactionStatusFilter,
 } from '@/store/slices/transactionsSlice';
 import {
   MarketplaceTransaction,
-  TransactionType,
   TransactionStatus,
 } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/Table';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
@@ -24,11 +21,14 @@ import {
   Download,
   Search,
   CheckCircle2,
+  ChevronDown,
+  Eye,
+  FileText,
 } from 'lucide-react';
 
 export const TransactionsPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { transactions, searchQuery, typeFilter, statusFilter } = useAppSelector(
+  const { transactions, searchQuery, statusFilter } = useAppSelector(
     (state) => state.transactions
   );
 
@@ -38,19 +38,25 @@ export const TransactionsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
+  // Filter transactions: strictly platform fee records matching search and status
   const filteredTransactions = transactions.filter((t) => {
+    const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
-      t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.orderId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.brandName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.creatorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.stripePaymentIntentId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase());
+      !q ||
+      t.id.toLowerCase().includes(q) ||
+      t.orderId.toLowerCase().includes(q) ||
+      t.brandName.toLowerCase().includes(q) ||
+      t.creatorName.toLowerCase().includes(q) ||
+      t.stripePaymentIntentId.toLowerCase().includes(q) ||
+      t.invoiceNumber.toLowerCase().includes(q) ||
+      t.campaignTitle.toLowerCase().includes(q);
 
-    const matchesType = typeFilter === 'all' || t.type === typeFilter;
-    const matchesStatus = statusFilter === 'all' || t.status === statusFilter;
+    const matchesStatus =
+      statusFilter === 'all' ||
+      (statusFilter === 'completed' && t.status === 'completed') ||
+      (statusFilter === 'escrow_locked' && t.status === 'escrow_locked');
 
-    return matchesSearch && matchesType && matchesStatus;
+    return matchesSearch && matchesStatus;
   });
 
   const totalPages = Math.ceil(filteredTransactions.length / pageSize) || 1;
@@ -65,35 +71,12 @@ export const TransactionsPage: React.FC = () => {
     setTimeout(() => setExportNotice(false), 2500);
   };
 
-  const getTypeBadgeVariant = (type: TransactionType) => {
-    switch (type) {
-      case 'escrow_deposit':
-        return 'pink';
-      case 'creator_payout':
-        return 'success';
-      case 'platform_fee':
-        return 'default';
-      case 'brand_refund':
-        return 'danger';
-      case 'arbitration_split':
-        return 'warning';
-      default:
-        return 'neutral';
-    }
-  };
-
   const getStatusBadgeVariant = (status: TransactionStatus) => {
     switch (status) {
       case 'completed':
         return 'success';
       case 'escrow_locked':
-        return 'pink';
-      case 'pending':
         return 'warning';
-      case 'refunded':
-        return 'danger';
-      case 'failed':
-        return 'danger';
       default:
         return 'neutral';
     }
@@ -103,7 +86,7 @@ export const TransactionsPage: React.FC = () => {
     <div className="space-y-6">
       <PageHeader
         title="Transactions"
-        subtitle="Escrow deposits, creator payouts, and platform fee records."
+        subtitle="Platform commission revenue ledger and 15% marketplace take-rate settlements."
         actions={
           <Button
             variant="outline"
@@ -112,7 +95,7 @@ export const TransactionsPage: React.FC = () => {
             onClick={handleExportCSV}
             leftIcon={<Download className="w-3.5 h-3.5" />}
           >
-            Export CSV
+            Export Ledger
           </Button>
         }
       />
@@ -120,162 +103,165 @@ export const TransactionsPage: React.FC = () => {
       {exportNotice && (
         <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-800 flex items-center gap-2 animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          <span>Financial statement generated & exported (influverse_ledger_sept2026.csv).</span>
+          <span>Platform fee ledger exported (influverse_platform_fees_sept2026.csv).</span>
         </div>
       )}
 
       {/* Financial KPIs Minimal Bar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: 'Total Volume', value: '€1,248,500' },
-          { label: 'In Escrow', value: '€148,500' },
-          { label: 'Platform Fees', value: '€187,275' },
-          { label: 'Payouts', value: '€912,725' },
+          { label: 'Total Platform Revenue', value: '€187,275', note: '15% fee on all completed deals' },
+          { label: 'Platform Take-Rate', value: '15.0%', note: 'Fixed contract margin' },
+          { label: 'In Escrow (Pending Fees)', value: '€22,275', note: 'Releasing upon sign-off' },
+          { label: 'Settled Transactions', value: '1,420', note: 'Directly deposited to treasury' },
         ].map((item) => (
           <Card key={item.label} className="p-4">
-            <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider block">
+            <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider block">
               {item.label}
             </span>
             <div className="text-2xl font-black text-neutral-950 mt-1 tabular-nums">
               {item.value}
             </div>
+            <span className="text-[10px] text-neutral-600 font-semibold block mt-0.5">
+              {item.note}
+            </span>
           </Card>
         ))}
       </div>
 
-      {/* Filters & Control Panel */}
+      {/* Minimal Control Panel: Search & Status Selector (No Unnecessary Tabs) */}
       <Card className="p-4">
-        <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
-          {/* Type Filter Pills */}
-          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'escrow_deposit', label: 'Deposits' },
-              { id: 'creator_payout', label: 'Payouts' },
-              { id: 'platform_fee', label: 'Fees' },
-              { id: 'brand_refund', label: 'Refunds' },
-            ].map((t) => (
-              <button
-                key={t.id}
-                onClick={() => {
-                  dispatch(setTransactionTypeFilter(t.id as any));
-                  setCurrentPage(1);
-                }}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all shrink-0 cursor-pointer ${
-                  typeFilter === t.id
-                    ? 'bg-white text-neutral-950 shadow-sm'
-                    : 'text-neutral-500 hover:text-neutral-900'
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+          {/* Search Box */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search by order ID, invoice, brand, or creator..."
+              value={searchQuery}
+              onChange={(e) => {
+                dispatch(setTransactionSearchQuery(e.target.value));
+                setCurrentPage(1);
+              }}
+              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink font-medium text-neutral-900 placeholder:text-neutral-400"
+            />
           </div>
 
-          {/* Search & Status */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 flex-1 lg:max-w-xl justify-end">
-            <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                placeholder="Search transactions..."
-                value={searchQuery}
-                onChange={(e) => {
-                  dispatch(setTransactionSearchQuery(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink font-medium text-neutral-900 placeholder:text-neutral-400"
-              />
-            </div>
-
+          {/* Status Dropdown with Positioned Chevron */}
+          <div className="relative sm:w-48">
             <select
               value={statusFilter}
               onChange={(e) => {
                 dispatch(setTransactionStatusFilter(e.target.value as any));
                 setCurrentPage(1);
               }}
-              className="h-9 px-3 text-xs font-semibold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
+              className="w-full h-9 pl-3 pr-8 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer appearance-none shadow-2xs"
             >
-              <option value="all">All Status</option>
-              <option value="completed">Completed</option>
-              <option value="escrow_locked">In Escrow</option>
-              <option value="pending">Pending</option>
-              <option value="refunded">Refunded</option>
+              <option value="all">All Settlements</option>
+              <option value="completed">Settled to Treasury</option>
+              <option value="escrow_locked">In Escrow (Pending)</option>
             </select>
+            <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
       </Card>
 
-      {/* Financial Ledger Table */}
+      {/* Financial Platform Revenue Ledger Table */}
       <Card>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Transaction</TableHead>
+              <TableHead>Invoice & Order</TableHead>
+              <TableHead>Campaign & Collaborators</TableHead>
+              <TableHead>Deal Value</TableHead>
+              <TableHead>Take-Rate</TableHead>
+              <TableHead>Platform Revenue</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead>Parties</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Action</TableHead>
+              <TableHead className="text-right">Receipt</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedTransactions.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-neutral-500 font-medium">
-                  No transaction records found matching your filters.
+                <TableCell colSpan={8} className="text-center py-12 text-neutral-500 font-medium">
+                  No platform revenue transactions found matching your filters.
                 </TableCell>
               </TableRow>
             ) : (
               paginatedTransactions.map((txn) => (
                 <TableRow key={txn.id}>
+                  {/* Invoice & Order ID */}
                   <TableCell>
-                    <span className="font-mono text-xs font-bold text-neutral-950">
-                      {txn.id}
-                    </span>
-                  </TableCell>
-
-                  <TableCell className="text-xs font-semibold text-neutral-500 whitespace-nowrap">
-                    {formatDate(txn.createdAt)}
-                  </TableCell>
-
-                  <TableCell>
-                    <div className="text-xs">
-                      <span className="font-bold text-neutral-950">{txn.brandName}</span>
-                      <span className="text-neutral-400 mx-1.5">→</span>
-                      <span className="text-neutral-700 font-medium">{txn.creatorName}</span>
+                    <div>
+                      <span className="font-mono text-xs font-black text-neutral-950 block">
+                        {txn.invoiceNumber}
+                      </span>
+                      <span className="text-[11px] font-bold text-neutral-500">
+                        {txn.orderId}
+                      </span>
                     </div>
                   </TableCell>
 
+                  {/* Campaign & Parties */}
                   <TableCell>
-                    <Badge variant={getTypeBadgeVariant(txn.type)} size="sm">
-                      {txn.type.replace('_', ' ')}
-                    </Badge>
+                    <div>
+                      <span className="font-extrabold text-neutral-950 text-xs block">
+                        {txn.campaignTitle}
+                      </span>
+                      <div className="text-[11px] text-neutral-600 font-semibold mt-0.5 flex items-center gap-1.5">
+                        <span className="text-neutral-900 font-bold">{txn.brandName}</span>
+                        <span className="text-neutral-400">→</span>
+                        <span>{txn.creatorName}</span>
+                      </div>
+                    </div>
                   </TableCell>
 
-                  <TableCell className="text-xs font-black text-neutral-950 tabular-nums">
+                  {/* Deal Volume (Gross) */}
+                  <TableCell className="text-xs font-bold text-neutral-700 tabular-nums">
                     {formatCurrency(txn.grossAmountEur)}
                   </TableCell>
 
+                  {/* Take-Rate Badge */}
+                  <TableCell>
+                    <Badge variant="pink" size="sm">
+                      15% Fee
+                    </Badge>
+                  </TableCell>
+
+                  {/* Admin Platform Revenue Earned */}
+                  <TableCell>
+                    <span className="text-xs font-black text-emerald-700 tabular-nums">
+                      +{formatCurrency(txn.platformFeeEur)}
+                    </span>
+                  </TableCell>
+
+                  {/* Date */}
+                  <TableCell className="text-xs font-semibold text-neutral-600 whitespace-nowrap">
+                    {formatDate(txn.createdAt)}
+                  </TableCell>
+
+                  {/* Status */}
                   <TableCell>
                     <Badge
                       variant={getStatusBadgeVariant(txn.status)}
                       size="sm"
                       dot
                     >
-                      {txn.status === 'escrow_locked' ? 'Locked' : txn.status.replace('_', ' ')}
+                      {txn.status === 'completed' ? 'Settled' : 'In Escrow'}
                     </Badge>
                   </TableCell>
 
+                  {/* Action: View Receipt */}
                   <TableCell className="text-right">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-xs h-7 px-2.5 font-bold text-neutral-700 hover:text-neutral-950"
+                      className="text-xs h-8 px-2.5 font-bold text-neutral-800 hover:text-neutral-950"
                       onClick={() => setInspectedTxn(txn)}
                     >
-                      View
+                      <FileText className="w-3.5 h-3.5 mr-1 text-neutral-500" />
+                      Receipt
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -297,12 +283,12 @@ export const TransactionsPage: React.FC = () => {
               setPageSize(size);
               setCurrentPage(1);
             }}
-            itemLabel="transactions"
+            itemLabel="revenue records"
           />
         </div>
       </Card>
 
-      {/* Transaction Details Modal */}
+      {/* Transaction Platform Fee Receipt Modal */}
       {inspectedTxn && (
         <Modal
           isOpen={true}
@@ -310,14 +296,14 @@ export const TransactionsPage: React.FC = () => {
           title={
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-brand-black text-white flex items-center justify-center font-mono font-bold text-xs">
-                TX
+                15%
               </div>
               <div>
                 <h3 className="text-base font-bold text-neutral-900">
-                  Transaction {inspectedTxn.id}
+                  Platform Fee Receipt: {inspectedTxn.invoiceNumber}
                 </h3>
-                <p className="text-xs text-neutral-400">
-                  {inspectedTxn.invoiceNumber} • {inspectedTxn.createdAt}
+                <p className="text-xs text-neutral-500 font-semibold">
+                  Campaign Order {inspectedTxn.orderId} • {formatDate(inspectedTxn.createdAt)}
                 </p>
               </div>
             </div>
@@ -326,7 +312,7 @@ export const TransactionsPage: React.FC = () => {
           footer={
             <div className="flex items-center justify-between w-full">
               <span className="text-[11px] font-mono text-neutral-500 truncate max-w-xs">
-                Stripe ID: {inspectedTxn.stripePaymentIntentId}
+                Stripe Transfer ID: {inspectedTxn.stripePaymentIntentId}
               </span>
               <Button
                 variant="primary"
@@ -334,36 +320,36 @@ export const TransactionsPage: React.FC = () => {
                 className="font-bold"
                 onClick={() => setInspectedTxn(null)}
               >
-                Close Audit View
+                Close Receipt
               </Button>
             </div>
           }
         >
           <div className="space-y-6">
-            {/* Financial Summary Card */}
+            {/* Financial Commission Calculation Summary */}
             <div className="p-4 bg-neutral-50 rounded-2xl border border-neutral-200 grid grid-cols-3 gap-4 text-center">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
-                  Gross Escrow
+                  Deal Gross Value
                 </span>
                 <p className="text-lg font-black text-neutral-950 mt-0.5 tabular-nums">
                   {formatCurrency(inspectedTxn.grossAmountEur)}
                 </p>
               </div>
-              <div className="border-x border-neutral-200 px-2">
+              <div className="border-x border-neutral-200 px-2 bg-pink-50/50 rounded-lg">
                 <span className="text-[10px] font-black uppercase tracking-wider text-brand-pink">
-                  Platform Take (15%)
+                  Platform Revenue (15%)
                 </span>
                 <p className="text-lg font-black text-brand-pink mt-0.5 tabular-nums">
-                  {formatCurrency(inspectedTxn.platformFeeEur)}
+                  +{formatCurrency(inspectedTxn.platformFeeEur)}
                 </p>
               </div>
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700">
-                  Net Disbursed
+                <span className="text-[10px] font-black uppercase tracking-wider text-neutral-600">
+                  Net Creator Payout (85%)
                 </span>
-                <p className="text-lg font-black text-emerald-700 mt-0.5 tabular-nums">
-                  {formatCurrency(inspectedTxn.netAmountEur)}
+                <p className="text-lg font-black text-neutral-950 mt-0.5 tabular-nums">
+                  {formatCurrency(inspectedTxn.grossAmountEur - inspectedTxn.platformFeeEur)}
                 </p>
               </div>
             </div>
@@ -372,26 +358,26 @@ export const TransactionsPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="p-4 rounded-xl border border-neutral-200 space-y-2">
                 <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
-                  Originating Brand
+                  Hiring Brand (Fee Payer)
                 </span>
                 <div className="flex items-center gap-2.5">
                   <Avatar src={inspectedTxn.brandAvatar} name={inspectedTxn.brandName} size="sm" />
                   <div>
                     <h5 className="font-extrabold text-neutral-950">{inspectedTxn.brandName}</h5>
-                    <p className="text-neutral-500 text-[11px] font-medium">Primary Payer</p>
+                    <p className="text-neutral-500 text-[11px] font-medium">B2B Verified Account</p>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 rounded-xl border border-neutral-200 space-y-2">
                 <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
-                  Commissioned Creator
+                  Contracted Creator
                 </span>
                 <div className="flex items-center gap-2.5">
                   <Avatar src={inspectedTxn.creatorAvatar} name={inspectedTxn.creatorName} size="sm" />
                   <div>
                     <h5 className="font-extrabold text-neutral-950">{inspectedTxn.creatorName}</h5>
-                    <p className="text-neutral-500 text-[11px] font-medium">Beneficiary Recipient</p>
+                    <p className="text-neutral-500 text-[11px] font-medium">Content Producer</p>
                   </div>
                 </div>
               </div>
@@ -400,7 +386,7 @@ export const TransactionsPage: React.FC = () => {
             {/* Technical Payment Rails Details */}
             <div className="border border-neutral-200 rounded-xl p-4 divide-y divide-neutral-100 text-xs">
               <div className="py-2.5 flex justify-between items-center">
-                <span className="text-neutral-500 font-medium">Gateway Protocol</span>
+                <span className="text-neutral-500 font-medium">Settlement Route</span>
                 <span className="font-extrabold text-neutral-900 uppercase">
                   {inspectedTxn.paymentMethod.replace('_', ' ')}
                 </span>
@@ -412,9 +398,9 @@ export const TransactionsPage: React.FC = () => {
                 </span>
               </div>
               <div className="py-2.5 flex justify-between items-center">
-                <span className="text-neutral-500 font-medium">Escrow Smart Custody Status</span>
+                <span className="text-neutral-500 font-medium">Treasury Settlement Status</span>
                 <Badge variant={getStatusBadgeVariant(inspectedTxn.status)} size="sm" dot>
-                  {inspectedTxn.status.replace('_', ' ')}
+                  {inspectedTxn.status === 'completed' ? 'Settled to Admin Treasury' : 'Held in Escrow'}
                 </Badge>
               </div>
               <div className="py-2.5 flex justify-between items-center">
