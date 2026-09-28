@@ -33,40 +33,40 @@ export const Sidebar: React.FC = () => {
     {
       label: 'Overview',
       path: ROUTES.DASHBOARD.OVERVIEW,
-      icon: <LayoutDashboard className="w-4 h-4" />,
+      icon: <LayoutDashboard className="w-[18px] h-[18px]" />,
     },
     {
       label: 'Users & Moderation',
       path: ROUTES.DASHBOARD.USERS,
-      icon: <Users className="w-4 h-4" />,
+      icon: <Users className="w-[18px] h-[18px]" />,
     },
     {
       label: 'Verification Queue',
       path: ROUTES.DASHBOARD.VERIFICATION,
-      icon: <ShieldCheck className="w-4 h-4" />,
+      icon: <ShieldCheck className="w-[18px] h-[18px]" />,
       badge: pendingVerifications > 0 ? pendingVerifications : undefined,
     },
     {
       label: 'Escrow Disputes',
       path: ROUTES.DASHBOARD.ESCROW,
-      icon: <Scale className="w-4 h-4" />,
+      icon: <Scale className="w-[18px] h-[18px]" />,
       badge: openDisputes > 0 ? openDisputes : undefined,
       badgeColor: 'rose',
     },
     {
       label: 'CMS & Legal Docs',
       path: ROUTES.DASHBOARD.CMS,
-      icon: <FileEdit className="w-4 h-4" />,
+      icon: <FileEdit className="w-[18px] h-[18px]" />,
     },
     {
       label: 'Admin Team & RBAC',
       path: ROUTES.DASHBOARD.TEAM,
-      icon: <ShieldAlert className="w-4 h-4" />,
+      icon: <ShieldAlert className="w-[18px] h-[18px]" />,
     },
     {
       label: 'Admin Settings',
       path: ROUTES.DASHBOARD.SETTINGS,
-      icon: <Settings className="w-4 h-4" />,
+      icon: <Settings className="w-[18px] h-[18px]" />,
     },
   ];
 
@@ -99,7 +99,7 @@ export const Sidebar: React.FC = () => {
 
       {/* Navigation Links */}
       <div className="flex-1 py-4 px-3 overflow-y-auto space-y-1">
-        <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+        <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-neutral-400">
           Core Operations
         </div>
         {navItems.map((item) => (
@@ -109,7 +109,7 @@ export const Sidebar: React.FC = () => {
             end={item.path === ROUTES.DASHBOARD.OVERVIEW}
             className={({ isActive }) =>
               cn(
-                'flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition-all duration-150 group',
+                'flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 group',
                 isActive
                   ? 'bg-brand-black text-white shadow-sm'
                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/70'
@@ -118,22 +118,22 @@ export const Sidebar: React.FC = () => {
           >
             {({ isActive }) => (
               <>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   <span
                     className={cn(
-                      'transition-colors',
+                      'transition-colors shrink-0',
                       isActive ? 'text-white' : 'text-neutral-400 group-hover:text-neutral-700'
                     )}
                   >
                     {item.icon}
                   </span>
-                  <span>{item.label}</span>
+                  <span className="truncate">{item.label}</span>
                 </div>
 
                 {item.badge !== undefined && (
                   <span
                     className={cn(
-                      'px-1.5 py-0.5 text-[10px] font-bold rounded-full',
+                      'px-2 py-0.5 text-xs font-bold rounded-full',
                       item.badgeColor === 'rose'
                         ? 'bg-rose-500 text-white'
                         : isActive
