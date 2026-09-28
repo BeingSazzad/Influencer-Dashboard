@@ -1,0 +1,89 @@
+import React from 'react';
+import { cn } from '@/lib/utils';
+
+export const Table: React.FC<React.TableHTMLAttributes<HTMLTableElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <div className="w-full overflow-x-auto">
+      <table
+        className={cn('w-full text-left border-collapse text-sm', className)}
+        {...props}
+      >
+        {children}
+      </table>
+    </div>
+  );
+};
+
+export const TableHeader: React.FC<
+  React.HTMLAttributes<HTMLTableSectionElement>
+> = ({ className, children, ...props }) => {
+  return (
+    <thead
+      className={cn('bg-neutral-50/80 border-b border-neutral-200/80 text-xs font-semibold text-neutral-500 uppercase tracking-wider', className)}
+      {...props}
+    >
+      {children}
+    </thead>
+  );
+};
+
+export const TableBody: React.FC<
+  React.HTMLAttributes<HTMLTableSectionElement>
+> = ({ className, children, ...props }) => {
+  return (
+    <tbody
+      className={cn('divide-y divide-neutral-100 bg-white', className)}
+      {...props}
+    >
+      {children}
+    </tbody>
+  );
+};
+
+export const TableRow: React.FC<React.HTMLAttributes<HTMLTableRowElement>> = ({
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <tr
+      className={cn(
+        'transition-colors hover:bg-neutral-50/70 data-[state=selected]:bg-neutral-100',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </tr>
+  );
+};
+
+export const TableHead: React.FC<
+  React.ThHTMLAttributes<HTMLTableCellElement>
+> = ({ className, children, ...props }) => {
+  return (
+    <th
+      className={cn('px-4 py-3.5 font-semibold text-neutral-600 align-middle', className)}
+      {...props}
+    >
+      {children}
+    </th>
+  );
+};
+
+export const TableCell: React.FC<
+  React.TdHTMLAttributes<HTMLTableCellElement>
+> = ({ className, children, ...props }) => {
+  return (
+    <td
+      className={cn('px-4 py-3.5 align-middle text-neutral-800', className)}
+      {...props}
+    >
+      {children}
+    </td>
+  );
+};

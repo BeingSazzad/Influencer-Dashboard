@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #FAFAF8;
+    color: #0A0A0A;
+    font-family: 'Red Hat Display', sans-serif;
+  }
+}
+
+/* Tabular figures for financial and metric numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom sleek scrollbar for admin tables & drawers */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E7E7E2;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D2D2CA;
+}

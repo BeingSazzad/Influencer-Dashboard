@@ -1,0 +1,198 @@
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/constants/routes';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { logoutAdmin } from '@/store/slices/authSlice';
+import { Avatar } from '@/components/ui/Avatar';
+import {
+  LayoutDashboard,
+  Users,
+  ShieldCheck,
+  Scale,
+  FileEdit,
+  ShieldAlert,
+  Settings,
+  LogOut,
+  ExternalLink,
+  Lock,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+export const Sidebar: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+  const pendingVerifications = useAppSelector(
+    (state) => state.verification.requests.filter((r) => r.status === 'pending').length
+  );
+  const openDisputes = useAppSelector(
+    (state) => state.escrow.disputes.filter((d) => d.status === 'open').length
+  );
+
+  const navItems = [
+    {
+      label: 'Overview',
+      path: ROUTES.DASHBOARD.OVERVIEW,
+      icon: <LayoutDashboard className="w-4 h-4" />,
+    },
+    {
+      label: 'Users & Moderation',
+      path: ROUTES.DASHBOARD.USERS,
+      icon: <Users className="w-4 h-4" />,
+    },
+    {
+      label: 'Verification Queue',
+      path: ROUTES.DASHBOARD.VERIFICATION,
+      icon: <ShieldCheck className="w-4 h-4" />,
+      badge: pendingVerifications > 0 ? pendingVerifications : undefined,
+    },
+    {
+      label: 'Escrow Disputes',
+      path: ROUTES.DASHBOARD.ESCROW,
+      icon: <Scale className="w-4 h-4" />,
+      badge: openDisputes > 0 ? openDisputes : undefined,
+      badgeColor: 'rose',
+    },
+    {
+      label: 'CMS & Legal Docs',
+      path: ROUTES.DASHBOARD.CMS,
+      icon: <FileEdit className="w-4 h-4" />,
+    },
+    {
+      label: 'Admin Team & RBAC',
+      path: ROUTES.DASHBOARD.TEAM,
+      icon: <ShieldAlert className="w-4 h-4" />,
+    },
+    {
+      label: 'Admin Settings',
+      path: ROUTES.DASHBOARD.SETTINGS,
+      icon: <Settings className="w-4 h-4" />,
+    },
+  ];
+
+  const handleLogout = () => {
+    dispatch(logoutAdmin());
+    navigate(ROUTES.AUTH.LOGIN);
+  };
+
+  return (
+    <aside className="w-64 bg-white border-r border-neutral-200/80 flex flex-col h-screen shrink-0 sticky top-0">
+      {/* Brand Header */}
+      <div className="h-16 flex items-center justify-between px-6 border-b border-neutral-100">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-brand-black flex items-center justify-center font-black text-white text-base shadow-sm">
+            I
+          </div>
+          <div>
+            <div className="font-extrabold text-sm tracking-tight text-neutral-900 flex items-center gap-1.5">
+              <span>INFLUVERSE</span>
+              <span className="text-[9px] uppercase tracking-wider font-bold bg-neutral-100 text-neutral-600 px-1.5 py-0.5 rounded">
+                HQ
+              </span>
+            </div>
+            <p className="text-[10px] text-neutral-400 font-medium">
+              Admin & Escrow Back-Office
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex-1 py-4 px-3 overflow-y-auto space-y-1">
+        <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+          Core Operations
+        </div>
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.path === ROUTES.DASHBOARD.OVERVIEW}
+            className={({ isActive }) =>
+              cn(
+                'flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition-all duration-150 group',
+                isActive
+                  ? 'bg-brand-black text-white shadow-sm'
+                  : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/70'
+              )
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <div className="flex items-center gap-3">
+                  <span
+                    className={cn(
+                      'transition-colors',
+                      isActive ? 'text-white' : 'text-neutral-400 group-hover:text-neutral-700'
+                    )}
+                  >
+                    {item.icon}
+                  </span>
+                  <span>{item.label}</span>
+                </div>
+
+                {item.badge !== undefined && (
+                  <span
+                    className={cn(
+                      'px-1.5 py-0.5 text-[10px] font-bold rounded-full',
+                      item.badgeColor === 'rose'
+                        ? 'bg-rose-500 text-white'
+                        : isActive
+                        ? 'bg-brand-pink text-white'
+                        : 'bg-brand-pink/10 text-brand-pink'
+                    )}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+              </>
+            )}
+          </NavLink>
+        ))}
+      </div>
+
+      {/* Security Status Capsule */}
+      <div className="p-3 mx-3 mb-3 bg-neutral-50 rounded-xl border border-neutral-200/60">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[11px] font-bold text-neutral-800">
+              Escrow Shield Active
+            </span>
+          </div>
+          <Lock className="w-3.5 h-3.5 text-neutral-400" />
+        </div>
+        <p className="text-[10px] text-neutral-500 mt-1 leading-tight">
+          PCI-DSS Level 1 & EU GDPR Enforced
+        </p>
+      </div>
+
+      {/* User Footer Profile */}
+      <div className="p-3 border-t border-neutral-100 flex items-center justify-between bg-white">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <Avatar
+            src={currentUser?.avatar}
+            name={currentUser?.name}
+            size="sm"
+            statusIndicator="online"
+          />
+          <div className="min-w-0">
+            <p className="text-xs font-bold text-neutral-900 truncate">
+              {currentUser?.name}
+            </p>
+            <p className="text-[10px] font-medium text-neutral-400 capitalize truncate">
+              {currentUser?.role?.replace('_', ' ')}
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={handleLogout}
+          title="Sign out of HQ"
+          className="p-1.5 text-neutral-400 hover:text-rose-600 hover:bg-neutral-100 rounded-lg transition-colors shrink-0"
+        >
+          <LogOut className="w-4 h-4" />
+        </button>
+      </div>
+    </aside>
+  );
+};
