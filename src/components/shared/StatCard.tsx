@@ -55,26 +55,28 @@ export const StatCard: React.FC<StatCardProps> = ({
         </div>
       </div>
 
-      <div className="mt-3.5 flex items-center gap-1.5 text-xs">
-        {change !== undefined && (
-          <span
-            className={cn(
-              'inline-flex items-center font-extrabold px-1.5 py-0.5 rounded text-[11px]',
-              isPositive && 'text-emerald-700 bg-emerald-50 border border-emerald-200/60',
-              isNegative && 'text-rose-700 bg-rose-50 border border-rose-200/60',
-              !isPositive && !isNegative && 'text-neutral-700 bg-neutral-100 border border-neutral-200/60'
-            )}
-          >
-            {isPositive && <ArrowUpRight className="w-3 h-3 mr-0.5" />}
-            {isNegative && <ArrowDownRight className="w-3 h-3 mr-0.5" />}
-            {!isPositive && !isNegative && <Minus className="w-3 h-3 mr-0.5" />}
-            {Math.abs(change)}%
+      {(change !== undefined || subtitle) && (
+        <div className="mt-3.5 flex items-center gap-1.5 text-xs">
+          {change !== undefined && (
+            <span
+              className={cn(
+                'inline-flex items-center font-extrabold px-1.5 py-0.5 rounded text-[11px]',
+                isPositive && 'text-emerald-700 bg-emerald-50 border border-emerald-200/60',
+                isNegative && 'text-rose-700 bg-rose-50 border border-rose-200/60',
+                !isPositive && !isNegative && 'text-neutral-700 bg-neutral-100 border border-neutral-200/60'
+              )}
+            >
+              {isPositive && <ArrowUpRight className="w-3 h-3 mr-0.5" />}
+              {isNegative && <ArrowDownRight className="w-3 h-3 mr-0.5" />}
+              {!isPositive && !isNegative && <Minus className="w-3 h-3 mr-0.5" />}
+              {Math.abs(change)}%
+            </span>
+          )}
+          <span className="text-neutral-500 text-[11px] font-medium">
+            {subtitle || (change !== undefined ? changePeriod : '')}
           </span>
-        )}
-        <span className="text-neutral-500 text-[11px] font-medium">
-          {subtitle || changePeriod}
-        </span>
-      </div>
+        </div>
+      )}
     </Card>
   );
 };
