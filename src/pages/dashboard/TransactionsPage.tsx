@@ -149,8 +149,8 @@ export const TransactionsPage: React.FC = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Invoice & Order</TableHead>
-              <TableHead>Campaign & Collaborators</TableHead>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Campaign</TableHead>
               <TableHead>Revenue</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Status</TableHead>
@@ -167,30 +167,21 @@ export const TransactionsPage: React.FC = () => {
             ) : (
               paginatedTransactions.map((txn) => (
                 <TableRow key={txn.id}>
-                  {/* Invoice & Order ID */}
+                  {/* Order ID */}
                   <TableCell>
-                    <div>
-                      <span className="font-mono text-xs font-black text-neutral-950 block">
-                        {txn.invoiceNumber}
-                      </span>
-                      <span className="text-[11px] font-bold text-neutral-500">
-                        {txn.orderId}
-                      </span>
-                    </div>
+                    <span className="font-mono text-xs font-bold text-neutral-900">
+                      {txn.orderId}
+                    </span>
                   </TableCell>
 
-                  {/* Campaign & Parties */}
+                  {/* Campaign */}
                   <TableCell>
-                    <div>
-                      <span className="font-extrabold text-neutral-950 text-xs block">
-                        {txn.campaignTitle}
-                      </span>
-                      <div className="text-[11px] text-neutral-600 font-semibold mt-0.5 flex items-center gap-1.5">
-                        <span className="text-neutral-900 font-bold">{txn.brandName}</span>
-                        <span className="text-neutral-400">→</span>
-                        <span>{txn.creatorName}</span>
-                      </div>
-                    </div>
+                    <span
+                      className="font-bold text-neutral-950 text-xs block truncate max-w-[280px]"
+                      title={txn.campaignTitle}
+                    >
+                      {txn.campaignTitle}
+                    </span>
                   </TableCell>
 
                   {/* Revenue */}

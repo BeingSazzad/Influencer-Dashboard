@@ -205,6 +205,7 @@ export const TicketsPage: React.FC = () => {
               type="button"
               onClick={() => {
                 dispatch(setTicketTypeFilter('user_report'));
+                dispatch(setTicketStatusFilter('all'));
                 setCurrentPage(1);
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
@@ -220,10 +221,11 @@ export const TicketsPage: React.FC = () => {
               type="button"
               onClick={() => {
                 dispatch(setTicketStatusFilter('open'));
+                dispatch(setTicketTypeFilter('all'));
                 setCurrentPage(1);
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                statusFilter === 'open'
+                statusFilter === 'open' && typeFilter === 'all'
                   ? 'bg-white text-neutral-950 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
@@ -234,10 +236,11 @@ export const TicketsPage: React.FC = () => {
               type="button"
               onClick={() => {
                 dispatch(setTicketStatusFilter('in_progress'));
+                dispatch(setTicketTypeFilter('all'));
                 setCurrentPage(1);
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                statusFilter === 'in_progress'
+                statusFilter === 'in_progress' && typeFilter === 'all'
                   ? 'bg-white text-neutral-950 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
@@ -248,10 +251,11 @@ export const TicketsPage: React.FC = () => {
               type="button"
               onClick={() => {
                 dispatch(setTicketStatusFilter('resolved'));
+                dispatch(setTicketTypeFilter('all'));
                 setCurrentPage(1);
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                statusFilter === 'resolved'
+                statusFilter === 'resolved' && typeFilter === 'all'
                   ? 'bg-white text-neutral-950 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
@@ -288,70 +292,6 @@ export const TicketsPage: React.FC = () => {
             )}
           </div>
         </div>
-
-        {/* Active Filter Summary */}
-        {(searchQuery || statusFilter !== 'all' || typeFilter !== 'all') && (
-          <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-neutral-500 border-t border-neutral-100">
-            <span className="font-semibold text-neutral-400">Active filters:</span>
-            {searchQuery && (
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px]">
-                Search: "{searchQuery}"
-                <button
-                  type="button"
-                  onClick={() => {
-                    dispatch(setTicketSearchQuery(''));
-                    setCurrentPage(1);
-                  }}
-                  className="hover:text-rose-600 cursor-pointer"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            {statusFilter !== 'all' && (
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px] capitalize">
-                Status: {statusFilter.replace('_', ' ')}
-                <button
-                  type="button"
-                  onClick={() => {
-                    dispatch(setTicketStatusFilter('all'));
-                    setCurrentPage(1);
-                  }}
-                  className="hover:text-rose-600 cursor-pointer"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            {typeFilter !== 'all' && (
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-200/60 font-semibold text-[11px]">
-                User Reports Only
-                <button
-                  type="button"
-                  onClick={() => {
-                    dispatch(setTicketTypeFilter('all'));
-                    setCurrentPage(1);
-                  }}
-                  className="hover:text-rose-800 cursor-pointer"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={() => {
-                dispatch(setTicketSearchQuery(''));
-                dispatch(setTicketStatusFilter('all'));
-                dispatch(setTicketTypeFilter('all'));
-                setCurrentPage(1);
-              }}
-              className="text-[11px] font-bold text-brand-pink hover:underline ml-auto cursor-pointer"
-            >
-              Reset all
-            </button>
-          </div>
-        )}
       </Card>
 
       {/* Tickets List Table */}

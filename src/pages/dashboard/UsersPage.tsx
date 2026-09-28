@@ -288,55 +288,6 @@ export const UsersPage: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Active Filter Chips / Reset */}
-        {(searchQuery || statusFilter !== 'all') && (
-          <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-neutral-500 border-t border-neutral-100">
-            <span className="font-semibold text-neutral-400">Active filters:</span>
-            {searchQuery && (
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px]">
-                Search: "{searchQuery}"
-                <button
-                  type="button"
-                  onClick={() => {
-                    dispatch(setSearchQuery(''));
-                    setCurrentPage(1);
-                  }}
-                  className="hover:text-rose-600 cursor-pointer"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            {statusFilter !== 'all' && (
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px] capitalize">
-                Status: {statusFilter}
-                <button
-                  type="button"
-                  onClick={() => {
-                    dispatch(setStatusFilter('all'));
-                    setCurrentPage(1);
-                  }}
-                  className="hover:text-rose-600 cursor-pointer"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={() => {
-                dispatch(setSearchQuery(''));
-                dispatch(setRoleFilter('all'));
-                dispatch(setStatusFilter('all'));
-                setCurrentPage(1);
-              }}
-              className="text-[11px] font-bold text-brand-pink hover:underline ml-auto cursor-pointer"
-            >
-              Reset all
-            </button>
-          </div>
-        )}
       </Card>
 
       {/* Users Directory Table */}
