@@ -258,37 +258,37 @@ export const OrdersPage: React.FC = () => {
       />
 
       {/* Top Level KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Active Orders In-Flight"
+          title="Active Orders"
           value={activeOrdersCount.toString()}
-          subtitle="Orders actively in production or review"
           icon={<ShoppingBag className="w-5 h-5" />}
           change={14.2}
           accentColor="pink"
+          changePeriod="vs last month"
         />
         <StatCard
-          title="Active Escrow in Custody"
+          title="In Escrow"
           value={formatCurrency(escrowLockedEur)}
-          subtitle="Capital securely held in platform vault"
           icon={<Lock className="w-5 h-5" />}
           change={8.5}
           accentColor="emerald"
+          changePeriod="vs last month"
         />
         <StatCard
-          title="Deliverables in Review"
+          title="In Review"
           value={reviewPendingCount.toString()}
-          subtitle="Submitted videos awaiting brand sign-off"
           icon={<Clock className="w-5 h-5" />}
           accentColor="amber"
+          changePeriod="vs last month"
         />
         <StatCard
-          title="At-Risk / Overdue Orders"
+          title="At Risk"
           value={atRiskCount.toString()}
-          subtitle="Requires immediate admin intervention"
           icon={<AlertTriangle className="w-5 h-5" />}
           change={atRiskCount > 0 ? -1 : undefined}
           accentColor="black"
+          changePeriod="vs last month"
         />
       </div>
 
@@ -394,14 +394,14 @@ export const OrdersPage: React.FC = () => {
       <Card className="border-[#E7E7E2] dark:border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-[#F4F4F0] dark:bg-white/[0.03] text-neutral-500 dark:text-neutral-400 uppercase text-[11px] tracking-wider border-b border-[#E7E7E2] dark:border-white/5 font-extrabold">
+            <thead className="bg-neutral-50 dark:bg-white/[0.03] text-neutral-500 dark:text-neutral-400 text-xs border-b border-[#E7E7E2] dark:border-white/5 font-semibold">
               <tr>
-                <th className="py-4 px-5">Order ID & Package</th>
-                <th className="py-4 px-5">Counterparties (Brand ➔ Creator)</th>
-                <th className="py-4 px-5">Escrow & Payout</th>
-                <th className="py-4 px-5">Status & Stage</th>
-                <th className="py-4 px-5">Delivery SLA</th>
-                <th className="py-4 px-5 text-right">Actions</th>
+                <th className="py-3 px-5">Order</th>
+                <th className="py-3 px-5">Parties</th>
+                <th className="py-3 px-5">Amount</th>
+                <th className="py-3 px-5">Status</th>
+                <th className="py-3 px-5">Deadline</th>
+                <th className="py-3 px-5 text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E7E7E2] dark:divide-white/5">

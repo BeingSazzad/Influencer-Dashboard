@@ -209,41 +209,38 @@ export const TicketsPage: React.FC = () => {
       />
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Open Action Tickets"
+          title="Open Tickets"
           value={openCount.toString()}
-          subtitle="Awaiting administrative response"
           icon={<LifeBuoy className="w-5 h-5" />}
           change={-2}
           accentColor="pink"
+          changePeriod="vs last month"
         />
         <StatCard
-          title="Active User Reports"
+          title="Reports"
           value={reportCount.toString()}
-          subtitle="Fraud, scam, or licensing allegations"
           icon={<ShieldAlert className="w-5 h-5" />}
           accentColor="amber"
         />
         <StatCard
-          title="Urgent Priority Queue"
+          title="Urgent"
           value={urgentCount.toString()}
-          subtitle="Immediate SLA risk or financial alert"
           icon={<AlertTriangle className="w-5 h-5" />}
           change={urgentCount > 0 ? -1 : undefined}
           accentColor="black"
         />
         <StatCard
-          title="In Progress Working"
+          title="In Progress"
           value={inProgressCount.toString()}
-          subtitle="Currently assigned to admin leads"
           icon={<Clock className="w-5 h-5" />}
           accentColor="emerald"
         />
       </div>
 
       {/* Filter Tabs & Search */}
-      <Card className="p-4 sm:p-5 border-[#E7E7E2] dark:border-white/10">
+      <Card className="p-4 border-[#E7E7E2] dark:border-white/10">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Status & Type Pills */}
           <div className="flex flex-wrap items-center gap-1.5 border-b lg:border-b-0 pb-3 lg:pb-0 border-white/5">
@@ -252,28 +249,28 @@ export const TicketsPage: React.FC = () => {
                 dispatch(setTicketStatusFilter('all'));
                 dispatch(setTicketTypeFilter('all'));
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 statusFilter === 'all' && typeFilter === 'all'
                   ? 'bg-white text-black dark:bg-white dark:text-black shadow-sm'
                   : 'text-neutral-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              All Inquiries ({tickets.length})
+              All ({tickets.length})
             </button>
             <button
               onClick={() => dispatch(setTicketTypeFilter('user_report'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                 typeFilter === 'user_report'
                   ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
                   : 'text-neutral-400 hover:text-white hover:bg-white/5'
               }`}
             >
               <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
-              User Reports ({reportCount})
+              Reports ({reportCount})
             </button>
             <button
               onClick={() => dispatch(setTicketStatusFilter('open'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 statusFilter === 'open'
                   ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                   : 'text-neutral-400 hover:text-white hover:bg-white/5'
@@ -283,7 +280,7 @@ export const TicketsPage: React.FC = () => {
             </button>
             <button
               onClick={() => dispatch(setTicketStatusFilter('in_progress'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 statusFilter === 'in_progress'
                   ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
                   : 'text-neutral-400 hover:text-white hover:bg-white/5'
@@ -293,7 +290,7 @@ export const TicketsPage: React.FC = () => {
             </button>
             <button
               onClick={() => dispatch(setTicketStatusFilter('resolved'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 statusFilter === 'resolved'
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                   : 'text-neutral-400 hover:text-white hover:bg-white/5'
@@ -309,7 +306,7 @@ export const TicketsPage: React.FC = () => {
             <Input
               value={searchQuery}
               onChange={(e) => dispatch(setTicketSearchQuery(e.target.value))}
-              placeholder="Search ID, user, reported subject..."
+              placeholder="Search tickets, users, issues..."
               className="pl-9 py-1.5 text-xs bg-black/40 border-white/10"
             />
           </div>
@@ -320,15 +317,15 @@ export const TicketsPage: React.FC = () => {
       <Card className="border-[#E7E7E2] dark:border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-[#F4F4F0] dark:bg-white/[0.03] text-neutral-500 dark:text-neutral-400 uppercase text-[11px] tracking-wider border-b border-[#E7E7E2] dark:border-white/5 font-extrabold">
+            <thead className="bg-neutral-50 dark:bg-white/[0.03] text-neutral-500 dark:text-neutral-400 text-xs border-b border-[#E7E7E2] dark:border-white/5 font-semibold">
               <tr>
-                <th className="py-4 px-5">Ticket ID & Subject</th>
-                <th className="py-4 px-5">Inquiring Party</th>
-                <th className="py-4 px-5">Category & Focus</th>
-                <th className="py-4 px-5">Priority</th>
-                <th className="py-4 px-5">Status</th>
-                <th className="py-4 px-5">Updated</th>
-                <th className="py-4 px-5 text-right">Actions</th>
+                <th className="py-3 px-5">Ticket</th>
+                <th className="py-3 px-5">User</th>
+                <th className="py-3 px-5">Category</th>
+                <th className="py-3 px-5">Priority</th>
+                <th className="py-3 px-5">Status</th>
+                <th className="py-3 px-5">Updated</th>
+                <th className="py-3 px-5 text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E7E7E2] dark:divide-white/5">

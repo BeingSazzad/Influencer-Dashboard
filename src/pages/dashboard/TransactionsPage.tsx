@@ -132,9 +132,9 @@ export const TransactionsPage: React.FC = () => {
       )}
 
       {/* Financial KPIs Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Total Gross Settled"
+          title="Total Volume"
           value="€1,248,500"
           change={18.4}
           icon={<Receipt className="w-5 h-5" />}
@@ -142,15 +142,15 @@ export const TransactionsPage: React.FC = () => {
           changePeriod="vs last month"
         />
         <StatCard
-          title="Escrow in Custody"
+          title="In Escrow"
           value="€148,500"
           change={6.2}
           icon={<Lock className="w-5 h-5" />}
           accentColor="pink"
-          subtitle="Segregated client escrow"
+          changePeriod="vs last month"
         />
         <StatCard
-          title="Platform Net Take (15%)"
+          title="Platform Fees"
           value="€187,275"
           change={21.8}
           icon={<Percent className="w-5 h-5" />}
@@ -158,12 +158,12 @@ export const TransactionsPage: React.FC = () => {
           changePeriod="vs last month"
         />
         <StatCard
-          title="Disbursed Payouts"
+          title="Payouts"
           value="€912,725"
           change={14.1}
           icon={<ArrowUpRight className="w-5 h-5" />}
           accentColor="amber"
-          subtitle="Zero payout delays"
+          changePeriod="vs last month"
         />
       </div>
 
@@ -173,10 +173,10 @@ export const TransactionsPage: React.FC = () => {
           {/* Type Filter Pills */}
           <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             {[
-              { id: 'all', label: 'All Transactions' },
-              { id: 'escrow_deposit', label: 'Escrow Deposits' },
-              { id: 'creator_payout', label: 'Creator Payouts' },
-              { id: 'platform_fee', label: 'Platform Fees (15%)' },
+              { id: 'all', label: 'All' },
+              { id: 'escrow_deposit', label: 'Deposits' },
+              { id: 'creator_payout', label: 'Payouts' },
+              { id: 'platform_fee', label: 'Fees' },
               { id: 'brand_refund', label: 'Refunds' },
             ].map((t) => (
               <button
@@ -199,7 +199,7 @@ export const TransactionsPage: React.FC = () => {
               <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search TXN, Order, Brand, Stripe..."
+                placeholder="Search transactions..."
                 value={searchQuery}
                 onChange={(e) => dispatch(setTransactionSearchQuery(e.target.value))}
                 className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink font-medium"
@@ -209,11 +209,11 @@ export const TransactionsPage: React.FC = () => {
             <select
               value={statusFilter}
               onChange={(e) => dispatch(setTransactionStatusFilter(e.target.value as any))}
-              className="h-9 px-3 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-700 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
+              className="h-9 px-3 text-xs font-semibold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-700 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
             >
-              <option value="all">All Statuses</option>
+              <option value="all">All Status</option>
               <option value="completed">Completed</option>
-              <option value="escrow_locked">Escrow Locked</option>
+              <option value="escrow_locked">In Escrow</option>
               <option value="pending">Pending</option>
               <option value="refunded">Refunded</option>
             </select>
@@ -226,21 +226,20 @@ export const TransactionsPage: React.FC = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Transaction / Invoice</TableHead>
-              <TableHead>Contract Order & Campaign</TableHead>
-              <TableHead>Counterparties</TableHead>
-              <TableHead>Transaction Type</TableHead>
+              <TableHead>Transaction</TableHead>
+              <TableHead>Campaign</TableHead>
+              <TableHead>Parties</TableHead>
+              <TableHead>Type</TableHead>
               <TableHead>Gross</TableHead>
-              <TableHead>15% Platform Take</TableHead>
-              <TableHead>Net Settlement</TableHead>
+              <TableHead>Net</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredTransactions.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="text-center py-12 text-neutral-400 font-medium">
+                <TableCell colSpan={8} className="text-center py-12 text-neutral-400 font-medium">
                   No transaction records found matching your filters.
                 </TableCell>
               </TableRow>
@@ -248,48 +247,28 @@ export const TransactionsPage: React.FC = () => {
               filteredTransactions.map((txn) => (
                 <TableRow key={txn.id}>
                   <TableCell>
-                    <div>
-                      <div className="font-mono text-xs font-black text-neutral-950">
-                        {txn.id}
-                      </div>
-                      <div className="text-[11px] text-neutral-400 font-medium mt-0.5">
-                        {txn.invoiceNumber}
-                      </div>
-                      <div className="text-[10px] text-neutral-400 font-medium">
-                        {txn.createdAt}
-                      </div>
+                    <div className="font-mono text-xs font-bold text-neutral-900">
+                      {txn.id}
+                    </div>
+                    <div className="text-[11px] text-neutral-400 mt-0.5">
+                      {formatDate(txn.createdAt)}
                     </div>
                   </TableCell>
 
                   <TableCell>
-                    <div className="space-y-0.5 max-w-[200px]">
-                      <span className="font-mono text-[11px] font-bold text-neutral-500">
-                        #{txn.orderId}
-                      </span>
-                      <div className="text-xs font-extrabold text-neutral-950 truncate" title={txn.campaignTitle}>
-                        {txn.campaignTitle}
-                      </div>
-                      <span className="inline-block text-[10px] uppercase font-bold text-neutral-500 bg-neutral-100 px-1.5 py-0.2 rounded">
-                        {txn.paymentMethod.replace('_', ' ')}
-                      </span>
+                    <div className="text-xs font-semibold text-neutral-900 truncate max-w-[180px]" title={txn.campaignTitle}>
+                      {txn.campaignTitle}
+                    </div>
+                    <div className="text-[11px] text-neutral-400 font-mono mt-0.5">
+                      #{txn.orderId}
                     </div>
                   </TableCell>
 
                   <TableCell>
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex items-center gap-1.5">
-                        <Avatar src={txn.brandAvatar} name={txn.brandName} size="xs" />
-                        <span className="font-bold text-neutral-900 truncate max-w-[120px]">
-                          {txn.brandName}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-neutral-400 pl-1 text-[11px]">
-                        <span>↳</span>
-                        <Avatar src={txn.creatorAvatar} name={txn.creatorName} size="xs" />
-                        <span className="font-semibold text-neutral-700 truncate max-w-[120px]">
-                          {txn.creatorName}
-                        </span>
-                      </div>
+                    <div className="text-xs text-neutral-700">
+                      <span className="font-semibold text-neutral-900">{txn.brandName}</span>
+                      <span className="text-neutral-400 mx-1.5">→</span>
+                      <span className="text-neutral-600">{txn.creatorName}</span>
                     </div>
                   </TableCell>
 
@@ -299,15 +278,12 @@ export const TransactionsPage: React.FC = () => {
                     </Badge>
                   </TableCell>
 
-                  <TableCell className="font-bold text-neutral-700 tabular-nums">
-                    {formatCurrency(txn.grossAmountEur)}
+                  <TableCell className="text-xs font-semibold text-neutral-900 tabular-nums">
+                    <div>{formatCurrency(txn.grossAmountEur)}</div>
+                    <div className="text-[10px] text-neutral-400">Fee: {formatCurrency(txn.platformFeeEur)}</div>
                   </TableCell>
 
-                  <TableCell className="font-bold text-brand-pink tabular-nums">
-                    {formatCurrency(txn.platformFeeEur)}
-                  </TableCell>
-
-                  <TableCell className="font-black text-neutral-950 tabular-nums text-sm">
+                  <TableCell className="text-xs font-bold text-neutral-950 tabular-nums">
                     {formatCurrency(txn.netAmountEur)}
                   </TableCell>
 
@@ -317,7 +293,7 @@ export const TransactionsPage: React.FC = () => {
                       size="sm"
                       dot
                     >
-                      {txn.status.replace('_', ' ')}
+                      {txn.status === 'escrow_locked' ? 'Locked' : txn.status.replace('_', ' ')}
                     </Badge>
                   </TableCell>
 
@@ -325,12 +301,9 @@ export const TransactionsPage: React.FC = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="font-bold"
                       onClick={() => setInspectedTxn(txn)}
-                      title="Inspect Ledger Entry"
                     >
-                      <Eye className="w-3.5 h-3.5 mr-1" />
-                      Inspect
+                      View
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -351,11 +324,11 @@ export const TransactionsPage: React.FC = () => {
                 TX
               </div>
               <div>
-                <h3 className="text-base font-black text-neutral-950">
-                  Transaction Audit: {inspectedTxn.id}
+                <h3 className="text-base font-bold text-neutral-900">
+                  Transaction {inspectedTxn.id}
                 </h3>
-                <p className="text-xs text-neutral-400 font-medium">
-                  Invoice {inspectedTxn.invoiceNumber} • Logged at {inspectedTxn.createdAt}
+                <p className="text-xs text-neutral-400">
+                  {inspectedTxn.invoiceNumber} • {inspectedTxn.createdAt}
                 </p>
               </div>
             </div>

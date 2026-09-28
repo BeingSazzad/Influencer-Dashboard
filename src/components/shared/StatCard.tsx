@@ -36,11 +36,11 @@ export const StatCard: React.FC<StatCardProps> = ({
     <Card hoverEffect className="p-5 relative overflow-hidden group">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-sans">
+          <p className="text-xs font-semibold text-neutral-500 font-sans">
             {title}
           </p>
-          <div className="mt-2.5 flex items-baseline gap-2">
-            <span className="text-3xl sm:text-[32px] font-black tracking-tight text-neutral-950 tabular-nums font-sans">
+          <div className="mt-2 flex items-baseline gap-2">
+            <span className="text-2xl sm:text-[26px] font-bold tracking-tight text-neutral-900 tabular-nums font-sans">
               {value}
             </span>
           </div>

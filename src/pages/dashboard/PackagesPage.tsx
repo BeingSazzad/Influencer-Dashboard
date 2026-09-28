@@ -152,16 +152,15 @@ export const PackagesPage: React.FC = () => {
       />
 
       {/* KPI Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Active Catalog Templates"
+          title="Templates"
           value={packages.length}
           icon={<Package className="w-5 h-5" />}
           accentColor="black"
-          subtitle="Pre-approved service blueprints"
         />
         <StatCard
-          title="Average Package Price"
+          title="Avg Price"
           value="€1,925"
           change={12.4}
           icon={<Euro className="w-5 h-5" />}
@@ -169,19 +168,18 @@ export const PackagesPage: React.FC = () => {
           changePeriod="vs last month"
         />
         <StatCard
-          title="Platform Take (15%)"
-          value="Automated"
+          title="Platform Fee"
+          value="15%"
           icon={<ShieldCheck className="w-5 h-5" />}
           accentColor="emerald"
-          subtitle="Paid on brand deposit"
         />
         <StatCard
-          title="Active Creator Adoptions"
+          title="Adoptions"
           value="468"
           change={18.2}
           icon={<Layers className="w-5 h-5" />}
           accentColor="amber"
-          subtitle="Using template packages"
+          changePeriod="vs last month"
         />
       </div>
 

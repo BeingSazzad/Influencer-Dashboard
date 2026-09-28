@@ -148,12 +148,12 @@ export const TeamPage: React.FC = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Administrator</TableHead>
-              <TableHead>Assigned Role</TableHead>
+              <TableHead>Admin</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Security (2FA)</TableHead>
+              <TableHead>2FA</TableHead>
               <TableHead>Last Active</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

@@ -177,7 +177,7 @@ export const DashboardPage: React.FC = () => {
           change={6.2}
           icon={<Euro className="w-4 h-4" />}
           accentColor="pink"
-          subtitle="34 active contracts"
+          changePeriod="vs last month"
         />
         <StatCard
           title="Platform Revenue"
@@ -193,7 +193,7 @@ export const DashboardPage: React.FC = () => {
           change={14.1}
           icon={<Users className="w-4 h-4" />}
           accentColor="amber"
-          subtitle="2,120 creators • 720 brands"
+          changePeriod="vs last month"
         />
       </div>
 
@@ -499,7 +499,7 @@ export const DashboardPage: React.FC = () => {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-600 font-black uppercase tracking-wider">
+                    <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-500 font-semibold text-xs">
                       <tr>
                         <th className="px-6 py-3">Case</th>
                         <th className="px-6 py-3">Campaign</th>
@@ -620,7 +620,7 @@ export const DashboardPage: React.FC = () => {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-600 font-black uppercase tracking-wider">
+                    <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-500 font-semibold text-xs">
                       <tr>
                         <th className="px-6 py-3">Creator</th>
                         <th className="px-6 py-3">Category</th>
@@ -716,7 +716,7 @@ export const DashboardPage: React.FC = () => {
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-600 font-black uppercase tracking-wider">
+                  <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-500 font-semibold text-xs">
                     <tr>
                       <th className="px-6 py-3">Order</th>
                       <th className="px-6 py-3">Package</th>

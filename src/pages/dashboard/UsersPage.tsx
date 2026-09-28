@@ -121,10 +121,10 @@ export const UsersPage: React.FC = () => {
               onChange={(e) => dispatch(setStatusFilter(e.target.value as any))}
               className="h-10 px-3.5 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-xl text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
             >
-              <option value="all">All Account Statuses</option>
-              <option value="active">Active Standing</option>
-              <option value="suspended">Suspended Accounts</option>
-              <option value="banned">Banned Accounts</option>
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="suspended">Suspended</option>
+              <option value="banned">Banned</option>
             </select>
           </div>
         </div>
@@ -135,13 +135,13 @@ export const UsersPage: React.FC = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>User Profile</TableHead>
-              <TableHead>Marketplace Role</TableHead>
-              <TableHead>Compliance Status</TableHead>
-              <TableHead>Total Volume (EUR)</TableHead>
-              <TableHead>Completed Deals</TableHead>
+              <TableHead>User</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Volume</TableHead>
+              <TableHead>Deals</TableHead>
               <TableHead>Joined</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
