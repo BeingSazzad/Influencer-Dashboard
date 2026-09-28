@@ -11,7 +11,6 @@ import { UsersPage } from '@/pages/dashboard/UsersPage';
 import { VerificationPage } from '@/pages/dashboard/VerificationPage';
 import { EscrowPage } from '@/pages/dashboard/EscrowPage';
 import { TransactionsPage } from '@/pages/dashboard/TransactionsPage';
-import { PackagesPage } from '@/pages/dashboard/PackagesPage';
 import { OrdersPage } from '@/pages/dashboard/OrdersPage';
 import { TicketsPage } from '@/pages/dashboard/TicketsPage';
 import { CmsPage } from '@/pages/dashboard/CmsPage';
@@ -65,10 +64,6 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.DASHBOARD.TICKETS,
             element: <TicketsPage />,
-          },
-          {
-            path: ROUTES.DASHBOARD.PACKAGES,
-            element: <PackagesPage />,
           },
           {
             path: ROUTES.DASHBOARD.CMS,

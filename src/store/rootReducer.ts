@@ -6,7 +6,6 @@ import escrowReducer from './slices/escrowSlice';
 import cmsReducer from './slices/cmsSlice';
 import teamReducer from './slices/teamSlice';
 import transactionsReducer from './slices/transactionsSlice';
-import packagesReducer from './slices/packagesSlice';
 import { ordersReducer } from './slices/ordersSlice';
 import { ticketsReducer } from './slices/ticketsSlice';
 
@@ -18,7 +17,6 @@ export const rootReducer = combineReducers({
   tickets: ticketsReducer,
   escrow: escrowReducer,
   transactions: transactionsReducer,
-  packages: packagesReducer,
   cms: cmsReducer,
   team: teamReducer,
 });

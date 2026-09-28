@@ -9,7 +9,6 @@ import {
   Users,
   ShieldCheck,
   ShoppingBag,
-  Package,
   Scale,
   Receipt,
   FileEdit,
@@ -61,11 +60,6 @@ export const Sidebar: React.FC = () => {
       path: ROUTES.DASHBOARD.ORDERS,
       icon: <ShoppingBag className="w-[18px] h-[18px]" />,
       badge: activeOrdersCount > 0 ? activeOrdersCount : undefined,
-    },
-    {
-      label: 'Packages',
-      path: ROUTES.DASHBOARD.PACKAGES,
-      icon: <Package className="w-[18px] h-[18px]" />,
     },
     {
       label: 'Disputes',

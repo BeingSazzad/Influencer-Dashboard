@@ -9,7 +9,6 @@ export const ROUTES = {
     USERS: '/users',
     VERIFICATION: '/verification',
     ORDERS: '/orders',
-    PACKAGES: '/packages',
     ESCROW: '/escrow',
     TRANSACTIONS: '/transactions',
     TICKETS: '/tickets',
