@@ -3,25 +3,20 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   addAdminMember,
   removeAdminMember,
-  updateAdminRole,
   toggleAdminStatus,
   setTeamSearch,
   setTeamRoleFilter,
 } from '@/store/slices/teamSlice';
-import { AdminUser, AdminRole } from '@/types/admin.types';
+import { AdminRole } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/Table';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
-import {
-  UserPlus,
-  Trash2,
-  Search,
-} from 'lucide-react';
+import { UserPlus, Trash2, Search } from 'lucide-react';
 
 export const TeamPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -32,11 +27,10 @@ export const TeamPage: React.FC = () => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState<AdminRole>('operations');
+  const [role, setRole] = useState<AdminRole>('admin');
   const [avatar, setAvatar] = useState(
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
   );
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
 
   const filteredMembers = members.filter((m) => {
     const matchesSearch =
@@ -57,28 +51,13 @@ export const TeamPage: React.FC = () => {
         role,
         avatar,
         status: 'active',
-        twoFactorEnabled,
+        twoFactorEnabled: false,
       })
     );
 
     setName('');
     setEmail('');
     setIsInviteModalOpen(false);
-  };
-
-  const getRoleBadgeVariant = (r: AdminRole) => {
-    switch (r) {
-      case 'super_admin':
-        return 'default';
-      case 'finance':
-        return 'success';
-      case 'operations':
-        return 'pink';
-      case 'moderator':
-        return 'neutral';
-      default:
-        return 'neutral';
-    }
   };
 
   return (
@@ -108,21 +87,23 @@ export const TeamPage: React.FC = () => {
       <Card className="p-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start">
-            {(['all', 'super_admin', 'operations', 'finance', 'moderator'] as const).map(
-              (r) => (
-                <button
-                  key={r}
-                  onClick={() => dispatch(setTeamRoleFilter(r))}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all capitalize ${
-                    filterRole === r
-                      ? 'bg-white text-neutral-900 shadow-sm'
-                      : 'text-neutral-500 hover:text-neutral-900'
-                  }`}
-                >
-                  {r === 'all' ? 'All Roles' : r.replace('_', ' ')}
-                </button>
-              )
-            )}
+            {[
+              { id: 'all', label: 'All Roles' },
+              { id: 'super_admin', label: 'Super Admin' },
+              { id: 'admin', label: 'Admin' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => dispatch(setTeamRoleFilter(tab.id as 'all' | AdminRole))}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                  filterRole === tab.id
+                    ? 'bg-white text-neutral-900 shadow-sm'
+                    : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
 
           <div className="relative w-full sm:w-64">
@@ -145,24 +126,29 @@ export const TeamPage: React.FC = () => {
             <TableRow>
               <TableHead>Admin</TableHead>
               <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>2FA</TableHead>
-              <TableHead>Active</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredMembers.map((member) => (
-              <TableRow key={member.id}>
+              <TableRow
+                key={member.id}
+                className={member.status === 'suspended' ? 'opacity-60 bg-neutral-50/50' : ''}
+              >
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Avatar src={member.avatar} name={member.name} size="sm" />
                     <div>
-                      <div className="font-extrabold text-neutral-950 flex items-center gap-1.5 text-sm">
+                      <div className="font-bold text-neutral-950 flex items-center gap-1.5 text-sm">
                         <span>{member.name}</span>
                         {member.id === currentUser?.id && (
-                          <span className="text-[10px] bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded font-black">
+                          <span className="text-[10px] bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded font-bold">
                             You
+                          </span>
+                        )}
+                        {member.status === 'suspended' && (
+                          <span className="text-[10px] bg-rose-50 text-rose-600 px-1.5 py-0.5 rounded font-bold">
+                            Suspended
                           </span>
                         )}
                       </div>
@@ -172,32 +158,9 @@ export const TeamPage: React.FC = () => {
                 </TableCell>
 
                 <TableCell>
-                  <Badge variant={getRoleBadgeVariant(member.role)} size="sm">
-                    {member.role.replace('_', ' ')}
+                  <Badge variant={member.role === 'super_admin' ? 'default' : 'neutral'} size="sm">
+                    {member.role === 'super_admin' ? 'Super Admin' : 'Admin'}
                   </Badge>
-                </TableCell>
-
-                <TableCell>
-                  <Badge
-                    variant={member.status === 'active' ? 'success' : 'danger'}
-                    size="sm"
-                    dot
-                  >
-                    {member.status}
-                  </Badge>
-                </TableCell>
-
-                <TableCell>
-                  <Badge
-                    variant={member.twoFactorEnabled ? 'success' : 'neutral'}
-                    size="sm"
-                  >
-                    {member.twoFactorEnabled ? 'Active' : 'Off'}
-                  </Badge>
-                </TableCell>
-
-                <TableCell className="text-neutral-500 text-xs">
-                  {member.lastLogin}
                 </TableCell>
 
                 <TableCell className="text-right">
@@ -206,6 +169,7 @@ export const TeamPage: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="sm"
+                        className="text-xs font-bold text-neutral-600 hover:text-neutral-900"
                         onClick={() => dispatch(toggleAdminStatus(member.id))}
                       >
                         {member.status === 'active' ? 'Suspend' : 'Activate'}
@@ -213,7 +177,7 @@ export const TeamPage: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-rose-600 hover:bg-rose-50"
+                        className="text-rose-600 hover:bg-rose-50 p-1.5"
                         onClick={() => dispatch(removeAdminMember(member.id))}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -232,8 +196,8 @@ export const TeamPage: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setIsInviteModalOpen(false)}
-          title="Add New Administrator"
-          description="Issue an operational key and role assignment to a team member."
+          title="Add Admin"
+          description="Invite a new administrator to the dashboard."
           maxWidth="md"
           footer={
             <>
@@ -245,14 +209,14 @@ export const TeamPage: React.FC = () => {
                 Cancel
               </Button>
               <Button variant="accent" size="sm" onClick={handleCreateAdmin}>
-                Grant Admin Access
+                Add Admin
               </Button>
             </>
           }
         >
           <form onSubmit={handleCreateAdmin} className="space-y-4">
             <Input
-              label="Full Legal Name"
+              label="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Elena Rostova"
@@ -260,7 +224,7 @@ export const TeamPage: React.FC = () => {
             />
 
             <Input
-              label="Company Email"
+              label="Email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -270,36 +234,24 @@ export const TeamPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600">
-                Security Role
+                Role
               </label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as AdminRole)}
                 className="w-full h-10 px-3 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink"
               >
-                <option value="operations">Operations Manager</option>
-                <option value="finance">Finance & Escrow Signatory</option>
-                <option value="moderator">Content & Trust Moderator</option>
-                <option value="super_admin">Super Administrator</option>
+                <option value="admin">Admin</option>
+                <option value="super_admin">Super Admin</option>
               </select>
             </div>
 
             <Input
-              label="Avatar Image URL"
+              label="Avatar URL (Optional)"
               value={avatar}
               onChange={(e) => setAvatar(e.target.value)}
               placeholder="https://..."
             />
-
-            <label className="flex items-center gap-2 pt-2 cursor-pointer select-none text-xs text-neutral-700">
-              <input
-                type="checkbox"
-                checked={twoFactorEnabled}
-                onChange={(e) => setTwoFactorEnabled(e.target.checked)}
-                className="w-4 h-4 rounded text-brand-black"
-              />
-              <span>Mandate Two-Factor Authentication (2FA) upon first login</span>
-            </label>
           </form>
         </Modal>
       )}
