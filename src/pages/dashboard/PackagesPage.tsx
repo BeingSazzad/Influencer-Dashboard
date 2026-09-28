@@ -10,7 +10,6 @@ import {
 } from '@/store/slices/packagesSlice';
 import { MarketplacePackage, PackageTier } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { StatCard } from '@/components/shared/StatCard';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -19,20 +18,11 @@ import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
 import { formatCurrency } from '@/lib/utils';
 import {
-  Package,
   Plus,
   Search,
   CheckCircle,
-  Clock,
-  RotateCcw,
-  Sparkles,
-  ShieldCheck,
   Trash2,
-  Euro,
-  FileCheck2,
-  Layers,
   Star,
-  Check,
   X,
 } from 'lucide-react';
 
@@ -150,38 +140,6 @@ export const PackagesPage: React.FC = () => {
           </Button>
         }
       />
-
-      {/* KPI Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Templates"
-          value={packages.length}
-          icon={<Package className="w-5 h-5" />}
-          accentColor="black"
-        />
-        <StatCard
-          title="Avg Price"
-          value="€1,925"
-          change={12.4}
-          icon={<Euro className="w-5 h-5" />}
-          accentColor="pink"
-          changePeriod="vs last month"
-        />
-        <StatCard
-          title="Platform Fee"
-          value="15%"
-          icon={<ShieldCheck className="w-5 h-5" />}
-          accentColor="emerald"
-        />
-        <StatCard
-          title="Adoptions"
-          value="468"
-          change={18.2}
-          icon={<Layers className="w-5 h-5" />}
-          accentColor="amber"
-          changePeriod="vs last month"
-        />
-      </div>
 
       {/* Controls & Filter Pills */}
       <Card className="p-4">
