@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Modal } from '@/components/ui/Modal';
 import { ImageUploadBox } from '@/components/shared/ImageUploadBox';
+import { RichTextEditor } from '@/components/ui/RichTextEditor';
 import {
   FileText,
   HelpCircle,
@@ -27,7 +28,6 @@ import {
   Trash2,
   Edit2,
   CheckCircle,
-  Eye,
   Search,
   ExternalLink,
 } from 'lucide-react';
@@ -42,12 +42,9 @@ export const CmsPage: React.FC = () => {
   // Legal Doc Editor State
   const currentLegalDoc =
     legalDocs.find((d) => d.slug === selectedLegalSlug) || legalDocs[0];
-  const [legalTitle, setLegalTitle] = useState(currentLegalDoc?.title || '');
-  const [legalVersion, setLegalVersion] = useState(currentLegalDoc?.version || '');
   const [legalContent, setLegalContent] = useState(
     currentLegalDoc?.contentMarkdown || ''
   );
-  const [legalPreviewMode, setLegalPreviewMode] = useState(false);
   const [saveSuccessNotice, setSaveSuccessNotice] = useState(false);
 
   // Sync state if slug changes
@@ -55,8 +52,6 @@ export const CmsPage: React.FC = () => {
     dispatch(setSelectedLegalSlug(slug));
     const doc = legalDocs.find((d) => d.slug === slug);
     if (doc) {
-      setLegalTitle(doc.title);
-      setLegalVersion(doc.version);
       setLegalContent(doc.contentMarkdown);
     }
   };
@@ -65,8 +60,6 @@ export const CmsPage: React.FC = () => {
     dispatch(
       updateLegalDoc({
         slug: selectedLegalSlug,
-        title: legalTitle,
-        version: legalVersion,
         contentMarkdown: legalContent,
       })
     );
@@ -240,7 +233,7 @@ export const CmsPage: React.FC = () => {
                           : 'text-neutral-400'
                       }`}
                     >
-                      v{doc.version} • {doc.lastModified}
+                      Updated: {doc.lastModified}
                     </div>
                   </button>
                 ))}
@@ -249,37 +242,25 @@ export const CmsPage: React.FC = () => {
 
             {/* Right Editor Area */}
             <div className="lg:col-span-3 space-y-4">
-              <Card className="p-6">
+              <Card className="p-5 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100 mb-4">
-                  <div className="flex items-center gap-3">
-                    <Input
-                      label="Policy Title"
-                      value={legalTitle}
-                      onChange={(e) => setLegalTitle(e.target.value)}
-                      className="w-72 font-extrabold"
-                    />
-                    <Input
-                      label="Revision"
-                      value={legalVersion}
-                      onChange={(e) => setLegalVersion(e.target.value)}
-                      className="w-24 font-bold"
-                    />
+                  <div>
+                    <h3 className="text-base font-extrabold text-neutral-950 flex items-center gap-2">
+                      <span>{currentLegalDoc?.title}</span>
+                      <Badge variant="neutral" size="sm">
+                        Active
+                      </Badge>
+                    </h3>
+                    <p className="text-xs text-neutral-400 font-medium mt-0.5">
+                      Last updated: {currentLegalDoc?.lastModified}
+                    </p>
                   </div>
 
-                  <div className="flex items-center gap-2 self-end sm:self-center">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="font-bold"
-                      onClick={() => setLegalPreviewMode(!legalPreviewMode)}
-                      leftIcon={<Eye className="w-3.5 h-3.5" />}
-                    >
-                      {legalPreviewMode ? 'Edit Markdown' : 'Preview'}
-                    </Button>
+                  <div className="flex items-center gap-2">
                     <Button
                       variant="accent"
                       size="sm"
-                      className="font-bold"
+                      className="font-bold text-xs"
                       onClick={handleSaveLegal}
                       leftIcon={<Save className="w-3.5 h-3.5" />}
                     >
@@ -288,23 +269,13 @@ export const CmsPage: React.FC = () => {
                   </div>
                 </div>
 
-                {legalPreviewMode ? (
-                  <div className="prose prose-sm max-w-none p-5 rounded-2xl bg-neutral-50 border border-neutral-200 text-neutral-900 whitespace-pre-line font-serif leading-relaxed">
-                    {legalContent}
-                  </div>
-                ) : (
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-extrabold uppercase tracking-wider text-neutral-700">
-                      Markdown Legal Document Source
-                    </label>
-                    <textarea
-                      value={legalContent}
-                      onChange={(e) => setLegalContent(e.target.value)}
-                      rows={16}
-                      className="w-full p-4 font-mono text-xs bg-white border border-neutral-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink leading-relaxed text-neutral-900 font-medium"
-                    />
-                  </div>
-                )}
+                {/* Formatted Text Editor */}
+                <RichTextEditor
+                  value={legalContent}
+                  onChange={setLegalContent}
+                  placeholder="Write policy content here..."
+                  minHeight="440px"
+                />
               </Card>
             </div>
           </div>

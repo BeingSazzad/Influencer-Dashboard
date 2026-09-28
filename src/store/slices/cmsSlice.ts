@@ -34,14 +34,14 @@ export const cmsSlice = createSlice({
       action: PayloadAction<{
         slug: string;
         contentMarkdown: string;
-        version: string;
+        version?: string;
         title?: string;
       }>
     ) => {
       const doc = state.legalDocs.find((d) => d.slug === action.payload.slug);
       if (doc) {
         doc.contentMarkdown = action.payload.contentMarkdown;
-        doc.version = action.payload.version;
+        if (action.payload.version) doc.version = action.payload.version;
         if (action.payload.title) doc.title = action.payload.title;
         doc.lastModified = new Date().toLocaleDateString('en-US', {
           month: 'long',
