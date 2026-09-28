@@ -217,7 +217,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         elements.push(
           <blockquote
             key={index}
-            className="border-l-4 border-brand-pink/70 pl-3.5 py-1 text-xs italic text-neutral-700 bg-pink-50/40 rounded-r-lg my-2 font-medium"
+            className="border-l-4 border-brand-pink/70 pl-3.5 py-1.5 text-sm italic text-neutral-700 bg-pink-50/40 rounded-r-lg my-2 font-medium"
           >
             {line.replace('> ', '')}
           </blockquote>
@@ -227,7 +227,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         elements.push(
           <li
             key={index}
-            className="text-xs text-neutral-700 list-disc ml-5 my-0.5 leading-relaxed"
+            className="text-sm text-neutral-800 list-disc ml-5 my-1 leading-relaxed"
           >
             {formatInline(line.trim().replace(/^[-*]\s+/, ''))}
           </li>
@@ -237,7 +237,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         elements.push(
           <li
             key={index}
-            className="text-xs text-neutral-700 list-decimal ml-5 my-0.5 leading-relaxed"
+            className="text-sm text-neutral-800 list-decimal ml-5 my-1 leading-relaxed"
           >
             {formatInline(line.trim().replace(/^\d+\.\s+/, ''))}
           </li>
@@ -251,7 +251,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       } else {
         // Normal paragraph
         elements.push(
-          <p key={index} className="text-xs text-neutral-800 leading-relaxed my-1">
+          <p key={index} className="text-sm text-neutral-800 leading-relaxed my-2">
             {formatInline(line)}
           </p>
         );
@@ -505,7 +505,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
               onChange={(e) => updateContent(e.target.value)}
               placeholder={placeholder}
               style={{ minHeight }}
-              className="w-full h-full p-4 font-sans text-xs text-neutral-900 bg-white outline-none resize-y leading-relaxed font-medium placeholder:text-neutral-400 focus:bg-neutral-50/20"
+              className="w-full h-full p-4 font-sans text-sm text-neutral-900 bg-white outline-none resize-y leading-relaxed font-normal placeholder:text-neutral-400 focus:bg-neutral-50/20"
             />
           </div>
         )}

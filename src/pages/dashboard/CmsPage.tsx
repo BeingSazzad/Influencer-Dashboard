@@ -211,29 +211,29 @@ export const CmsPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Left selector */}
             <div className="space-y-2">
-              <span className="text-[11px] uppercase font-black text-neutral-400 tracking-wider">
-                Select Document
+              <span className="text-xs uppercase font-bold text-neutral-500 tracking-wider">
+                Policies
               </span>
               <div className="space-y-1.5">
                 {legalDocs.map((doc) => (
                   <button
                     key={doc.id}
                     onClick={() => handleSelectSlug(doc.slug)}
-                    className={`w-full p-3 rounded-xl border text-left transition-all ${
+                    className={`w-full p-3.5 rounded-xl border text-left transition-all ${
                       selectedLegalSlug === doc.slug
-                        ? 'border-brand-black bg-brand-black text-white font-extrabold shadow-sm'
-                        : 'border-neutral-200 bg-white text-neutral-800 font-bold hover:bg-neutral-50'
+                        ? 'border-brand-black bg-brand-black text-white shadow-sm'
+                        : 'border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50'
                     }`}
                   >
-                    <div className="text-xs font-black truncate">{doc.title}</div>
+                    <div className="text-sm font-bold leading-snug">{doc.title}</div>
                     <div
-                      className={`text-[11px] mt-0.5 font-medium ${
+                      className={`text-xs mt-1 font-medium ${
                         selectedLegalSlug === doc.slug
                           ? 'text-neutral-300'
-                          : 'text-neutral-400'
+                          : 'text-neutral-500'
                       }`}
                     >
-                      Updated: {doc.lastModified}
+                      {doc.lastModified}
                     </div>
                   </button>
                 ))}
