@@ -439,40 +439,27 @@ export const CmsPage: React.FC = () => {
               <h3 className="text-sm font-extrabold text-neutral-900">
                 Brand Identity
               </h3>
-              <p className="text-[11px] text-neutral-400 font-medium">
-                Logos and platform assets.
-              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ImageUploadBox
-                label="Light Logo"
-                description="For dark headers and hero banners."
-                value={logoLight}
-                onChange={setLogoLight}
-                previewBg="dark"
-                recommendedDimensions="Recommended: SVG or PNG (400x100px)"
-              />
-
-              <ImageUploadBox
-                label="Dark Logo"
-                description="For light backgrounds and contracts."
+                label="Logo"
                 value={logoDark}
-                onChange={setLogoDark}
+                onChange={(val) => {
+                  setLogoDark(val);
+                  setLogoLight(val);
+                }}
                 previewBg="light"
-                recommendedDimensions="Recommended: SVG or PNG (400x100px)"
+                recommendedDimensions="SVG or PNG (400x100px)"
               />
-            </div>
 
-            <div className="pt-2">
               <ImageUploadBox
                 label="Favicon"
-                description="Browser tab icon."
                 value={favicon}
                 onChange={setFavicon}
                 aspectRatio="square"
                 previewBg="light"
-                recommendedDimensions="Recommended: 32x32px or 64x64px"
+                recommendedDimensions="32x32px or 64x64px"
               />
             </div>
 
