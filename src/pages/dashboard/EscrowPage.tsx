@@ -71,12 +71,12 @@ export const EscrowPage: React.FC = () => {
       />
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start max-w-xs">
+      <div className="flex items-center gap-1.5 bg-neutral-100 p-1 rounded-xl self-start max-w-sm">
         {(['all', 'open', 'resolved'] as const).map((s) => (
           <button
             key={s}
             onClick={() => dispatch(setDisputeFilter(s))}
-            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all capitalize ${
+            className={`px-3.5 py-2 text-sm font-bold rounded-lg transition-all capitalize cursor-pointer ${
               filterStatus === s
                 ? 'bg-white text-neutral-900 shadow-sm'
                 : 'text-neutral-500 hover:text-neutral-900'

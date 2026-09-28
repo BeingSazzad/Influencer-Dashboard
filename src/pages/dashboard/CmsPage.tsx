@@ -158,7 +158,7 @@ export const CmsPage: React.FC = () => {
       <div className="flex items-center gap-2 border-b border-neutral-200">
         <button
           onClick={() => setActiveTab('legal')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
             activeTab === 'legal'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
@@ -170,7 +170,7 @@ export const CmsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('faqs')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
             activeTab === 'faqs'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
@@ -182,7 +182,7 @@ export const CmsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('branding')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
             activeTab === 'branding'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'

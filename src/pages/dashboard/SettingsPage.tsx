@@ -103,7 +103,7 @@ export const SettingsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveTab('profile')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
             activeTab === 'profile'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
@@ -116,7 +116,7 @@ export const SettingsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveTab('security')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
             activeTab === 'security'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
@@ -129,7 +129,7 @@ export const SettingsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveTab('escrow')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
             activeTab === 'escrow'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
