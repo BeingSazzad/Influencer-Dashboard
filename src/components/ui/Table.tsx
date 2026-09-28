@@ -80,7 +80,7 @@ export const TableCell: React.FC<
 > = ({ className, children, ...props }) => {
   return (
     <td
-      className={cn('px-4 py-3.5 align-middle text-neutral-900 font-semibold text-xs', className)}
+      className={cn('px-4 py-3.5 align-middle text-neutral-900 font-semibold text-sm', className)}
       {...props}
     >
       {children}

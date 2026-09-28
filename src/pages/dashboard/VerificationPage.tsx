@@ -117,13 +117,13 @@ export const VerificationPage: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <Avatar src={request.avatar} name={request.creatorName} size="sm" />
                       <div>
-                        <div className="font-extrabold text-neutral-950 flex items-center gap-1.5 text-xs">
+                        <div className="font-extrabold text-neutral-950 flex items-center gap-1.5 text-sm">
                           <span>{request.creatorName}</span>
                           {request.status === 'approved' && (
                             <BadgeCheck className="w-4 h-4 text-sky-500 fill-sky-500/15 shrink-0" title="Verified Creator" />
                           )}
                         </div>
-                        <div className="text-[11px] text-neutral-600 font-semibold">
+                        <div className="text-xs text-neutral-500 font-semibold">
                           @{request.handle}
                         </div>
                       </div>
@@ -132,7 +132,7 @@ export const VerificationPage: React.FC = () => {
 
                   {/* Email */}
                   <TableCell>
-                    <span className="text-xs text-neutral-800 font-semibold">
+                    <span className="text-sm text-neutral-800 font-semibold">
                       {request.email || `${request.handle}@creator.com`}
                     </span>
                   </TableCell>
@@ -167,7 +167,7 @@ export const VerificationPage: React.FC = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="text-xs font-bold flex items-center gap-1"
+                        className="text-sm font-bold flex items-center gap-1.5"
                         onClick={() => setSelectedRequest(request)}
                       >
                         <Eye className="w-3.5 h-3.5" />
@@ -177,7 +177,7 @@ export const VerificationPage: React.FC = () => {
                         <Button
                           variant="accent"
                           size="sm"
-                          className="text-xs font-bold"
+                          className="text-sm font-bold"
                           onClick={() => handleApprove(request.id)}
                         >
                           Approve

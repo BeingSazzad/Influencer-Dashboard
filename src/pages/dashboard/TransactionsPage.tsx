@@ -169,7 +169,7 @@ export const TransactionsPage: React.FC = () => {
                 <TableRow key={txn.id}>
                   {/* Order ID */}
                   <TableCell>
-                    <span className="font-mono text-xs font-bold text-neutral-900">
+                    <span className="font-mono text-sm font-bold text-neutral-900">
                       {txn.orderId}
                     </span>
                   </TableCell>
@@ -177,7 +177,7 @@ export const TransactionsPage: React.FC = () => {
                   {/* Campaign */}
                   <TableCell>
                     <span
-                      className="font-bold text-neutral-950 text-xs block truncate max-w-[280px]"
+                      className="font-bold text-neutral-950 text-sm block truncate max-w-[320px]"
                       title={txn.campaignTitle}
                     >
                       {txn.campaignTitle}
@@ -186,13 +186,13 @@ export const TransactionsPage: React.FC = () => {
 
                   {/* Revenue */}
                   <TableCell>
-                    <span className="text-xs font-black text-emerald-700 tabular-nums">
+                    <span className="text-sm font-black text-emerald-700 tabular-nums">
                       +{formatCurrency(txn.platformFeeEur)}
                     </span>
                   </TableCell>
 
                   {/* Date */}
-                  <TableCell className="text-xs font-semibold text-neutral-600 whitespace-nowrap">
+                  <TableCell className="text-sm font-semibold text-neutral-600 whitespace-nowrap">
                     {formatDate(txn.createdAt)}
                   </TableCell>
 
@@ -212,10 +212,10 @@ export const TransactionsPage: React.FC = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-xs h-8 px-2.5 font-bold text-neutral-800 hover:text-neutral-950"
+                      className="text-sm h-8 px-2.5 font-bold text-neutral-800 hover:text-neutral-950"
                       onClick={() => setInspectedTxn(txn)}
                     >
-                      <FileText className="w-3.5 h-3.5 mr-1 text-neutral-500" />
+                      <FileText className="w-4 h-4 mr-1 text-neutral-500" />
                       Receipt
                     </Button>
                   </TableCell>
