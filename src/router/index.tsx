@@ -13,6 +13,7 @@ import { EscrowPage } from '@/pages/dashboard/EscrowPage';
 import { TransactionsPage } from '@/pages/dashboard/TransactionsPage';
 import { PackagesPage } from '@/pages/dashboard/PackagesPage';
 import { OrdersPage } from '@/pages/dashboard/OrdersPage';
+import { TicketsPage } from '@/pages/dashboard/TicketsPage';
 import { CmsPage } from '@/pages/dashboard/CmsPage';
 import { TeamPage } from '@/pages/dashboard/TeamPage';
 import { SettingsPage } from '@/pages/dashboard/SettingsPage';
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.DASHBOARD.TRANSACTIONS,
             element: <TransactionsPage />,
+          },
+          {
+            path: ROUTES.DASHBOARD.TICKETS,
+            element: <TicketsPage />,
           },
           {
             path: ROUTES.DASHBOARD.PACKAGES,

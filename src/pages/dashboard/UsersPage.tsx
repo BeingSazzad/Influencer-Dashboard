@@ -101,46 +101,30 @@ export const UsersPage: React.FC = () => {
 
       {/* Control Panel: Filters & Search */}
       <Card className="p-4">
-        <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
-          {/* Role Filter Tabs */}
-          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start">
-            {(['all', 'creator', 'brand'] as const).map((r) => (
-              <button
-                key={r}
-                onClick={() => dispatch(setRoleFilter(r))}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all capitalize ${
-                  roleFilter === r
-                    ? 'bg-white text-neutral-900 shadow-sm'
-                    : 'text-neutral-500 hover:text-neutral-900'
-                }`}
-              >
-                {r === 'all' ? 'All Roles' : `${r}s`}
-              </button>
-            ))}
+        <div className="flex flex-col sm:flex-row items-center gap-3 justify-between">
+          {/* Search Input */}
+          <div className="relative w-full sm:max-w-md">
+            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search user by name, @handle, or email..."
+              value={searchQuery}
+              onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+              className="w-full h-10 pl-9 pr-3 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 dark:text-white"
+            />
           </div>
 
-          {/* Search and Status Dropdown */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 flex-1 lg:max-w-xl justify-end">
-            <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                placeholder="Search name, handle, email..."
-                value={searchQuery}
-                onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-                className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink"
-              />
-            </div>
-
+          {/* Status Dropdown Filter */}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <select
               value={statusFilter}
               onChange={(e) => dispatch(setStatusFilter(e.target.value as any))}
-              className="h-9 px-3 text-xs font-semibold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-700 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
+              className="h-10 px-3.5 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-xl text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
             >
-              <option value="all">All Statuses</option>
-              <option value="active">Active</option>
-              <option value="suspended">Suspended</option>
-              <option value="banned">Banned</option>
+              <option value="all">All Account Statuses</option>
+              <option value="active">Active Standing</option>
+              <option value="suspended">Suspended Accounts</option>
+              <option value="banned">Banned Accounts</option>
             </select>
           </div>
         </div>

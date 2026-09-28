@@ -9,6 +9,7 @@ import {
   MarketplaceTransaction,
   MarketplacePackage,
   MarketplaceOrder,
+  SupportTicket,
 } from '@/types/admin.types';
 
 export const INITIAL_ADMIN_USER: AdminUser = {
@@ -225,7 +226,7 @@ Creators grant brands standard digital advertising rights for a minimum of 12 mo
   {
     id: 'CMS-PRIVACY',
     slug: 'privacy',
-    title: 'Privacy Policy',
+    title: 'Privacy Policy & GDPR',
     version: '1.9',
     lastModified: 'September 2026',
     isPublished: true,
@@ -235,7 +236,75 @@ Creators grant brands standard digital advertising rights for a minimum of 12 mo
 We collect personal identification, business legal registration, social media statistics, and billing information necessary to execute contracts and deliver tax-compliant invoices.
 
 ## 2. Escrow Financial Data
-We do not store full credit card numbers. All payments are processed through PCI-DSS Level 1 compliant partners (Stripe & Wise).`,
+We do not store full credit card numbers. All payments are processed through PCI-DSS Level 1 compliant partners (Stripe & Wise).
+
+## 3. Data Subject Rights (GDPR)
+EU and international users may request full data deletion or data portability by emailing privacy@influverse.com.`,
+  },
+  {
+    id: 'CMS-ESCROW',
+    slug: 'escrow-refund',
+    title: 'Escrow Custody & Refund Policy',
+    version: '2.1',
+    lastModified: 'September 2026',
+    isPublished: true,
+    contentMarkdown: `# Escrow Custody & Refund Policy
+
+## 1. 100% Escrow Protection
+Every brand deposit is held in a segregated client trust account. Creators are never paid until the brand inspects and signs off on the completed creative deliverables.
+
+## 2. 72-Hour Auto-Disbursement Clock
+Once a creator submits the final deliverable files, the brand has exactly 72 hours to review and either request allowable revisions or approve. If the brand does not take action within 72 hours and does not open a dispute, funds auto-release to protect the creator.
+
+## 3. Refund Circumstances
+Brands are eligible for a 100% refund if:
+- The creator fails to submit content within the agreed delivery SLA window.
+- The creator is sanctioned or banned for terms violation before production begins.`,
+  },
+  {
+    id: 'CMS-CONDUCT',
+    slug: 'creator-guidelines',
+    title: 'Creator Code of Conduct & Ad Disclosure',
+    version: '1.4',
+    lastModified: 'September 2026',
+    isPublished: true,
+    contentMarkdown: `# Creator Code of Conduct & FTC/EU Guidelines
+
+## 1. Mandatory Ad Disclosures
+All sponsored content, gifted placements, and paid TikTok/Reels must clearly display compliant commercial tags (#ad, #sponsored, or platform Paid Partnership labels) in accordance with EU Consumer Protection and FTC mandates.
+
+## 2. Authentic Metrics Guarantee
+Creators are prohibited from using bot engagement, fake followers, or click pods. Any account discovered inflating view counts will face immediate ban and forfeiture of pending escrow.`,
+  },
+  {
+    id: 'CMS-COOKIES',
+    slug: 'cookies',
+    title: 'Cookie & Tracking Policy',
+    version: '1.2',
+    lastModified: 'September 2026',
+    isPublished: true,
+    contentMarkdown: `# Cookie & Tracking Technologies Policy
+
+## 1. Essential Cookies
+We use secure session cookies strictly required for authentication, CSRF tokens, and escrow ledger navigation.
+
+## 2. Analytics & Preference Cookies
+We use privacy-preserving analytics to track conversion funnel metrics and marketplace search performance. Users can opt out anytime via cookie preferences.`,
+  },
+  {
+    id: 'CMS-COMMUNITY',
+    slug: 'community-standards',
+    title: 'Community Guidelines & Anti-Fraud Standards',
+    version: '2.0',
+    lastModified: 'September 2026',
+    isPublished: true,
+    contentMarkdown: `# Community Guidelines & Anti-Fraud Rules
+
+## 1. Platform Fee Circumvention
+Attempting to communicate off-platform to avoid the 15% escrow protection fee will result in immediate permanent suspension of both Brand and Creator accounts.
+
+## 2. Professionalism & Harassment
+Zero tolerance for abusive language, extortion over review scores, or non-consensual sharing of proprietary brand campaign briefs.`,
   },
 ];
 
@@ -721,6 +790,178 @@ export const INITIAL_ORDERS: MarketplaceOrder[] = [
     slaWarning: false,
   },
 ];
+
+export const INITIAL_TICKETS: SupportTicket[] = [
+  {
+    id: 'TCK-501',
+    type: 'user_report',
+    subject: 'Report: Suspected bot engagement / fake views on creator profile',
+    category: 'fraud_scam',
+    userName: 'Nordica Botanicals',
+    userEmail: 'partnerships@nordicabotanicals.com',
+    userRole: 'brand',
+    userAvatar: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=400&q=80',
+    priority: 'urgent',
+    status: 'open',
+    reportedUser: {
+      name: 'FakeGrowth Studio',
+      handle: '@bot_creator',
+      role: 'creator',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80',
+      reason: 'Sudden spike of 50k views within 10 minutes with 0 comments.',
+    },
+    messages: [
+      {
+        id: 'MSG-01',
+        senderName: 'Nordica Botanicals',
+        senderRole: 'brand',
+        senderAvatar: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=400&q=80',
+        message: 'We funded an order with this creator yesterday and noticed their TikTok video comments are all copy-paste bot accounts. Please investigate their engagement before escrow funds are released.',
+        timestamp: 'Today at 08:30 AM',
+      },
+    ],
+    createdAt: '2026-09-28',
+    lastUpdated: '10 minutes ago',
+  },
+  {
+    id: 'TCK-502',
+    type: 'support',
+    subject: 'SEPA Escrow Deposit verification confirmation delay',
+    category: 'billing_escrow',
+    userName: 'Aura Skincare Paris',
+    userEmail: 'marketing@auraskincare.fr',
+    userRole: 'brand',
+    userAvatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80',
+    priority: 'high',
+    status: 'in_progress',
+    assignedAdmin: 'Sazzad Hoshen',
+    messages: [
+      {
+        id: 'MSG-02',
+        senderName: 'Aura Skincare Paris',
+        senderRole: 'brand',
+        senderAvatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80',
+        message: 'We initiated a SEPA wire transfer of €3,400 for our autumn launch 2 days ago. Our bank confirmed it cleared, but the dashboard still shows "Pending Bank Clearing".',
+        timestamp: 'Sep 27, 02:15 PM',
+      },
+      {
+        id: 'MSG-03',
+        senderName: 'Sazzad Hoshen (Super Admin)',
+        senderRole: 'admin',
+        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+        message: 'Hello Aura team. Our banking partner Stripe SEPA Treasury processes clearing within 1-2 business days. We have escalated this to our settlement team for manual reconciliation.',
+        timestamp: 'Sep 27, 03:45 PM',
+        isAdminReply: true,
+      },
+    ],
+    createdAt: '2026-09-27',
+    lastUpdated: '1 hour ago',
+  },
+  {
+    id: 'TCK-503',
+    type: 'user_report',
+    subject: 'Brand demanding 4th revision without paying add-on fee',
+    category: 'order_delivery',
+    userName: 'Elena Rostova',
+    userEmail: 'elena.rostova@creator.com',
+    userRole: 'creator',
+    userAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+    priority: 'high',
+    status: 'open',
+    reportedUser: {
+      name: 'Verve Apparel Munich',
+      role: 'brand',
+      avatar: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=400&q=80',
+      reason: 'Brand insisting on completely re-shooting after 2 agreed revisions exhausted.',
+    },
+    messages: [
+      {
+        id: 'MSG-04',
+        senderName: 'Elena Rostova',
+        senderRole: 'creator',
+        senderAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+        message: 'The contract for Order #ORD-89418 included 2 revisions. I already provided both edits based on their written notes. Now the brand wants me to re-film with a new outfit and refused to release escrow.',
+        timestamp: 'Today at 09:10 AM',
+      },
+    ],
+    createdAt: '2026-09-28',
+    lastUpdated: '35 minutes ago',
+  },
+  {
+    id: 'TCK-504',
+    type: 'support',
+    subject: 'Request to update registered EU VAT ID for corporate invoicing',
+    category: 'billing_escrow',
+    userName: 'Kura Supplements',
+    userEmail: 'billing@kurasupplements.com',
+    userRole: 'brand',
+    userAvatar: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=400&q=80',
+    priority: 'normal',
+    status: 'resolved',
+    assignedAdmin: 'Sazzad Hoshen',
+    messages: [
+      {
+        id: 'MSG-05',
+        senderName: 'Kura Supplements',
+        senderRole: 'brand',
+        senderAvatar: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=400&q=80',
+        message: 'We recently restructured our EU holding entity. We need our VAT number updated on our marketplace invoices from DE384920 to DE992817.',
+        timestamp: 'Sep 25, 11:00 AM',
+      },
+      {
+        id: 'MSG-06',
+        senderName: 'Sazzad Hoshen (Super Admin)',
+        senderRole: 'admin',
+        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+        message: 'Done! We have verified your new VAT registration with VIES database and updated your billing profile. All upcoming invoice PDFs will reflect DE992817.',
+        timestamp: 'Sep 25, 12:30 PM',
+        isAdminReply: true,
+      },
+    ],
+    createdAt: '2026-09-25',
+    lastUpdated: 'Sep 25',
+  },
+  {
+    id: 'TCK-505',
+    type: 'user_report',
+    subject: 'Brand running whitelisted ad past the 6-month contract license',
+    category: 'copyright_ip',
+    userName: 'Marcus Vance',
+    userEmail: 'marcus.vance@creator.com',
+    userRole: 'creator',
+    userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+    priority: 'urgent',
+    status: 'in_progress',
+    reportedUser: {
+      name: 'Urban Streetwear UK',
+      role: 'brand',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80',
+      reason: 'Using my face on Meta Ads after license expiration.',
+    },
+    messages: [
+      {
+        id: 'MSG-07',
+        senderName: 'Marcus Vance',
+        senderRole: 'creator',
+        senderAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+        message: 'I booked a 6-month UGC package in February 2026 with Urban Streetwear. My license expired August 31. They are still actively running my video on Facebook Ads Library with €10k+ spend.',
+        timestamp: 'Sep 26, 04:00 PM',
+      },
+      {
+        id: 'MSG-08',
+        senderName: 'Sazzad Hoshen (Super Admin)',
+        senderRole: 'admin',
+        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+        message: 'We have reviewed the Meta Ad Library link and issued a formal cease-and-desist demand to the brands legal contact. Their account has been temporarily restricted until paid renewal is settled.',
+        timestamp: 'Sep 26, 05:20 PM',
+        isAdminReply: true,
+      },
+    ],
+    createdAt: '2026-09-26',
+    lastUpdated: 'Yesterday',
+  },
+];
+
 
 
 

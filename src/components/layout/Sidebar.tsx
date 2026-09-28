@@ -15,6 +15,7 @@ import {
   FileEdit,
   ShieldAlert,
   Settings,
+  LifeBuoy,
   LogOut,
   ExternalLink,
   Lock,
@@ -33,6 +34,9 @@ export const Sidebar: React.FC = () => {
   );
   const activeOrdersCount = useAppSelector(
     (state) => state.orders.orders.filter((o) => o.status !== 'completed' && o.status !== 'cancelled').length
+  );
+  const openTicketsCount = useAppSelector(
+    (state) => state.tickets.tickets.filter((t) => t.status === 'open').length
   );
 
   const navItems = [
@@ -74,6 +78,13 @@ export const Sidebar: React.FC = () => {
       label: 'Financial Ledger',
       path: ROUTES.DASHBOARD.TRANSACTIONS,
       icon: <Receipt className="w-[18px] h-[18px]" />,
+    },
+    {
+      label: 'Support & Reports',
+      path: ROUTES.DASHBOARD.TICKETS,
+      icon: <LifeBuoy className="w-[18px] h-[18px]" />,
+      badge: openTicketsCount > 0 ? openTicketsCount : undefined,
+      badgeColor: 'amber',
     },
     {
       label: 'CMS & Legal Docs',

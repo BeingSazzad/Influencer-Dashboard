@@ -10,15 +10,15 @@ interface CmsState {
   legalDocs: CmsLegalDoc[];
   faqs: CmsFaqItem[];
   brandAssets: CmsBrandAssets;
-  selectedLegalSlug: 'terms' | 'privacy';
-  faqCategoryFilter: 'all' | 'brands' | 'creators' | 'escrow';
+  selectedLegalSlug: string;
+  faqCategoryFilter: string;
 }
 
 const initialState: CmsState = {
   legalDocs: INITIAL_LEGAL_DOCS,
   faqs: INITIAL_FAQS,
   brandAssets: INITIAL_BRAND_ASSETS,
-  selectedLegalSlug: 'terms',
+  selectedLegalSlug: 'terms-of-service',
   faqCategoryFilter: 'all',
 };
 
@@ -26,13 +26,13 @@ export const cmsSlice = createSlice({
   name: 'cms',
   initialState,
   reducers: {
-    setSelectedLegalSlug: (state, action: PayloadAction<'terms' | 'privacy'>) => {
+    setSelectedLegalSlug: (state, action: PayloadAction<string>) => {
       state.selectedLegalSlug = action.payload;
     },
     updateLegalDoc: (
       state,
       action: PayloadAction<{
-        slug: 'terms' | 'privacy';
+        slug: string;
         contentMarkdown: string;
         version: string;
         title?: string;
@@ -52,7 +52,7 @@ export const cmsSlice = createSlice({
     },
     setFaqCategoryFilter: (
       state,
-      action: PayloadAction<'all' | 'brands' | 'creators' | 'escrow'>
+      action: PayloadAction<string>
     ) => {
       state.faqCategoryFilter = action.payload;
     },

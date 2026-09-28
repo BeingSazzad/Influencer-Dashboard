@@ -12,6 +12,7 @@ export const ROUTES = {
     PACKAGES: '/packages',
     ESCROW: '/escrow',
     TRANSACTIONS: '/transactions',
+    TICKETS: '/tickets',
     CMS: '/cms',
     TEAM: '/team',
     SETTINGS: '/settings',

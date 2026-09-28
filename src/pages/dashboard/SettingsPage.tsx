@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Avatar } from '@/components/ui/Avatar';
+import { ImageUploadBox } from '@/components/shared/ImageUploadBox';
 import {
   User,
   Lock,
@@ -121,20 +122,15 @@ export const SettingsPage: React.FC = () => {
         </div>
 
         <form onSubmit={handleUpdateProfile} className="space-y-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-            <Avatar src={avatar} name={name} size="xl" statusIndicator="online" />
-            <div className="space-y-1.5 flex-1 w-full">
-              <Input
-                label="Avatar Image URL"
-                value={avatar}
-                onChange={(e) => setAvatar(e.target.value)}
-                placeholder="https://images.unsplash.com/..."
-              />
-              <p className="text-[11px] text-neutral-400">
-                Paste any high-resolution image link to update your back-office avatar.
-              </p>
-            </div>
-          </div>
+          <ImageUploadBox
+            label="Administrator Profile Avatar"
+            description="Upload an official headshot photo. Automatically cropped for audit signatures and settlement trails."
+            value={avatar}
+            onChange={setAvatar}
+            aspectRatio="avatar"
+            previewBg="light"
+            recommendedDimensions="Recommended: Square JPG or PNG, min 250x250px"
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input

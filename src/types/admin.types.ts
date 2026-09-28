@@ -50,6 +50,7 @@ export interface VerificationRequest {
   };
   sampleWorkTitle: string;
   sampleWorkViews: string;
+  sampleWorkUrl?: string;
   submittedDate: string;
   status: 'pending' | 'approved' | 'rejected';
   rejectionReason?: string;
@@ -75,7 +76,7 @@ export interface EscrowDispute {
 
 export interface CmsLegalDoc {
   id: string;
-  slug: 'terms' | 'privacy';
+  slug: string;
   title: string;
   version: string;
   lastModified: string;
@@ -85,7 +86,7 @@ export interface CmsLegalDoc {
 
 export interface CmsFaqItem {
   id: string;
-  category: 'brands' | 'creators' | 'escrow';
+  category?: string;
   question: string;
   answer: string;
   order: number;
@@ -205,6 +206,45 @@ export interface MarketplaceOrder {
   brandNotes?: string;
   slaWarning?: boolean;
 }
+
+export type TicketType = 'support' | 'user_report';
+export type TicketPriority = 'urgent' | 'high' | 'normal' | 'low';
+export type TicketStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
+
+export interface TicketMessage {
+  id: string;
+  senderName: string;
+  senderRole: 'brand' | 'creator' | 'admin';
+  senderAvatar: string;
+  message: string;
+  timestamp: string;
+  isAdminReply?: boolean;
+}
+
+export interface SupportTicket {
+  id: string; // e.g. "TCK-4019"
+  type: TicketType;
+  subject: string;
+  category: 'billing_escrow' | 'account_access' | 'order_delivery' | 'fraud_scam' | 'copyright_ip' | 'general';
+  userName: string;
+  userEmail: string;
+  userRole: 'brand' | 'creator';
+  userAvatar: string;
+  priority: TicketPriority;
+  status: TicketStatus;
+  assignedAdmin?: string;
+  reportedUser?: {
+    name: string;
+    handle?: string;
+    role: 'brand' | 'creator';
+    avatar: string;
+    reason: string;
+  };
+  messages: TicketMessage[];
+  createdAt: string;
+  lastUpdated: string;
+}
+
 
 
 
