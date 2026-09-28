@@ -101,25 +101,55 @@ export const UsersPage: React.FC = () => {
 
       {/* Control Panel: Filters & Search */}
       <Card className="p-4">
-        <div className="flex flex-col sm:flex-row items-center gap-3 justify-between">
-          {/* Search Input */}
-          <div className="relative w-full sm:max-w-md">
-            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search user by name, @handle, or email..."
-              value={searchQuery}
-              onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-              className="w-full h-10 pl-9 pr-3 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 dark:text-white"
-            />
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+          {/* Role Filter Tabs (All / Creators / Brands) */}
+          <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/5 p-1 rounded-xl self-start">
+            {[
+              { label: 'All', value: 'all' as const, count: users.length },
+              { label: 'Creators', value: 'creator' as const, count: users.filter((u) => u.role === 'creator').length },
+              { label: 'Brands', value: 'brand' as const, count: users.filter((u) => u.role === 'brand').length },
+            ].map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => dispatch(setRoleFilter(tab.value))}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                  roleFilter === tab.value
+                    ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm'
+                    : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                }`}
+              >
+                <span>{tab.label}</span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                    roleFilter === tab.value
+                      ? 'bg-neutral-100 dark:bg-white/10 text-neutral-800 dark:text-white'
+                      : 'bg-neutral-200/60 dark:bg-white/5 text-neutral-400'
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              </button>
+            ))}
           </div>
 
-          {/* Status Dropdown Filter */}
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            {/* Search Input */}
+            <div className="relative w-full sm:w-64">
+              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search user by name, @handle, or email..."
+                value={searchQuery}
+                onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+                className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 dark:text-white"
+              />
+            </div>
+
+            {/* Status Dropdown Filter */}
             <select
               value={statusFilter}
               onChange={(e) => dispatch(setStatusFilter(e.target.value as any))}
-              className="h-10 px-3.5 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-xl text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
+              className="h-9 px-3 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
