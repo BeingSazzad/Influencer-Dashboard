@@ -25,17 +25,8 @@ export const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const currentUser = useAppSelector((state) => state.auth.currentUser);
-  const pendingVerifications = useAppSelector(
-    (state) => state.verification.requests.filter((r) => r.status === 'pending').length
-  );
   const openDisputes = useAppSelector(
     (state) => state.escrow.disputes.filter((d) => d.status === 'open').length
-  );
-  const activeOrdersCount = useAppSelector(
-    (state) => state.orders.orders.filter((o) => o.status !== 'completed' && o.status !== 'cancelled').length
-  );
-  const openTicketsCount = useAppSelector(
-    (state) => state.tickets.tickets.filter((t) => t.status === 'open').length
   );
 
   const navItems = [
@@ -53,20 +44,17 @@ export const Sidebar: React.FC = () => {
       label: 'Verifications',
       path: ROUTES.DASHBOARD.VERIFICATION,
       icon: <ShieldCheck className="w-[18px] h-[18px]" />,
-      badge: pendingVerifications > 0 ? pendingVerifications : undefined,
     },
     {
       label: 'Orders',
       path: ROUTES.DASHBOARD.ORDERS,
       icon: <ShoppingBag className="w-[18px] h-[18px]" />,
-      badge: activeOrdersCount > 0 ? activeOrdersCount : undefined,
     },
     {
       label: 'Disputes',
       path: ROUTES.DASHBOARD.ESCROW,
       icon: <Scale className="w-[18px] h-[18px]" />,
       badge: openDisputes > 0 ? openDisputes : undefined,
-      badgeColor: 'rose',
     },
     {
       label: 'Transactions',
@@ -77,8 +65,6 @@ export const Sidebar: React.FC = () => {
       label: 'Support',
       path: ROUTES.DASHBOARD.TICKETS,
       icon: <LifeBuoy className="w-[18px] h-[18px]" />,
-      badge: openTicketsCount > 0 ? openTicketsCount : undefined,
-      badgeColor: 'amber',
     },
     {
       label: 'CMS',
@@ -158,16 +144,7 @@ export const Sidebar: React.FC = () => {
                 </div>
 
                 {item.badge !== undefined && (
-                  <span
-                    className={cn(
-                      'px-2 py-0.5 text-xs font-black rounded-full',
-                      item.badgeColor === 'rose'
-                        ? 'bg-rose-500 text-white'
-                        : isActive
-                        ? 'bg-brand-pink text-white'
-                        : 'bg-brand-pink/10 text-brand-pink'
-                    )}
-                  >
+                  <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-rose-500 text-white leading-none">
                     {item.badge}
                   </span>
                 )}
