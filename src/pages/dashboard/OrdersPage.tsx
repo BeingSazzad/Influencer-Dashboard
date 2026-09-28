@@ -207,11 +207,6 @@ export const OrdersPage: React.FC = () => {
       <PageHeader
         title="Orders"
         subtitle="Track active contracts, escrow status, and delivery milestones."
-        badge={
-          <Badge variant="neutral" size="sm">
-            {orders.length} Orders
-          </Badge>
-        }
         actions={
           <Button
             variant="outline"

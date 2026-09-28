@@ -152,11 +152,6 @@ export const CmsPage: React.FC = () => {
       <PageHeader
         title="CMS"
         subtitle="Manage legal policies, FAQs, and brand assets."
-        badge={
-          <Badge variant="pink" size="sm">
-            Live Sync
-          </Badge>
-        }
       />
 
       {/* Main CMS Navigation Tabs */}

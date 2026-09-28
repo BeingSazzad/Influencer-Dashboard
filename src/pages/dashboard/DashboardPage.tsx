@@ -123,11 +123,6 @@ export const DashboardPage: React.FC = () => {
       <PageHeader
         title="Overview"
         subtitle="Platform metrics, escrow, and active operations."
-        badge={
-          <Badge variant="success" size="sm" dot>
-            Operational
-          </Badge>
-        }
         actions={
           <>
             <Button

@@ -96,11 +96,6 @@ export const SettingsPage: React.FC = () => {
       <PageHeader
         title="Settings"
         subtitle="Manage your profile, credentials, and escrow rules."
-        badge={
-          <Badge variant="default" size="sm">
-            {currentUser?.role === 'super_admin' ? 'Super Admin' : 'Admin'}
-          </Badge>
-        }
       />
 
       {/* Tabs Bar */}

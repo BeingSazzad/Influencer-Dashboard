@@ -67,11 +67,6 @@ export const VerificationPage: React.FC = () => {
       <PageHeader
         title="Verifications"
         subtitle="Review and audit creator identity applications."
-        badge={
-          <Badge variant="pink" size="sm">
-            {requests.filter((r) => r.status === 'pending').length} Pending
-          </Badge>
-        }
       />
 
       {/* Filter Tabs */}
@@ -87,7 +82,7 @@ export const VerificationPage: React.FC = () => {
             className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all capitalize cursor-pointer ${
               filterStatus === s
                 ? 'bg-white text-neutral-950 shadow-sm'
-                : 'text-neutral-500 hover:text-neutral-900'
+                : 'text-neutral-700 hover:text-neutral-950'
             }`}
           >
             {s}
@@ -128,7 +123,7 @@ export const VerificationPage: React.FC = () => {
                             <Award className="w-3.5 h-3.5 text-brand-pink fill-brand-pink/20" />
                           )}
                         </div>
-                        <div className="text-[11px] text-neutral-500 font-medium">
+                        <div className="text-[11px] text-neutral-600 font-semibold">
                           @{request.handle}
                         </div>
                       </div>
@@ -137,7 +132,7 @@ export const VerificationPage: React.FC = () => {
 
                   {/* Email */}
                   <TableCell>
-                    <span className="text-xs text-neutral-700 font-medium">
+                    <span className="text-xs text-neutral-800 font-semibold">
                       {request.email || `${request.handle}@creator.com`}
                     </span>
                   </TableCell>

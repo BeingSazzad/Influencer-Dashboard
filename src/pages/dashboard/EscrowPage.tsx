@@ -70,11 +70,6 @@ export const EscrowPage: React.FC = () => {
       <PageHeader
         title="Disputes"
         subtitle="Arbitrate escrow conflicts and payment settlements."
-        badge={
-          <Badge variant="danger" size="sm">
-            {disputes.filter((d) => d.status === 'open').length} Open
-          </Badge>
-        }
       />
 
       {/* Escrow High-Level Stats */}

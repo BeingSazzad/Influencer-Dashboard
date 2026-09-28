@@ -89,7 +89,7 @@ export const TeamPage: React.FC = () => {
                 className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
                   filterRole === tab.id
                     ? 'bg-white text-neutral-900 shadow-sm'
-                    : 'text-neutral-500 hover:text-neutral-900'
+                    : 'text-neutral-700 hover:text-neutral-950'
                 }`}
               >
                 {tab.label}
@@ -104,7 +104,7 @@ export const TeamPage: React.FC = () => {
               placeholder="Search admin name..."
               value={searchQuery}
               onChange={(e) => dispatch(setTeamSearch(e.target.value))}
-              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20"
+              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 text-neutral-900 font-medium"
             />
           </div>
         </div>
@@ -143,7 +143,7 @@ export const TeamPage: React.FC = () => {
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-neutral-500 font-medium">{member.email}</div>
+                      <div className="text-xs text-neutral-700 font-semibold">{member.email}</div>
                     </div>
                   </div>
                 </TableCell>
@@ -160,7 +160,7 @@ export const TeamPage: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-xs font-bold text-neutral-600 hover:text-neutral-900"
+                        className="text-xs font-bold text-neutral-800 hover:text-neutral-950"
                         onClick={() => dispatch(toggleAdminStatus(member.id))}
                       >
                         {member.status === 'active' ? 'Suspend' : 'Activate'}

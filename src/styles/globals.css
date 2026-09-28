@@ -12,6 +12,22 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Universal high-contrast readability defaults */
+  th {
+    color: #27272A;
+    font-weight: 700;
+  }
+
+  td {
+    color: #0A0A0A;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #71717A !important;
+    opacity: 1;
+  }
 }
 
 /* Tabular figures for financial and metric numbers */

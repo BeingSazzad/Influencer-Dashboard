@@ -434,7 +434,7 @@ export const UsersPage: React.FC = () => {
                             </span>
                           )}
                         </div>
-                        <div className="text-xs text-neutral-500 font-medium">@{user.handle} • {user.email}</div>
+                        <div className="text-xs text-neutral-600 font-semibold">@{user.handle} • {user.email}</div>
                       </div>
                     </div>
                   </TableCell>
@@ -477,7 +477,7 @@ export const UsersPage: React.FC = () => {
                     {user.ordersCount} campaigns
                   </TableCell>
 
-                  <TableCell className="text-neutral-500 text-xs font-semibold">
+                  <TableCell className="text-neutral-700 text-xs font-bold">
                     {formatDate(user.joinedDate)}
                   </TableCell>
 

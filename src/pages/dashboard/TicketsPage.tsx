@@ -178,11 +178,6 @@ export const TicketsPage: React.FC = () => {
       <PageHeader
         title="Support"
         subtitle="Manage customer support inquiries and user reports."
-        badge={
-          <Badge variant="neutral" size="sm">
-            {openCount} Open
-          </Badge>
-        }
       />
 
       {/* KPI Stat Cards: High Contrast & Punchy Bold */}

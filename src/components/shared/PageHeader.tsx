@@ -19,7 +19,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   return (
     <div
       className={cn(
-        'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-neutral-200/80 mb-6',
+        'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-neutral-200 mb-6',
         className
       )}
     >
@@ -31,7 +31,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           {badge}
         </div>
         {subtitle && (
-          <p className="mt-1 text-sm font-medium text-neutral-500 max-w-2xl leading-relaxed">
+          <p className="mt-1 text-sm font-semibold text-neutral-600 max-w-2xl leading-relaxed">
             {subtitle}
           </p>
         )}
