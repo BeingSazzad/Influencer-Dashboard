@@ -104,21 +104,22 @@ export const TransactionsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Financial Ledger & Transactions"
-        subtitle="Immutable transaction ledger tracking brand escrow deposits, creator payouts, 15% platform take, and gateway refunds."
+        title="Transactions"
+        subtitle="Escrow deposits, creator payouts, and platform fee records."
         badge={
           <Badge variant="default" size="sm">
-            Stripe & SEPA Audited
+            {transactions.length} Records
           </Badge>
         }
         actions={
           <Button
             variant="outline"
             size="sm"
+            className="font-bold text-xs"
             onClick={handleExportCSV}
-            leftIcon={<Download className="w-4 h-4" />}
+            leftIcon={<Download className="w-3.5 h-3.5" />}
           >
-            Export CSV Ledger
+            Export CSV
           </Button>
         }
       />

@@ -157,11 +157,11 @@ export const CmsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="CMS & Dynamic Content Studio"
-        subtitle="Live management of consumer Terms of Service, Privacy Policies, unified FAQ catalogue, and platform brand assets."
+        title="CMS"
+        subtitle="Manage legal policies, FAQs, and brand assets."
         badge={
           <Badge variant="pink" size="sm">
-            Live Web Sync Enabled
+            Live Sync
           </Badge>
         }
       />
@@ -170,48 +170,48 @@ export const CmsPage: React.FC = () => {
       <div className="flex items-center gap-2 border-b border-neutral-200">
         <button
           onClick={() => setActiveTab('legal')}
-          className={`flex items-center gap-2 px-4 py-3 text-sm font-extrabold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
             activeTab === 'legal'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
           }`}
         >
           <FileText className="w-4 h-4" />
-          <span>Legal Policies & Compliance ({legalDocs.length})</span>
+          <span>Policies ({legalDocs.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab('faqs')}
-          className={`flex items-center gap-2 px-4 py-3 text-sm font-extrabold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
             activeTab === 'faqs'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
           }`}
         >
           <HelpCircle className="w-4 h-4" />
-          <span>Platform FAQs ({faqs.length})</span>
+          <span>FAQs ({faqs.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab('branding')}
-          className={`flex items-center gap-2 px-4 py-3 text-sm font-extrabold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
             activeTab === 'branding'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
           }`}
         >
           <ImageIcon className="w-4 h-4" />
-          <span>Brand Assets & Uploads</span>
+          <span>Branding</span>
         </button>
       </div>
 
-      {/* TAB 1: LEGAL DOCUMENTS (TERMS, PRIVACY, ESCROW, FTC, COOKIES, COMMUNITY) */}
+      {/* TAB 1: LEGAL DOCUMENTS */}
       {activeTab === 'legal' && (
         <div className="space-y-6">
           {saveSuccessNotice && (
             <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-800 flex items-center gap-2 animate-in fade-in">
               <CheckCircle className="w-4 h-4 text-emerald-600" />
-              <span>Document updated and synchronized with live consumer portal.</span>
+              <span>Document updated and synchronized live.</span>
             </div>
           )}
 
@@ -219,14 +219,14 @@ export const CmsPage: React.FC = () => {
             {/* Left selector */}
             <div className="space-y-2">
               <span className="text-[11px] uppercase font-black text-neutral-400 tracking-wider">
-                Select Legal Contract
+                Select Document
               </span>
               <div className="space-y-1.5">
                 {legalDocs.map((doc) => (
                   <button
                     key={doc.id}
                     onClick={() => handleSelectSlug(doc.slug)}
-                    className={`w-full p-3.5 rounded-xl border text-left transition-all ${
+                    className={`w-full p-3 rounded-xl border text-left transition-all ${
                       selectedLegalSlug === doc.slug
                         ? 'border-brand-black bg-brand-black text-white font-extrabold shadow-sm'
                         : 'border-neutral-200 bg-white text-neutral-800 font-bold hover:bg-neutral-50'
@@ -234,7 +234,7 @@ export const CmsPage: React.FC = () => {
                   >
                     <div className="text-xs font-black truncate">{doc.title}</div>
                     <div
-                      className={`text-[11px] mt-1 font-medium ${
+                      className={`text-[11px] mt-0.5 font-medium ${
                         selectedLegalSlug === doc.slug
                           ? 'text-neutral-300'
                           : 'text-neutral-400'
@@ -244,16 +244,6 @@ export const CmsPage: React.FC = () => {
                     </div>
                   </button>
                 ))}
-              </div>
-
-              <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 mt-4 text-[11px] text-neutral-600 space-y-1.5">
-                <span className="font-black text-neutral-900 uppercase tracking-wider text-[10px]">
-                  Legal Audit Trail Guarantee
-                </span>
-                <p className="leading-relaxed">
-                  Every modification automatically increments minor revisions and
-                  preserves historic diffs for GDPR/EU consumer protection audits.
-                </p>
               </div>
             </div>
 
@@ -474,87 +464,84 @@ export const CmsPage: React.FC = () => {
           )}
 
           <Card className="p-6 space-y-6">
-            <div className="border-b border-neutral-100 pb-4">
-              <h3 className="text-base font-extrabold text-neutral-900">
-                Visual Assets & Brand Identity
+            <div className="border-b border-neutral-100 pb-3">
+              <h3 className="text-sm font-extrabold text-neutral-900">
+                Brand Identity
               </h3>
-              <p className="text-xs text-neutral-500 font-medium">
-                Upload new logos and browser favicons directly from your computer. Changes reflect globally across consumer headers and footers.
+              <p className="text-[11px] text-neutral-400 font-medium">
+                Logos and platform assets.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Header Logo (Light on Dark Header) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ImageUploadBox
-                label="Primary Light Logo (For Dark Backgrounds)"
-                description="Displayed across consumer header navigation and luxury banners."
+                label="Light Logo"
+                description="For dark headers and hero banners."
                 value={logoLight}
                 onChange={setLogoLight}
                 previewBg="dark"
-                recommendedDimensions="Recommended: SVG or Transparent PNG (400x100px)"
+                recommendedDimensions="Recommended: SVG or PNG (400x100px)"
               />
 
-              {/* Contrast Logo (Dark on Light) */}
               <ImageUploadBox
-                label="Dark Contrast Logo (For Light Backgrounds)"
-                description="Used in PDF contracts, escrow dispute briefs, and invoices."
+                label="Dark Logo"
+                description="For light backgrounds and contracts."
                 value={logoDark}
                 onChange={setLogoDark}
                 previewBg="light"
-                recommendedDimensions="Recommended: SVG or Transparent PNG (400x100px)"
+                recommendedDimensions="Recommended: SVG or PNG (400x100px)"
               />
             </div>
 
-            {/* Favicon Upload */}
             <div className="pt-2">
               <ImageUploadBox
-                label="Platform Favicon (.ICO / .PNG)"
-                description="Browser tab icon displayed across consumer and creator sessions."
+                label="Favicon"
+                description="Browser tab icon."
                 value={favicon}
                 onChange={setFavicon}
                 aspectRatio="square"
                 previewBg="light"
-                recommendedDimensions="Recommended: 32x32px or 64x64px square icon"
+                recommendedDimensions="Recommended: 32x32px or 64x64px"
               />
             </div>
 
-            {/* Global Homepage Messaging */}
-            <div className="pt-6 border-t border-neutral-100 space-y-4">
-              <h3 className="text-base font-extrabold text-neutral-900">
-                Global Homepage Messaging & Concierge
+            {/* Homepage Messaging */}
+            <div className="pt-4 border-t border-neutral-100 space-y-3">
+              <h3 className="text-sm font-extrabold text-neutral-900">
+                Homepage Copy
               </h3>
 
               <Input
-                label="Primary Hero Headline"
+                label="Hero Headline"
                 value={headline}
                 onChange={(e) => setHeadline(e.target.value)}
-                className="font-bold"
+                className="font-bold text-xs"
               />
 
               <Textarea
-                label="Hero Supporting Subtitle"
+                label="Hero Subtitle"
                 value={subtitle}
                 onChange={(e) => setSubtitle(e.target.value)}
                 rows={2}
               />
 
               <Input
-                label="Concierge Support Email"
+                label="Support Email"
                 value={supportEmail}
                 onChange={(e) => setSupportEmail(e.target.value)}
-                className="font-bold"
+                className="font-bold text-xs"
               />
             </div>
 
-            <div className="pt-4 flex justify-end">
+            <div className="pt-3 flex justify-end">
               <Button
                 variant="accent"
-                size="md"
-                className="font-bold"
+                size="sm"
+                className="font-bold text-xs"
                 onClick={handleSaveBrand}
-                leftIcon={<Save className="w-4 h-4" />}
+                leftIcon={<Save className="w-3.5 h-3.5" />}
               >
-                Save Brand Configuration
+                Save Changes
               </Button>
             </div>
           </Card>

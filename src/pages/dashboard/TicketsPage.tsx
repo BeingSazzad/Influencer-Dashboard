@@ -196,14 +196,14 @@ export const TicketsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 pb-16">
+    <div className="space-y-6 pb-16">
       {/* Page Header */}
       <PageHeader
-        title="Support Center & User Reports"
-        subtitle="Manage and resolve incoming creator & brand support tickets, report flags, copyright breaches, and fraud allegations."
+        title="Support"
+        subtitle="Customer tickets and reported platform issues."
         badge={
           <Badge variant="default" size="sm" className="bg-[#FF2D78]/10 text-[#FF2D78] border border-[#FF2D78]/20 font-black">
-            {openCount} Open Action Items
+            {openCount} Open
           </Badge>
         }
       />

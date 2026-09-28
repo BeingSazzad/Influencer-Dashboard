@@ -216,11 +216,15 @@ export const OrdersPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 pb-16">
-      {/* Editorial Page Header */}
+    <div className="space-y-6 pb-16">
       <PageHeader
-        title="Active Orders & Production Monitor"
-        subtitle="Real-time oversight of funded creator contracts, production milestones, deliverable review clocks, and escrow release locks."
+        title="Orders"
+        subtitle="Track active contracts, milestones, and escrow releases."
+        badge={
+          <Badge variant="neutral" size="sm">
+            {orders.length} Total
+          </Badge>
+        }
         actions={
           <div className="flex items-center gap-3">
             <Button

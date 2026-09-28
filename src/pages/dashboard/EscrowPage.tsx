@@ -68,11 +68,11 @@ export const EscrowPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Escrow Vault & Dispute Arbitration"
-        subtitle="Neutral platform arbitration docket ensuring irrevocable payment release or brand restitution."
+        title="Disputes"
+        subtitle="Arbitrate escrow conflicts and payment settlements."
         badge={
-          <Badge variant="default" size="sm">
-            Trust & Safety Desk
+          <Badge variant="danger" size="sm">
+            {disputes.filter((d) => d.status === 'open').length} Open
           </Badge>
         }
       />

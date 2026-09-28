@@ -51,11 +51,11 @@ export const VerificationPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Creator Verification & Badges"
-        subtitle="Vetting the top 1% UGC creators to guarantee campaign ROI for enterprise brands."
+        title="Verifications"
+        subtitle="Review and audit creator identity applications."
         badge={
           <Badge variant="pink" size="sm">
-            Strict 1% Acceptance Rate
+            {requests.filter((r) => r.status === 'pending').length} Pending
           </Badge>
         }
       />

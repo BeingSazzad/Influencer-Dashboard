@@ -118,14 +118,14 @@ export const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Page Header */}
       <PageHeader
-        title="Marketplace Command Center"
-        subtitle="Real-time surveillance of Escrow deposits, Creator KYC approvals, User Growth, and Platform Revenue."
+        title="Overview"
+        subtitle="Platform metrics, escrow, and active operations."
         badge={
           <Badge variant="success" size="sm" dot>
-            HQ Systems Operational
+            Operational
           </Badge>
         }
         actions={
@@ -133,33 +133,25 @@ export const DashboardPage: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              className="font-extrabold"
+              className="font-bold text-xs"
               onClick={() => navigate(ROUTES.DASHBOARD.ORDERS)}
               leftIcon={<ShoppingBag className="w-3.5 h-3.5" />}
             >
-              Active Orders ({activeOrders.length})
+              Orders ({activeOrders.length})
             </Button>
             <Button
               variant="outline"
               size="sm"
-              className="font-extrabold"
+              className="font-bold text-xs"
               onClick={() => navigate(ROUTES.DASHBOARD.TRANSACTIONS)}
               leftIcon={<Receipt className="w-3.5 h-3.5" />}
             >
-              Financial Ledger
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="font-extrabold"
-              onClick={() => navigate(ROUTES.DASHBOARD.CMS)}
-            >
-              CMS & Legal
+              Transactions
             </Button>
             <Button
               variant="accent"
               size="sm"
-              className="font-extrabold"
+              className="font-bold text-xs"
               onClick={() => navigate(ROUTES.DASHBOARD.ESCROW)}
               rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
             >
@@ -170,69 +162,69 @@ export const DashboardPage: React.FC = () => {
       />
 
       {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Gross Marketplace Volume"
+          title="Gross Volume"
           value="€1,248,500"
           change={18.4}
-          icon={<TrendingUp className="w-5 h-5" />}
+          icon={<TrendingUp className="w-4 h-4" />}
           accentColor="black"
           changePeriod="vs last month"
         />
         <StatCard
-          title="Escrow in Custody"
+          title="In Escrow"
           value="€148,500"
           change={6.2}
-          icon={<Euro className="w-5 h-5" />}
+          icon={<Euro className="w-4 h-4" />}
           accentColor="pink"
-          subtitle="34 active contract locks"
+          subtitle="34 active contracts"
         />
         <StatCard
-          title="Platform Net Fees (15%)"
+          title="Platform Revenue"
           value="€187,275"
           change={21.8}
-          icon={<ShieldCheck className="w-5 h-5" />}
+          icon={<ShieldCheck className="w-4 h-4" />}
           accentColor="emerald"
           changePeriod="vs last month"
         />
         <StatCard
-          title="Active Creators & Brands"
+          title="Total Users"
           value="2,840"
           change={14.1}
-          icon={<Users className="w-5 h-5" />}
+          icon={<Users className="w-4 h-4" />}
           accentColor="amber"
-          subtitle="2,120 Creators • 720 Brands"
+          subtitle="2,120 creators • 720 brands"
         />
       </div>
 
-      {/* DUAL ANALYTICS CHARTS GRID (TOTAL USER GROWTH & INCOME GROWTH) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* CHART 1: TOTAL USER GROWTH (CREATORS VS BRANDS) */}
-        <Card className="p-6 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-100">
+      {/* DUAL ANALYTICS CHARTS GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* CHART 1: USER GROWTH */}
+        <Card className="p-5 space-y-3">
+          <div className="flex items-center justify-between gap-3 pb-2 border-b border-neutral-100">
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-extrabold text-neutral-900">
-                  Total Marketplace User Growth
+                <h3 className="text-sm font-extrabold text-neutral-900">
+                  User Growth
                 </h3>
-                <span className="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  +14.1% MoM
+                <span className="text-[11px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  +14.1%
                 </span>
               </div>
-              <p className="text-xs text-neutral-500 font-medium">
-                Dual breakdown of verified Creator registrations vs Brand enterprise accounts.
+              <p className="text-[11px] text-neutral-400 font-medium">
+                Monthly creator and brand signups
               </p>
             </div>
 
             {/* Legend */}
             <div className="flex items-center gap-3 text-xs font-bold shrink-0">
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-md bg-brand-pink" />
-                <span className="text-neutral-800">Creators (2,120)</span>
+                <span className="w-2.5 h-2.5 rounded-sm bg-brand-pink" />
+                <span className="text-neutral-700">Creators (2,120)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-md bg-neutral-950" />
-                <span className="text-neutral-800">Brands (720)</span>
+                <span className="w-2.5 h-2.5 rounded-sm bg-neutral-950" />
+                <span className="text-neutral-700">Brands (720)</span>
               </div>
             </div>
           </div>
@@ -319,32 +311,32 @@ export const DashboardPage: React.FC = () => {
           </div>
         </Card>
 
-        {/* CHART 2: INCOME GROWTH (GMV & 15% NET TAKE-RATE) */}
-        <Card className="p-6 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-100">
+        {/* CHART 2: REVENUE */}
+        <Card className="p-5 space-y-3">
+          <div className="flex items-center justify-between gap-3 pb-2 border-b border-neutral-100">
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-extrabold text-neutral-900">
-                  Income & Platform Revenue Growth
+                <h3 className="text-sm font-extrabold text-neutral-900">
+                  Revenue
                 </h3>
-                <span className="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  +21.8% Net
+                <span className="text-[11px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  +21.8%
                 </span>
               </div>
-              <p className="text-xs text-neutral-500 font-medium">
-                Monthly Gross Marketplace Volume vs 15% Net Escrow take-rate revenue.
+              <p className="text-[11px] text-neutral-400 font-medium">
+                Gross GMV and 15% platform fees
               </p>
             </div>
 
             {/* Legend */}
             <div className="flex items-center gap-3 text-xs font-bold shrink-0">
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-md bg-neutral-300" />
-                <span className="text-neutral-700">Gross GMV</span>
+                <span className="w-2.5 h-2.5 rounded-sm bg-neutral-300" />
+                <span className="text-neutral-700">GMV</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-md bg-emerald-500" />
-                <span className="text-neutral-800">Net Fee 15%</span>
+                <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500" />
+                <span className="text-neutral-700">15% Fee</span>
               </div>
             </div>
           </div>
@@ -362,7 +354,7 @@ export const DashboardPage: React.FC = () => {
                 </span>
                 <span>•</span>
                 <span className="text-emerald-400 font-black">
-                  Net Fee: {formatCurrency(incomeGrowthData[hoveredIncomeMonth].netFee)}
+                  Fee: {formatCurrency(incomeGrowthData[hoveredIncomeMonth].netFee)}
                 </span>
               </div>
             )}
@@ -382,14 +374,14 @@ export const DashboardPage: React.FC = () => {
                     onMouseLeave={() => setHoveredIncomeMonth(null)}
                   >
                     <div className="w-full max-w-[48px] flex items-end justify-center gap-1 h-full">
-                      {/* GMV Bar (Subtle Metallic Slate) */}
+                      {/* GMV Bar */}
                       <div
                         style={{ height: `${gmvHeight}%` }}
                         className={`w-1/2 bg-neutral-200 border border-neutral-300 rounded-t-md transition-all duration-200 ${
                           isHovered ? 'bg-neutral-300' : 'hover:opacity-90'
                         }`}
                       />
-                      {/* Net Fee Bar (Emerald Profit) */}
+                      {/* Net Fee Bar */}
                       <div
                         style={{ height: `${netFeeHeight}%` }}
                         className={`w-1/2 bg-emerald-500 rounded-t-md transition-all duration-200 ${
@@ -412,67 +404,61 @@ export const DashboardPage: React.FC = () => {
             {/* Bottom Summary Bar */}
             <div className="grid grid-cols-3 gap-2 pt-3 text-center">
               <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">Monthly GMV</div>
-                <div className="text-sm font-black text-neutral-900 tabular-nums">€1,248,500</div>
+                <div className="text-[10px] font-black uppercase text-neutral-400">GMV</div>
+                <div className="text-sm font-black text-neutral-900 tabular-nums">€1.25M</div>
               </div>
               <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
                 <div className="text-[10px] font-black uppercase text-neutral-400">Take-Rate</div>
-                <div className="text-sm font-black text-emerald-600 tabular-nums">15.0% Fixed</div>
+                <div className="text-sm font-black text-emerald-600 tabular-nums">15%</div>
               </div>
               <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">Net Fee MRR</div>
-                <div className="text-sm font-black text-neutral-900 tabular-nums">€187,275</div>
+                <div className="text-[10px] font-black uppercase text-neutral-400">Net Fees</div>
+                <div className="text-sm font-black text-neutral-900 tabular-nums">€187.3k</div>
               </div>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* OPERATIONAL SURVEILLANCE TABLE CARDS (WITH FULL SCREEN CASE DOSSIERS ON CLICK) */}
+      {/* OPERATIONAL TRAYS */}
       <div className="space-y-4">
-        {/* Navigation Switcher Tabs between Operational Trays */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 pb-2">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveOperationalTab('disputes')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
-                activeOperationalTab === 'disputes'
-                  ? 'bg-rose-600 text-white shadow-sm'
-                  : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
-              }`}
-            >
-              <Scale className="w-3.5 h-3.5" />
-              <span>Escrow Arbitration Docket ({openDisputes.length})</span>
-            </button>
+        {/* Navigation Tabs */}
+        <div className="flex items-center gap-2 border-b border-neutral-200 pb-2">
+          <button
+            onClick={() => setActiveOperationalTab('disputes')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              activeOperationalTab === 'disputes'
+                ? 'bg-rose-600 text-white shadow-sm'
+                : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
+            }`}
+          >
+            <Scale className="w-3.5 h-3.5" />
+            <span>Disputes ({openDisputes.length})</span>
+          </button>
 
-            <button
-              onClick={() => setActiveOperationalTab('kyc')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
-                activeOperationalTab === 'kyc'
-                  ? 'bg-brand-pink text-white shadow-sm'
-                  : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
-              }`}
-            >
-              <FileCheck className="w-3.5 h-3.5" />
-              <span>Creator KYC Queue ({pendingVerifications.length})</span>
-            </button>
+          <button
+            onClick={() => setActiveOperationalTab('kyc')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              activeOperationalTab === 'kyc'
+                ? 'bg-brand-pink text-white shadow-sm'
+                : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
+            }`}
+          >
+            <FileCheck className="w-3.5 h-3.5" />
+            <span>Verifications ({pendingVerifications.length})</span>
+          </button>
 
-            <button
-              onClick={() => setActiveOperationalTab('orders')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
-                activeOperationalTab === 'orders'
-                  ? 'bg-brand-black text-white shadow-sm'
-                  : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
-              }`}
-            >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span>Live Active Orders ({activeOrders.length})</span>
-            </button>
-          </div>
-
-          <span className="text-xs font-bold text-neutral-400">
-            Click any row to open full-screen inspection dossier
-          </span>
+          <button
+            onClick={() => setActiveOperationalTab('orders')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              activeOperationalTab === 'orders'
+                ? 'bg-brand-black text-white shadow-sm'
+                : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
+            }`}
+          >
+            <ShoppingBag className="w-3.5 h-3.5" />
+            <span>Orders ({activeOrders.length})</span>
+          </button>
         </div>
 
         {/* TRAY 1: ESCROW ARBITRATION DOCKET TABLE CARD */}
@@ -486,10 +472,10 @@ export const DashboardPage: React.FC = () => {
                   </div>
                   <div>
                     <CardTitle className="text-rose-950 font-black">
-                      Escrow Arbitration Docket
+                      Disputes
                     </CardTitle>
-                    <p className="text-xs text-rose-700 font-semibold">
-                      {openDisputes.length} active dispute awaiting official tribunal arbitration
+                    <p className="text-xs text-rose-700 font-medium">
+                      {openDisputes.length} cases requiring ruling
                     </p>
                   </div>
                 </div>
@@ -497,10 +483,10 @@ export const DashboardPage: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="bg-white font-extrabold text-xs"
+                  className="bg-white font-bold text-xs"
                   onClick={() => navigate(ROUTES.DASHBOARD.ESCROW)}
                 >
-                  Manage Escrow
+                  All Disputes
                 </Button>
               </div>
             </CardHeader>
@@ -508,19 +494,19 @@ export const DashboardPage: React.FC = () => {
             <CardContent className="p-0">
               {openDisputes.length === 0 ? (
                 <div className="p-8 text-center text-xs font-medium text-neutral-500">
-                  All active campaigns are delivering without disputes.
+                  No active disputes.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-600 font-black uppercase tracking-wider">
                       <tr>
-                        <th className="px-6 py-3">Case ID</th>
-                        <th className="px-6 py-3">Campaign Order</th>
-                        <th className="px-6 py-3">Disputing Parties</th>
-                        <th className="px-6 py-3">Disputed Vault</th>
-                        <th className="px-6 py-3">SLA / Status</th>
-                        <th className="px-6 py-3 text-right">Arbitration Action</th>
+                        <th className="px-6 py-3">Case</th>
+                        <th className="px-6 py-3">Campaign</th>
+                        <th className="px-6 py-3">Parties</th>
+                        <th className="px-6 py-3">Amount</th>
+                        <th className="px-6 py-3">Status</th>
+                        <th className="px-6 py-3 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-100">
@@ -535,35 +521,35 @@ export const DashboardPage: React.FC = () => {
                               {dispute.id}
                             </span>
                             <div className="text-[11px] text-neutral-400 font-medium mt-0.5">
-                              Order #{dispute.orderId}
+                              #{dispute.orderId}
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <div className="font-black text-neutral-900 text-sm">
+                            <div className="font-extrabold text-neutral-900 text-xs">
                               {dispute.campaignTitle}
                             </div>
-                            <div className="text-neutral-500 line-clamp-1 font-medium max-w-xs">
+                            <div className="text-neutral-500 line-clamp-1 font-medium max-w-xs text-[11px]">
                               {dispute.disputeReason}
                             </div>
                           </td>
-                          <td className="px-6 py-4">
+                          <td className="px-6 py-4 text-xs">
                             <div className="space-y-0.5">
                               <div>
                                 <span className="text-neutral-400">Brand: </span>
-                                <strong className="font-black text-neutral-900">
+                                <strong className="font-bold text-neutral-900">
                                   {dispute.brandName}
                                 </strong>
                               </div>
                               <div>
                                 <span className="text-neutral-400">Creator: </span>
-                                <strong className="font-black text-neutral-900">
+                                <strong className="font-bold text-neutral-900">
                                   {dispute.creatorName}
                                 </strong>
                               </div>
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <div className="font-black text-neutral-950 text-sm tabular-nums">
+                            <div className="font-black text-neutral-950 text-xs tabular-nums">
                               {formatCurrency(dispute.amountEur)}
                             </div>
                             <div className="text-[11px] text-neutral-400 font-medium">
@@ -572,21 +558,20 @@ export const DashboardPage: React.FC = () => {
                           </td>
                           <td className="px-6 py-4">
                             <Badge variant="danger" size="sm" dot>
-                              Mediation Needed
+                              Pending
                             </Badge>
                           </td>
                           <td className="px-6 py-4 text-right">
                             <Button
                               variant="secondary"
                               size="sm"
-                              className="font-extrabold text-xs"
+                              className="font-bold text-xs"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedDispute(dispute);
                               }}
-                              leftIcon={<Maximize2 className="w-3.5 h-3.5" />}
                             >
-                              Inspect Dossier
+                              Inspect
                             </Button>
                           </td>
                         </tr>
@@ -609,9 +594,9 @@ export const DashboardPage: React.FC = () => {
                     <FileCheck className="w-4 h-4" />
                   </div>
                   <div>
-                    <CardTitle className="font-black">Creator Verification & KYC Queue</CardTitle>
-                    <p className="text-xs text-neutral-500 font-semibold">
-                      {pendingVerifications.length} verified badge audits awaiting credential evaluation
+                    <CardTitle className="font-black">Verifications</CardTitle>
+                    <p className="text-xs text-neutral-500 font-medium">
+                      {pendingVerifications.length} badge audits pending
                     </p>
                   </div>
                 </div>
@@ -619,10 +604,10 @@ export const DashboardPage: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="font-extrabold text-xs"
+                  className="font-bold text-xs"
                   onClick={() => navigate(ROUTES.DASHBOARD.VERIFICATION)}
                 >
-                  View All Requests
+                  All Requests
                 </Button>
               </div>
             </CardHeader>
@@ -630,19 +615,19 @@ export const DashboardPage: React.FC = () => {
             <CardContent className="p-0">
               {pendingVerifications.length === 0 ? (
                 <div className="p-8 text-center text-xs font-medium text-neutral-500">
-                  Verification queue is up to date.
+                  Verification queue is empty.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-600 font-black uppercase tracking-wider">
                       <tr>
-                        <th className="px-6 py-3">Creator Candidate</th>
-                        <th className="px-6 py-3">Category / Niche</th>
-                        <th className="px-6 py-3">Verified Audience</th>
-                        <th className="px-6 py-3">Sample Deliverable</th>
-                        <th className="px-6 py-3">Audit Status</th>
-                        <th className="px-6 py-3 text-right">KYC Action</th>
+                        <th className="px-6 py-3">Creator</th>
+                        <th className="px-6 py-3">Category</th>
+                        <th className="px-6 py-3">Followers</th>
+                        <th className="px-6 py-3">Sample</th>
+                        <th className="px-6 py-3">Status</th>
+                        <th className="px-6 py-3 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-100">
@@ -656,10 +641,10 @@ export const DashboardPage: React.FC = () => {
                             <div className="flex items-center gap-3">
                               <Avatar src={item.avatar} name={item.creatorName} size="sm" />
                               <div>
-                                <div className="font-extrabold text-neutral-950 text-sm">
+                                <div className="font-extrabold text-neutral-950 text-xs">
                                   {item.creatorName}
                                 </div>
-                                <div className="text-neutral-400 font-semibold">@{item.handle}</div>
+                                <div className="text-neutral-400 font-medium">@{item.handle}</div>
                               </div>
                             </div>
                           </td>
@@ -674,21 +659,20 @@ export const DashboardPage: React.FC = () => {
                           </td>
                           <td className="px-6 py-4">
                             <Badge variant="warning" size="sm" dot>
-                              Pending KYC
+                              Pending
                             </Badge>
                           </td>
                           <td className="px-6 py-4 text-right">
                             <Button
                               variant="primary"
                               size="sm"
-                              className="font-extrabold text-xs"
+                              className="font-bold text-xs"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedVerification(item);
                               }}
-                              leftIcon={<Maximize2 className="w-3.5 h-3.5" />}
                             >
-                              Audit Dossier
+                              Audit
                             </Button>
                           </td>
                         </tr>
@@ -711,9 +695,9 @@ export const DashboardPage: React.FC = () => {
                     <ShoppingBag className="w-4 h-4" />
                   </div>
                   <div>
-                    <CardTitle className="font-black">Active Marketplace Orders</CardTitle>
-                    <p className="text-xs text-neutral-500 font-semibold">
-                      Real-time delivery progress and escrow commitments across active campaigns
+                    <CardTitle className="font-black">Active Orders</CardTitle>
+                    <p className="text-xs text-neutral-500 font-medium">
+                      In-flight campaign delivery
                     </p>
                   </div>
                 </div>
@@ -721,10 +705,10 @@ export const DashboardPage: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="font-extrabold text-xs"
+                  className="font-bold text-xs"
                   onClick={() => navigate(ROUTES.DASHBOARD.ORDERS)}
                 >
-                  Full Orders Room
+                  All Orders
                 </Button>
               </div>
             </CardHeader>
@@ -734,13 +718,13 @@ export const DashboardPage: React.FC = () => {
                 <table className="w-full text-left text-xs">
                   <thead className="bg-neutral-50 border-b border-neutral-100 text-neutral-600 font-black uppercase tracking-wider">
                     <tr>
-                      <th className="px-6 py-3">Order ID</th>
-                      <th className="px-6 py-3">Campaign & Package</th>
-                      <th className="px-6 py-3">Brand Buyer</th>
+                      <th className="px-6 py-3">Order</th>
+                      <th className="px-6 py-3">Package</th>
+                      <th className="px-6 py-3">Brand</th>
                       <th className="px-6 py-3">Creator</th>
-                      <th className="px-6 py-3">Escrow Value</th>
-                      <th className="px-6 py-3">Delivery Status</th>
-                      <th className="px-6 py-3 text-right">Surveillance</th>
+                      <th className="px-6 py-3">Escrow</th>
+                      <th className="px-6 py-3">Status</th>
+                      <th className="px-6 py-3 text-right">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-neutral-100">
@@ -816,7 +800,7 @@ export const DashboardPage: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setSelectedDispute(null)}
-          title={`Arbitration Case Dossier — ${selectedDispute.id}`}
+          title={`Dispute ${selectedDispute.id}`}
           maxWidth="2xl"
           footer={
             <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
@@ -965,7 +949,7 @@ export const DashboardPage: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setSelectedVerification(null)}
-          title={`Creator KYC & Verified Badge Audit — ${selectedVerification.creatorName}`}
+          title={`Verify @${selectedVerification.handle}`}
           maxWidth="2xl"
           footer={
             <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
@@ -1079,7 +1063,7 @@ export const DashboardPage: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setSelectedOrder(null)}
-          title={`Order Dossier — ${selectedOrder.id}`}
+          title={`Order #${selectedOrder.id}`}
           maxWidth="2xl"
           footer={
             <div className="flex items-center justify-between w-full">

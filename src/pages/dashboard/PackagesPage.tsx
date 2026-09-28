@@ -131,21 +131,22 @@ export const PackagesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Creator Packages & Services Catalog"
-        subtitle="Manage standard deliverable templates, price brackets, commercial rights, and 15% escrow commission presets."
+        title="Packages"
+        subtitle="Creator service offerings and pricing tiers."
         badge={
           <Badge variant="default" size="sm">
-            Standardized Contracts
+            {packages.length} Packages
           </Badge>
         }
         actions={
           <Button
             variant="accent"
             size="sm"
+            className="font-bold text-xs"
             onClick={() => setIsCreateModalOpen(true)}
             leftIcon={<Plus className="w-4 h-4" />}
           >
-            Create New Package
+            New Package
           </Button>
         }
       />

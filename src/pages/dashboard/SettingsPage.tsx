@@ -91,45 +91,45 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-6 max-w-4xl">
       <PageHeader
-        title="Admin Settings & Security"
-        subtitle="Manage administrator identity, credentials, two-factor authentication, and platform escrow constraints."
+        title="Settings"
+        subtitle="Profile, security credentials, and escrow parameters."
         badge={
           <Badge variant="default" size="sm">
-            Root Admin Controls
+            Root Admin
           </Badge>
         }
       />
 
       {/* SECTION 1: ADMIN PROFILE & AVATAR */}
       <Card className="p-6">
-        <div className="pb-4 border-b border-neutral-100 mb-6 flex items-center justify-between">
+        <div className="pb-3 border-b border-neutral-100 mb-5 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-neutral-900">
-              Personal Administrator Profile
+            <h3 className="text-sm font-extrabold text-neutral-900">
+              Profile
             </h3>
-            <p className="text-xs text-neutral-500">
-              Your name and avatar appear on certified audit trails and dispute settlements.
+            <p className="text-[11px] text-neutral-400 font-medium">
+              Your name and avatar for audit trails.
             </p>
           </div>
           {profileSuccessNotice && (
             <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
               <CheckCircle className="w-3.5 h-3.5" />
-              <span>Profile Saved</span>
+              <span>Saved</span>
             </div>
           )}
         </div>
 
-        <form onSubmit={handleUpdateProfile} className="space-y-6">
+        <form onSubmit={handleUpdateProfile} className="space-y-5">
           <ImageUploadBox
-            label="Administrator Profile Avatar"
-            description="Upload an official headshot photo. Automatically cropped for audit signatures and settlement trails."
+            label="Avatar"
+            description="Square photo for audit trails."
             value={avatar}
             onChange={setAvatar}
             aspectRatio="avatar"
             previewBg="light"
-            recommendedDimensions="Recommended: Square JPG or PNG, min 250x250px"
+            recommendedDimensions="Recommended: Square JPG or PNG"
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -141,7 +141,7 @@ export const SettingsPage: React.FC = () => {
               required
             />
             <Input
-              label="Administrative Email"
+              label="Email Address"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -150,16 +150,17 @@ export const SettingsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center justify-between pt-2">
-            <div className="text-xs text-neutral-500">
-              Current Role: <strong className="capitalize">{currentUser?.role?.replace('_', ' ')}</strong>
+            <div className="text-xs text-neutral-500 font-medium">
+              Role: <strong className="capitalize text-neutral-900 font-bold">{currentUser?.role?.replace('_', ' ')}</strong>
             </div>
             <Button
               type="submit"
               variant="accent"
-              size="md"
-              leftIcon={<Save className="w-4 h-4" />}
+              size="sm"
+              className="font-bold text-xs"
+              leftIcon={<Save className="w-3.5 h-3.5" />}
             >
-              Save Profile Changes
+              Save Profile
             </Button>
           </div>
         </form>
@@ -167,13 +168,13 @@ export const SettingsPage: React.FC = () => {
 
       {/* SECTION 2: PASSWORD CHANGE & 2FA */}
       <Card className="p-6">
-        <div className="pb-4 border-b border-neutral-100 mb-6 flex items-center justify-between">
+        <div className="pb-3 border-b border-neutral-100 mb-5 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-neutral-900">
-              Security & Passwords
+            <h3 className="text-sm font-extrabold text-neutral-900">
+              Security
             </h3>
-            <p className="text-xs text-neutral-500">
-              Rotate passwords regularly and enforce multi-factor TOTP authentication.
+            <p className="text-[11px] text-neutral-400 font-medium">
+              Password rotation and two-factor authentication.
             </p>
           </div>
           {passwordNotice && (
@@ -264,19 +265,19 @@ export const SettingsPage: React.FC = () => {
 
       {/* SECTION 3: ESCROW PLATFORM RULES & SLAs */}
       <Card className="p-6">
-        <div className="pb-4 border-b border-neutral-100 mb-6 flex items-center justify-between">
+        <div className="pb-3 border-b border-neutral-100 mb-5 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-neutral-900">
-              Escrow Engine Rules & System Limits
+            <h3 className="text-sm font-extrabold text-neutral-900">
+              Escrow Parameters
             </h3>
-            <p className="text-xs text-neutral-500">
-              Core economic parameters governing transaction take-rates and auto-release timelines.
+            <p className="text-[11px] text-neutral-400 font-medium">
+              Platform take-rates and dispute SLAs.
             </p>
           </div>
           {policySavedNotice && (
             <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
               <CheckCircle className="w-3.5 h-3.5" />
-              <span>Policy Updated</span>
+              <span>Saved</span>
             </div>
           )}
         </div>
@@ -284,33 +285,34 @@ export const SettingsPage: React.FC = () => {
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Input
-              label="Platform Escrow Take Rate (%)"
+              label="Platform Fee (%)"
               value={escrowFeeRate}
               onChange={(e) => setEscrowFeeRate(e.target.value)}
-              helperText="Charged to hiring brands on deposit"
+              helperText="Charged on deposit"
             />
             <Input
-              label="Auto-Release Window (Days)"
+              label="Auto-Release (Days)"
               value={autoReleaseDays}
               onChange={(e) => setAutoReleaseDays(e.target.value)}
-              helperText="Days after delivery if brand is silent"
+              helperText="Days after delivery"
             />
             <Input
-              label="Dispute Resolution SLA (Hours)"
+              label="Arbitration SLA (Hours)"
               value={arbitrationSlaHours}
               onChange={(e) => setArbitrationSlaHours(e.target.value)}
-              helperText="Maximum window for admin arbitration"
+              helperText="Target ruling time"
             />
           </div>
 
           <div className="flex justify-end pt-2">
             <Button
-              variant="secondary"
+              variant="accent"
               size="sm"
+              className="font-bold text-xs"
               onClick={handleSavePlatformPolicy}
-              leftIcon={<Save className="w-4 h-4" />}
+              leftIcon={<Save className="w-3.5 h-3.5" />}
             >
-              Save Escrow Parameters
+              Save Parameters
             </Button>
           </div>
         </div>

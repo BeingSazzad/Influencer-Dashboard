@@ -89,21 +89,22 @@ export const TeamPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Admin Team & Access Governance (RBAC)"
-        subtitle="Manage back-office operators, financial signatories, dispute mediators, and privilege tiers."
+        title="Team"
+        subtitle="Manage administrator seats and access permissions."
         badge={
           <Badge variant="default" size="sm">
-            {members.length} Admin Seats
+            {members.length} Admins
           </Badge>
         }
         actions={
           <Button
             variant="accent"
             size="sm"
+            className="font-bold text-xs"
             onClick={() => setIsInviteModalOpen(true)}
             leftIcon={<UserPlus className="w-4 h-4" />}
           >
-            Add Administrator
+            Add Admin
           </Button>
         }
       />

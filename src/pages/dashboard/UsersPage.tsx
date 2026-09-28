@@ -90,11 +90,11 @@ export const UsersPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Marketplace Users & Moderation"
-        subtitle="Surgical enforcement of platform terms, creator credentials, brand billing, and account bans."
+        title="Users"
+        subtitle="Manage registered creators and brand accounts."
         badge={
           <Badge variant="neutral" size="sm">
-            {users.length} Registered
+            {users.length} Users
           </Badge>
         }
       />
