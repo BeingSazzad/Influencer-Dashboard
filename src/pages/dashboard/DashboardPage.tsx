@@ -311,7 +311,7 @@ export const DashboardPage: React.FC = () => {
           </div>
         </Card>
 
-        {/* CHART 2: REVENUE */}
+        {/* CHART 2: REVENUE (Curved Trend Area Chart for Visual Hierarchy) */}
         <Card className="p-5 space-y-3">
           <div className="flex items-center justify-between gap-3 pb-2 border-b border-neutral-100">
             <div>
@@ -324,19 +324,19 @@ export const DashboardPage: React.FC = () => {
                 </span>
               </div>
               <p className="text-[11px] text-neutral-400 font-medium">
-                Gross GMV and 15% platform fees
+                Gross GMV and 15% platform fees trajectory
               </p>
             </div>
 
             {/* Legend */}
             <div className="flex items-center gap-3 text-xs font-bold shrink-0">
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-neutral-300" />
-                <span className="text-neutral-700">GMV</span>
+                <span className="w-4 h-0.5 border-t-2 border-dashed border-neutral-400" />
+                <span className="text-neutral-500 font-medium">GMV</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500" />
-                <span className="text-neutral-700">15% Fee</span>
+                <span className="w-3.5 h-1 rounded-full bg-emerald-500" />
+                <span className="text-neutral-900 font-bold">15% Fee</span>
               </div>
             </div>
           </div>
@@ -354,51 +354,129 @@ export const DashboardPage: React.FC = () => {
                 </span>
                 <span>•</span>
                 <span className="text-emerald-400 font-black">
-                  Fee: {formatCurrency(incomeGrowthData[hoveredIncomeMonth].netFee)}
+                  15% Fee: {formatCurrency(incomeGrowthData[hoveredIncomeMonth].netFee)}
                 </span>
               </div>
             )}
 
-            {/* SVG Visual */}
-            <div className="h-56 flex items-end justify-between gap-3 pt-6 pb-2 px-2 border-b border-neutral-100">
-              {incomeGrowthData.map((item, index) => {
-                const gmvHeight = (item.gmv / maxGmv) * 100;
-                const netFeeHeight = (item.netFee / (maxGmv * 0.2)) * 100;
-                const isHovered = hoveredIncomeMonth === index;
+            {/* SVG Curved Area & Trend Line Visual */}
+            <div className="h-56 flex flex-col justify-between pt-2">
+              <svg
+                viewBox="0 0 500 180"
+                className="w-full h-44 overflow-visible"
+                preserveAspectRatio="none"
+              >
+                <defs>
+                  <linearGradient id="revenueAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#10B981" stopOpacity="0.28" />
+                    <stop offset="50%" stopColor="#10B981" stopOpacity="0.10" />
+                    <stop offset="100%" stopColor="#10B981" stopOpacity="0.00" />
+                  </linearGradient>
+                </defs>
 
-                return (
-                  <div
-                    key={item.month}
-                    className="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer"
-                    onMouseEnter={() => setHoveredIncomeMonth(index)}
-                    onMouseLeave={() => setHoveredIncomeMonth(null)}
-                  >
-                    <div className="w-full max-w-[48px] flex items-end justify-center gap-1 h-full">
-                      {/* GMV Bar */}
-                      <div
-                        style={{ height: `${gmvHeight}%` }}
-                        className={`w-1/2 bg-neutral-200 border border-neutral-300 rounded-t-md transition-all duration-200 ${
-                          isHovered ? 'bg-neutral-300' : 'hover:opacity-90'
-                        }`}
+                {/* Horizontal Gridlines */}
+                <line x1="35" y1="35" x2="465" y2="35" stroke="#F4F4F0" strokeDasharray="3 3" />
+                <line x1="35" y1="75" x2="465" y2="75" stroke="#F4F4F0" strokeDasharray="3 3" />
+                <line x1="35" y1="115" x2="465" y2="115" stroke="#F4F4F0" strokeDasharray="3 3" />
+                <line x1="35" y1="155" x2="465" y2="155" stroke="#E7E7E2" strokeWidth="1" />
+
+                {/* Active Hover Crosshair Line */}
+                {hoveredIncomeMonth !== null && (
+                  <line
+                    x1={[35, 121, 207, 293, 379, 465][hoveredIncomeMonth]}
+                    y1="20"
+                    x2={[35, 121, 207, 293, 379, 465][hoveredIncomeMonth]}
+                    y2="155"
+                    stroke="#10B981"
+                    strokeWidth="1.5"
+                    strokeDasharray="4 4"
+                  />
+                )}
+
+                {/* GMV Trendline (Dashed Neutral) */}
+                <path
+                  d="M 35,125 C 78,125 78,108 121,108 C 164,108 164,88 207,88 C 250,88 250,68 293,68 C 336,68 336,52 379,52 C 422,52 422,38 465,38"
+                  fill="none"
+                  stroke="#A3A39E"
+                  strokeWidth="2"
+                  strokeDasharray="4 4"
+                />
+
+                {/* 15% Fee Gradient Area Fill */}
+                <path
+                  d="M 35,130 C 78,130 78,112 121,112 C 164,112 164,90 207,90 C 250,90 250,70 293,70 C 336,70 336,51 379,51 C 422,51 422,34 465,34 L 465,155 L 35,155 Z"
+                  fill="url(#revenueAreaGrad)"
+                />
+
+                {/* 15% Fee Main Line */}
+                <path
+                  d="M 35,130 C 78,130 78,112 121,112 C 164,112 164,90 207,90 C 250,90 250,70 293,70 C 336,70 336,51 379,51 C 422,51 422,34 465,34"
+                  fill="none"
+                  stroke="#10B981"
+                  strokeWidth="2.5"
+                />
+
+                {/* Interactive Data Point Nodes */}
+                {[
+                  { x: 35, y: 130 },
+                  { x: 121, y: 112 },
+                  { x: 207, y: 90 },
+                  { x: 293, y: 70 },
+                  { x: 379, y: 51 },
+                  { x: 465, y: 34 },
+                ].map((pt, idx) => {
+                  const isHovered = hoveredIncomeMonth === idx;
+                  return (
+                    <g
+                      key={idx}
+                      className="cursor-pointer"
+                      onMouseEnter={() => setHoveredIncomeMonth(idx)}
+                      onMouseLeave={() => setHoveredIncomeMonth(null)}
+                    >
+                      <circle cx={pt.x} cy={pt.y} r="16" fill="transparent" />
+                      {isHovered && (
+                        <circle
+                          cx={pt.x}
+                          cy={pt.y}
+                          r="8"
+                          fill="#10B981"
+                          fillOpacity="0.2"
+                        />
+                      )}
+                      <circle
+                        cx={pt.x}
+                        cy={pt.y}
+                        r={isHovered ? 5 : 3.5}
+                        fill="#FFFFFF"
+                        stroke="#10B981"
+                        strokeWidth={isHovered ? 2.5 : 2}
                       />
-                      {/* Net Fee Bar */}
-                      <div
-                        style={{ height: `${netFeeHeight}%` }}
-                        className={`w-1/2 bg-emerald-500 rounded-t-md transition-all duration-200 ${
-                          isHovered ? 'bg-emerald-400 shadow-md shadow-emerald-500/30' : 'hover:opacity-90'
-                        }`}
-                      />
-                    </div>
-                    <span
-                      className={`text-xs mt-2 transition-colors ${
-                        isHovered ? 'font-black text-emerald-600' : 'font-extrabold text-neutral-500'
+                    </g>
+                  );
+                })}
+              </svg>
+
+              {/* X-Axis Month Labels */}
+              <div className="flex justify-between px-5 pt-1 border-b border-neutral-100 pb-2">
+                {incomeGrowthData.map((item, index) => {
+                  const isHovered = hoveredIncomeMonth === index;
+                  return (
+                    <button
+                      key={item.month}
+                      type="button"
+                      onMouseEnter={() => setHoveredIncomeMonth(index)}
+                      onMouseLeave={() => setHoveredIncomeMonth(null)}
+                      className={`text-xs transition-colors cursor-pointer ${
+                        isHovered
+                          ? 'font-black text-emerald-600'
+                          : 'font-extrabold text-neutral-400 hover:text-neutral-700'
                       }`}
                     >
                       {item.month}
-                    </span>
-                  </div>
-                );
-              })}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Bottom Summary Bar */}
