@@ -27,7 +27,6 @@ export const TeamPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<AdminRole>('admin');
-  const [avatar, setAvatar] = useState('');
 
   const filteredMembers = members.filter((m) => {
     const matchesSearch =
@@ -46,7 +45,7 @@ export const TeamPage: React.FC = () => {
         name,
         email,
         role,
-        avatar: avatar.trim() || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         status: 'active',
         twoFactorEnabled: false,
       })
@@ -54,7 +53,6 @@ export const TeamPage: React.FC = () => {
 
     setName('');
     setEmail('');
-    setAvatar('');
     setIsInviteModalOpen(false);
   };
 
@@ -238,13 +236,6 @@ export const TeamPage: React.FC = () => {
                 <option value="super_admin">Super Admin</option>
               </select>
             </div>
-
-            <Input
-              label="Avatar URL (Optional)"
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
-              placeholder="https://..."
-            />
           </form>
         </Modal>
       )}
