@@ -167,7 +167,7 @@ export const EscrowPage: React.FC = () => {
                   <div className="space-y-3">
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                        Campaign Title
+                        Campaign
                       </span>
                       <h4 className="text-base font-extrabold text-neutral-950">
                         {dispute.campaignTitle}
@@ -177,7 +177,7 @@ export const EscrowPage: React.FC = () => {
                     <div className="grid grid-cols-2 gap-3 pt-1">
                       <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100">
                         <span className="text-[10px] uppercase font-bold text-neutral-400">
-                          Hiring Brand
+                          Brand
                         </span>
                         <div className="flex items-center gap-2 mt-1">
                           <Avatar src={dispute.brandAvatar} name={dispute.brandName} size="xs" />
@@ -189,7 +189,7 @@ export const EscrowPage: React.FC = () => {
 
                       <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100">
                         <span className="text-[10px] uppercase font-bold text-neutral-400">
-                          Commissioned Creator
+                          Creator
                         </span>
                         <div className="flex items-center gap-2 mt-1">
                           <Avatar src={dispute.creatorAvatar} name={dispute.creatorName} size="xs" />
@@ -201,7 +201,7 @@ export const EscrowPage: React.FC = () => {
                     </div>
 
                     <div className="text-xs text-neutral-600 bg-neutral-50 p-3 rounded-xl border border-neutral-100 font-medium">
-                      <span className="font-bold text-neutral-900">Brief Scope: </span>
+                      <span className="font-bold text-neutral-900">Scope: </span>
                       {dispute.briefSummary}
                     </div>
                   </div>
@@ -210,7 +210,7 @@ export const EscrowPage: React.FC = () => {
                   <div className="space-y-3 flex flex-col justify-between">
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                        Formal Disputed Grievance
+                        Grievance
                       </span>
                       <div className="mt-1 p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-xs text-rose-950 leading-relaxed font-semibold">
                         "{dispute.disputeReason}"
@@ -225,7 +225,7 @@ export const EscrowPage: React.FC = () => {
                         className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-pink hover:underline"
                       >
                         <FileText className="w-4 h-4" />
-                        Inspect Deliverable Video Submission
+                        View Deliverable
                       </a>
 
                       {dispute.status === 'open' ? (
