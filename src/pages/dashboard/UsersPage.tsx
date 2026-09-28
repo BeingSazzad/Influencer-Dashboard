@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
 import { Textarea } from '@/components/ui/Textarea';
+import { Pagination } from '@/components/ui/Pagination';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import {
   Search,
@@ -28,13 +29,32 @@ import {
   RotateCcw,
   Eye,
   SlidersHorizontal,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+  X,
 } from 'lucide-react';
+
+type SortOption =
+  | 'recent'
+  | 'oldest'
+  | 'volume_desc'
+  | 'volume_asc'
+  | 'deals_desc'
+  | 'deals_asc'
+  | 'name_asc'
+  | 'name_desc';
 
 export const UsersPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { users, searchQuery, roleFilter, statusFilter } = useAppSelector(
     (state) => state.users
   );
+
+  // Sorting & Pagination State
+  const [sortBy, setSortBy] = useState<SortOption>('recent');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
 
   // Moderation Modal State
   const [selectedUserForModeration, setSelectedUserForModeration] =
@@ -47,17 +67,86 @@ export const UsersPage: React.FC = () => {
   // User Profile Inspector Drawer/Modal
   const [inspectedUser, setInspectedUser] = useState<MarketplaceUser | null>(null);
 
+  // Enhanced Filter matching name, handle, email, company, category, and location
+  const q = searchQuery.toLowerCase().trim();
   const filteredUsers = users.filter((u) => {
     const matchesSearch =
-      u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.handle.toLowerCase().includes(searchQuery.toLowerCase());
+      !q ||
+      u.name.toLowerCase().includes(q) ||
+      u.email.toLowerCase().includes(q) ||
+      u.handle.toLowerCase().includes(q) ||
+      (u.companyName && u.companyName.toLowerCase().includes(q)) ||
+      (u.category && u.category.toLowerCase().includes(q)) ||
+      u.location.toLowerCase().includes(q);
 
     const matchesRole = roleFilter === 'all' || u.role === roleFilter;
     const matchesStatus = statusFilter === 'all' || u.status === statusFilter;
 
     return matchesSearch && matchesRole && matchesStatus;
   });
+
+  // Sorting
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    switch (sortBy) {
+      case 'recent':
+        return new Date(b.joinedDate).getTime() - new Date(a.joinedDate).getTime();
+      case 'oldest':
+        return new Date(a.joinedDate).getTime() - new Date(b.joinedDate).getTime();
+      case 'volume_desc':
+        return b.totalVolumeEur - a.totalVolumeEur;
+      case 'volume_asc':
+        return a.totalVolumeEur - b.totalVolumeEur;
+      case 'deals_desc':
+        return b.ordersCount - a.ordersCount;
+      case 'deals_asc':
+        return a.ordersCount - b.ordersCount;
+      case 'name_asc':
+        return a.name.localeCompare(b.name);
+      case 'name_desc':
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
+    }
+  });
+
+  // Pagination calculation
+  const totalPages = Math.ceil(sortedUsers.length / pageSize) || 1;
+  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const paginatedUsers = sortedUsers.slice(
+    (validCurrentPage - 1) * pageSize,
+    validCurrentPage * pageSize
+  );
+
+  // Column Header Sort Toggle
+  const handleSort = (field: 'name' | 'volume' | 'deals' | 'joined') => {
+    setCurrentPage(1);
+    if (field === 'name') {
+      setSortBy((prev) => (prev === 'name_asc' ? 'name_desc' : 'name_asc'));
+    } else if (field === 'volume') {
+      setSortBy((prev) => (prev === 'volume_desc' ? 'volume_asc' : 'volume_desc'));
+    } else if (field === 'deals') {
+      setSortBy((prev) => (prev === 'deals_desc' ? 'deals_asc' : 'deals_desc'));
+    } else if (field === 'joined') {
+      setSortBy((prev) => (prev === 'recent' ? 'oldest' : 'recent'));
+    }
+  };
+
+  const renderSortIcon = (field: 'name' | 'volume' | 'deals' | 'joined') => {
+    if (field === 'name') {
+      if (sortBy === 'name_asc') return <ArrowUp className="w-3.5 h-3.5 text-neutral-900" />;
+      if (sortBy === 'name_desc') return <ArrowDown className="w-3.5 h-3.5 text-neutral-900" />;
+    } else if (field === 'volume') {
+      if (sortBy === 'volume_desc') return <ArrowDown className="w-3.5 h-3.5 text-neutral-900" />;
+      if (sortBy === 'volume_asc') return <ArrowUp className="w-3.5 h-3.5 text-neutral-900" />;
+    } else if (field === 'deals') {
+      if (sortBy === 'deals_desc') return <ArrowDown className="w-3.5 h-3.5 text-neutral-900" />;
+      if (sortBy === 'deals_asc') return <ArrowUp className="w-3.5 h-3.5 text-neutral-900" />;
+    } else if (field === 'joined') {
+      if (sortBy === 'recent') return <ArrowDown className="w-3.5 h-3.5 text-neutral-900" />;
+      if (sortBy === 'oldest') return <ArrowUp className="w-3.5 h-3.5 text-neutral-900" />;
+    }
+    return <ArrowUpDown className="w-3 h-3 text-neutral-300 opacity-0 group-hover:opacity-100 transition-opacity" />;
+  };
 
   const handleOpenModeration = (user: MarketplaceUser) => {
     setSelectedUserForModeration(user);
@@ -99,9 +188,9 @@ export const UsersPage: React.FC = () => {
         }
       />
 
-      {/* Control Panel: Filters & Search */}
-      <Card className="p-4">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      {/* Control Panel: Filters, Search & Sorting */}
+      <Card className="p-4 space-y-3">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Role Filter Tabs (All / Creators / Brands) */}
           <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/5 p-1 rounded-xl self-start">
             {[
@@ -111,8 +200,11 @@ export const UsersPage: React.FC = () => {
             ].map((tab) => (
               <button
                 key={tab.value}
-                onClick={() => dispatch(setRoleFilter(tab.value))}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                onClick={() => {
+                  dispatch(setRoleFilter(tab.value));
+                  setCurrentPage(1);
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                   roleFilter === tab.value
                     ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm'
                     : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
@@ -132,24 +224,61 @@ export const UsersPage: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3">
-            {/* Search Input */}
-            <div className="relative w-full sm:w-64">
-              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1 lg:justify-end">
+            {/* Search Input with Clear Button */}
+            <div className="relative flex-1 sm:w-64 lg:w-72">
+              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
-                placeholder="Search user by name, @handle, or email..."
+                placeholder="Search name, @handle, email, category..."
                 value={searchQuery}
-                onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-                className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 dark:text-white"
+                onChange={(e) => {
+                  dispatch(setSearchQuery(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="w-full h-9 pl-9 pr-8 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 dark:text-white placeholder:text-neutral-400 transition-all"
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setSearchQuery(''));
+                    setCurrentPage(1);
+                  }}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 p-0.5 rounded transition-colors"
+                  title="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
+
+            {/* Sort Dropdown */}
+            <select
+              value={sortBy}
+              onChange={(e) => {
+                setSortBy(e.target.value as SortOption);
+                setCurrentPage(1);
+              }}
+              className="h-9 px-3 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer"
+              title="Sort directory"
+            >
+              <option value="recent">Sort: Recently Joined</option>
+              <option value="oldest">Sort: Oldest Joined</option>
+              <option value="volume_desc">Sort: Highest Volume (€)</option>
+              <option value="volume_asc">Sort: Lowest Volume (€)</option>
+              <option value="deals_desc">Sort: Most Campaigns</option>
+              <option value="name_asc">Sort: Name (A → Z)</option>
+            </select>
 
             {/* Status Dropdown Filter */}
             <select
               value={statusFilter}
-              onChange={(e) => dispatch(setStatusFilter(e.target.value as any))}
-              className="h-9 px-3 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
+              onChange={(e) => {
+                dispatch(setStatusFilter(e.target.value as any));
+                setCurrentPage(1);
+              }}
+              className="h-9 px-3 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -158,6 +287,70 @@ export const UsersPage: React.FC = () => {
             </select>
           </div>
         </div>
+
+        {/* Active Filter Chips / Reset */}
+        {(searchQuery || roleFilter !== 'all' || statusFilter !== 'all') && (
+          <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-neutral-500 border-t border-neutral-100">
+            <span className="font-semibold text-neutral-400">Active filters:</span>
+            {searchQuery && (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px]">
+                Search: "{searchQuery}"
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setSearchQuery(''));
+                    setCurrentPage(1);
+                  }}
+                  className="hover:text-rose-600 cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {roleFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px] capitalize">
+                Role: {roleFilter}
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setRoleFilter('all'));
+                    setCurrentPage(1);
+                  }}
+                  className="hover:text-rose-600 cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {statusFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px] capitalize">
+                Status: {statusFilter}
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setStatusFilter('all'));
+                    setCurrentPage(1);
+                  }}
+                  className="hover:text-rose-600 cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(setSearchQuery(''));
+                dispatch(setRoleFilter('all'));
+                dispatch(setStatusFilter('all'));
+                setCurrentPage(1);
+              }}
+              className="text-[11px] font-bold text-brand-pink hover:underline ml-auto cursor-pointer"
+            >
+              Reset all
+            </button>
+          </div>
+        )}
       </Card>
 
       {/* Users Directory Table */}
@@ -165,24 +358,74 @@ export const UsersPage: React.FC = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>User</TableHead>
+              <TableHead
+                className="cursor-pointer hover:text-neutral-950 transition-colors select-none group"
+                onClick={() => handleSort('name')}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>User</span>
+                  {renderSortIcon('name')}
+                </div>
+              </TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Volume</TableHead>
-              <TableHead>Deals</TableHead>
-              <TableHead>Joined</TableHead>
+              <TableHead
+                className="cursor-pointer hover:text-neutral-950 transition-colors select-none group"
+                onClick={() => handleSort('volume')}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>Volume</span>
+                  {renderSortIcon('volume')}
+                </div>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer hover:text-neutral-950 transition-colors select-none group"
+                onClick={() => handleSort('deals')}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>Deals</span>
+                  {renderSortIcon('deals')}
+                </div>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer hover:text-neutral-950 transition-colors select-none group"
+                onClick={() => handleSort('joined')}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>Joined</span>
+                  {renderSortIcon('joined')}
+                </div>
+              </TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredUsers.length === 0 ? (
+            {paginatedUsers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-10 text-neutral-400">
-                  No accounts found matching your query or filters.
+                <TableCell colSpan={7} className="text-center py-12 text-neutral-500">
+                  <div className="max-w-xs mx-auto space-y-2">
+                    <p className="font-bold text-neutral-900">No matching accounts found</p>
+                    <p className="text-xs text-neutral-400">
+                      Try adjusting your search keywords, role filters, or status selection.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => {
+                        dispatch(setSearchQuery(''));
+                        dispatch(setRoleFilter('all'));
+                        dispatch(setStatusFilter('all'));
+                        setCurrentPage(1);
+                      }}
+                    >
+                      Reset All Filters
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
-              filteredUsers.map((user) => (
+              paginatedUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -282,6 +525,23 @@ export const UsersPage: React.FC = () => {
             )}
           </TableBody>
         </Table>
+
+        {/* Bottom Pagination Bar */}
+        <div className="border-t border-neutral-100 dark:border-white/5 px-4 py-1.5">
+          <Pagination
+            currentPage={validCurrentPage}
+            totalPages={totalPages}
+            totalItems={sortedUsers.length}
+            pageSize={pageSize}
+            pageSizeOptions={[8, 16, 24, 50]}
+            onPageChange={(page) => setCurrentPage(page)}
+            onPageSizeChange={(size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+            }}
+            itemLabel="accounts"
+          />
+        </div>
       </Card>
 
       {/* Moderation Action Modal (Ban / Suspend) */}
