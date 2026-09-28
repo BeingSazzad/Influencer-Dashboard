@@ -6,6 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 
 import { LoginPage } from '@/pages/auth/LoginPage';
+import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 import { UsersPage } from '@/pages/dashboard/UsersPage';
 import { VerificationPage } from '@/pages/dashboard/VerificationPage';
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.AUTH.LOGIN,
         element: <LoginPage />,
+      },
+      {
+        path: ROUTES.AUTH.FORGOT_PASSWORD,
+        element: <ForgotPasswordPage />,
       },
     ],
   },

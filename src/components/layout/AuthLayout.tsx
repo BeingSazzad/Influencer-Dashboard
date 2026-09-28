@@ -1,35 +1,34 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Shield } from 'lucide-react';
 
 export const AuthLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAFAF8] flex flex-col justify-center items-center p-4 selection:bg-brand-pink/20 selection:text-brand-pink">
-      <div className="w-full max-w-md space-y-6">
+      <div className="w-full max-w-sm space-y-6">
         {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-black text-white text-xl font-black shadow-md mb-2">
+        <div className="text-center space-y-1">
+          <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-brand-black text-white text-lg font-black shadow-sm mb-1">
             I
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            Influverse HQ
+          <h1 className="text-xl font-bold tracking-tight text-neutral-900">
+            Influverse
           </h1>
-          <p className="text-xs text-neutral-500 font-medium">
-            Authorized Personnel & Platform Administration Access Only
+          <p className="text-xs text-neutral-400">
+            Admin Panel
           </p>
         </div>
 
-        {/* Auth Page Content */}
-        <div className="bg-white rounded-2xl border border-neutral-200/80 shadow-xl p-8">
+        {/* Auth Card */}
+        <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6 sm:p-7">
           <Outlet />
         </div>
 
-        {/* Security Footer Notice */}
-        <div className="flex items-center justify-center gap-1.5 text-[11px] text-neutral-400">
-          <Shield className="w-3.5 h-3.5" />
-          <span>Encrypted with 256-bit TLS • SOC2 Type II Certified</span>
+        {/* Minimal Footer */}
+        <div className="text-center text-[11px] text-neutral-400">
+          Influverse &copy; {new Date().getFullYear()}
         </div>
       </div>
     </div>
   );
 };
+export default AuthLayout;
