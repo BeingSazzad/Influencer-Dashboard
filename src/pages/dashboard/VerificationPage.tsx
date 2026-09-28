@@ -88,15 +88,15 @@ export const VerificationPage: React.FC = () => {
                   <Avatar src={request.avatar} name={request.creatorName} size="lg" />
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-base font-bold text-neutral-900">
+                      <h3 className="text-base font-black text-neutral-950">
                         {request.creatorName}
                       </h3>
                       {request.status === 'approved' && (
                         <Award className="w-4 h-4 text-brand-pink fill-brand-pink/20" />
                       )}
                     </div>
-                    <p className="text-xs text-neutral-400">@{request.handle}</p>
-                    <span className="inline-block mt-1 text-[11px] font-semibold text-neutral-700 bg-neutral-100 px-2 py-0.5 rounded">
+                    <p className="text-xs text-neutral-400 font-semibold">@{request.handle}</p>
+                    <span className="inline-block mt-1 text-[11px] font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded">
                       {request.category}
                     </span>
                   </div>
@@ -125,7 +125,7 @@ export const VerificationPage: React.FC = () => {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                       Total Audience Reach
                     </span>
-                    <p className="text-sm font-bold text-neutral-900 mt-0.5">
+                    <p className="text-base font-black text-neutral-950 mt-0.5 tabular-nums">
                       {request.followersTotal}
                     </p>
                   </div>
@@ -133,7 +133,7 @@ export const VerificationPage: React.FC = () => {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                       Verified Views
                     </span>
-                    <p className="text-sm font-bold text-neutral-900 mt-0.5">
+                    <p className="text-base font-black text-neutral-950 mt-0.5 tabular-nums">
                       {request.sampleWorkViews}
                     </p>
                   </div>
@@ -141,24 +141,24 @@ export const VerificationPage: React.FC = () => {
 
                 {/* Connected Handles */}
                 <div className="space-y-1.5 text-xs">
-                  <span className="text-[11px] font-semibold text-neutral-500 uppercase">
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wide">
                     Connected Platforms
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {request.platforms.instagram && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-pink-50 text-pink-700 font-medium">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-pink-50 text-pink-800 font-bold">
                         <Instagram className="w-3.5 h-3.5" />
                         {request.platforms.instagram}
                       </span>
                     )}
                     {request.platforms.tiktok && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-800 font-medium">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-900 font-bold">
                         <Video className="w-3.5 h-3.5" />
                         {request.platforms.tiktok}
                       </span>
                     )}
                     {request.platforms.youtube && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 font-medium">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-50 text-rose-800 font-bold">
                         <Youtube className="w-3.5 h-3.5" />
                         {request.platforms.youtube}
                       </span>

@@ -26,7 +26,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   const isNegative = change !== undefined && change < 0;
 
   const iconVariants = {
-    black: 'bg-brand-black text-white',
+    black: 'bg-brand-black text-white shadow-sm',
     pink: 'bg-brand-pink/10 text-brand-pink',
     emerald: 'bg-emerald-50 text-emerald-600',
     amber: 'bg-amber-50 text-amber-600',
@@ -36,11 +36,11 @@ export const StatCard: React.FC<StatCardProps> = ({
     <Card hoverEffect className="p-5 relative overflow-hidden group">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-sans">
             {title}
           </p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold tracking-tight text-neutral-900 tabular-nums">
+          <div className="mt-2.5 flex items-baseline gap-2">
+            <span className="text-3xl sm:text-[32px] font-black tracking-tight text-neutral-950 tabular-nums font-sans">
               {value}
             </span>
           </div>
@@ -55,14 +55,14 @@ export const StatCard: React.FC<StatCardProps> = ({
         </div>
       </div>
 
-      <div className="mt-3 flex items-center gap-1.5 text-xs">
+      <div className="mt-3.5 flex items-center gap-1.5 text-xs">
         {change !== undefined && (
           <span
             className={cn(
-              'inline-flex items-center font-bold px-1.5 py-0.5 rounded text-[11px]',
-              isPositive && 'text-emerald-700 bg-emerald-50',
-              isNegative && 'text-rose-700 bg-rose-50',
-              !isPositive && !isNegative && 'text-neutral-600 bg-neutral-100'
+              'inline-flex items-center font-extrabold px-1.5 py-0.5 rounded text-[11px]',
+              isPositive && 'text-emerald-700 bg-emerald-50 border border-emerald-200/60',
+              isNegative && 'text-rose-700 bg-rose-50 border border-rose-200/60',
+              !isPositive && !isNegative && 'text-neutral-700 bg-neutral-100 border border-neutral-200/60'
             )}
           >
             {isPositive && <ArrowUpRight className="w-3 h-3 mr-0.5" />}
@@ -71,7 +71,7 @@ export const StatCard: React.FC<StatCardProps> = ({
             {Math.abs(change)}%
           </span>
         )}
-        <span className="text-neutral-500 text-[11px]">
+        <span className="text-neutral-500 text-[11px] font-medium">
           {subtitle || changePeriod}
         </span>
       </div>

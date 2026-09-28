@@ -162,15 +162,15 @@ export const TeamPage: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <Avatar src={member.avatar} name={member.name} size="sm" />
                     <div>
-                      <div className="font-bold text-neutral-900 flex items-center gap-1.5">
+                      <div className="font-extrabold text-neutral-950 flex items-center gap-1.5 text-sm">
                         <span>{member.name}</span>
                         {member.id === currentUser?.id && (
-                          <span className="text-[10px] bg-neutral-100 text-neutral-600 px-1 rounded font-semibold">
+                          <span className="text-[10px] bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded font-black">
                             You
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-neutral-400">{member.email}</div>
+                      <div className="text-xs text-neutral-400 font-medium">{member.email}</div>
                     </div>
                   </div>
                 </TableCell>

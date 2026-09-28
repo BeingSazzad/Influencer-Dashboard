@@ -24,33 +24,33 @@ export const Badge: React.FC<BadgeProps> = ({
 }) => {
   const variants = {
     default: 'bg-brand-black text-white border-transparent',
-    neutral: 'bg-neutral-100 text-neutral-700 border-neutral-200',
-    success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    warning: 'bg-amber-50 text-amber-700 border-amber-200',
-    danger: 'bg-rose-50 text-rose-700 border-rose-200',
+    neutral: 'bg-neutral-100 text-neutral-800 border-neutral-200',
+    success: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+    warning: 'bg-amber-50 text-amber-800 border-amber-200',
+    danger: 'bg-rose-50 text-rose-800 border-rose-200',
     pink: 'bg-pink-50 text-brand-pink border-pink-200',
-    outline: 'bg-transparent text-neutral-800 border-neutral-300',
+    outline: 'bg-transparent text-neutral-900 border-neutral-300',
   };
 
   const dotColors = {
     default: 'bg-white',
-    neutral: 'bg-neutral-400',
+    neutral: 'bg-neutral-500',
     success: 'bg-emerald-500',
     warning: 'bg-amber-500',
     danger: 'bg-rose-500',
     pink: 'bg-brand-pink',
-    outline: 'bg-neutral-500',
+    outline: 'bg-neutral-600',
   };
 
   const sizes = {
-    sm: 'text-[11px] px-2 py-0.5 font-medium',
-    md: 'text-xs px-2.5 py-1 font-medium',
+    sm: 'text-[11px] px-2 py-0.5 font-bold',
+    md: 'text-xs px-2.5 py-1 font-bold',
   };
 
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border tracking-wide uppercase font-semibold transition-colors',
+        'inline-flex items-center gap-1.5 rounded-full border tracking-wide uppercase font-extrabold transition-colors',
         variants[variant],
         sizes[size],
         className

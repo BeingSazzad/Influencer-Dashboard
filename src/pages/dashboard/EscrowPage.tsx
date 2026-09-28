@@ -132,7 +132,7 @@ export const EscrowPage: React.FC = () => {
               <div className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm font-bold text-neutral-900 bg-neutral-100 px-2 py-1 rounded">
+                    <span className="font-mono text-xs font-black text-neutral-950 bg-neutral-100 px-2 py-1 rounded">
                       {dispute.id}
                     </span>
                     <Badge
@@ -142,21 +142,21 @@ export const EscrowPage: React.FC = () => {
                     >
                       {dispute.status.replace('_', ' ')}
                     </Badge>
-                    <span className="text-xs text-neutral-400">
+                    <span className="text-xs text-neutral-400 font-medium">
                       Contract Order #{dispute.orderId}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-4 text-xs">
-                    <span className="text-neutral-400">
+                    <span className="text-neutral-400 font-medium">
                       Filed: {formatDate(dispute.submittedDate)}
                     </span>
                     <div className="text-right">
-                      <span className="text-base font-bold text-neutral-900 tabular-nums">
+                      <span className="text-xl font-black text-neutral-950 tabular-nums">
                         {formatCurrency(dispute.amountEur)}
                       </span>
-                      <span className="text-[11px] text-neutral-400 ml-1.5">
-                        (Fee: {formatCurrency(dispute.feeEur)})
+                      <span className="text-[11px] text-neutral-500 font-medium ml-1.5">
+                        (Fee: <strong className="font-bold text-neutral-800">{formatCurrency(dispute.feeEur)}</strong>)
                       </span>
                     </div>
                   </div>
@@ -169,7 +169,7 @@ export const EscrowPage: React.FC = () => {
                       <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                         Campaign Title
                       </span>
-                      <h4 className="text-sm font-bold text-neutral-900">
+                      <h4 className="text-base font-extrabold text-neutral-950">
                         {dispute.campaignTitle}
                       </h4>
                     </div>
@@ -181,7 +181,7 @@ export const EscrowPage: React.FC = () => {
                         </span>
                         <div className="flex items-center gap-2 mt-1">
                           <Avatar src={dispute.brandAvatar} name={dispute.brandName} size="xs" />
-                          <span className="text-xs font-bold text-neutral-800 truncate">
+                          <span className="text-xs font-extrabold text-neutral-900 truncate">
                             {dispute.brandName}
                           </span>
                         </div>
@@ -193,15 +193,15 @@ export const EscrowPage: React.FC = () => {
                         </span>
                         <div className="flex items-center gap-2 mt-1">
                           <Avatar src={dispute.creatorAvatar} name={dispute.creatorName} size="xs" />
-                          <span className="text-xs font-bold text-neutral-800 truncate">
+                          <span className="text-xs font-extrabold text-neutral-900 truncate">
                             {dispute.creatorName}
                           </span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="text-xs text-neutral-600 bg-neutral-50 p-3 rounded-xl border border-neutral-100">
-                      <span className="font-semibold text-neutral-800">Brief Scope: </span>
+                    <div className="text-xs text-neutral-600 bg-neutral-50 p-3 rounded-xl border border-neutral-100 font-medium">
+                      <span className="font-bold text-neutral-900">Brief Scope: </span>
                       {dispute.briefSummary}
                     </div>
                   </div>
@@ -212,7 +212,7 @@ export const EscrowPage: React.FC = () => {
                       <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                         Formal Disputed Grievance
                       </span>
-                      <div className="mt-1 p-3 rounded-xl bg-rose-50/70 border border-rose-200/80 text-xs text-rose-900 leading-relaxed font-medium">
+                      <div className="mt-1 p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-xs text-rose-950 leading-relaxed font-semibold">
                         "{dispute.disputeReason}"
                       </div>
                     </div>
@@ -222,7 +222,7 @@ export const EscrowPage: React.FC = () => {
                         href={dispute.deliverableLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-pink hover:underline"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-pink hover:underline"
                       >
                         <FileText className="w-4 h-4" />
                         Inspect Deliverable Video Submission

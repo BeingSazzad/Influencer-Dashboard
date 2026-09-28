@@ -169,7 +169,7 @@ export const CmsPage: React.FC = () => {
       <div className="flex items-center gap-2 border-b border-neutral-200">
         <button
           onClick={() => setActiveTab('legal')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-bold border-b-2 transition-all ${
             activeTab === 'legal'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
@@ -181,7 +181,7 @@ export const CmsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('faqs')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-bold border-b-2 transition-all ${
             activeTab === 'faqs'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
@@ -193,7 +193,7 @@ export const CmsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('branding')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition-all ${
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-bold border-b-2 transition-all ${
             activeTab === 'branding'
               ? 'border-brand-black text-brand-black'
               : 'border-transparent text-neutral-500 hover:text-neutral-900'
@@ -217,7 +217,7 @@ export const CmsPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Left selector */}
             <div className="space-y-2">
-              <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">
+              <span className="text-[11px] uppercase font-black text-neutral-400 tracking-wider">
                 Select Legal Contract
               </span>
               <div className="space-y-1">
@@ -225,15 +225,15 @@ export const CmsPage: React.FC = () => {
                   <button
                     key={doc.id}
                     onClick={() => handleSelectSlug(doc.slug)}
-                    className={`w-full p-3 rounded-xl border text-left transition-all ${
+                    className={`w-full p-3.5 rounded-xl border text-left transition-all ${
                       selectedLegalSlug === doc.slug
                         ? 'border-brand-black bg-brand-black text-white font-bold'
-                        : 'border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50'
+                        : 'border-neutral-200 bg-white text-neutral-800 font-bold hover:bg-neutral-50'
                     }`}
                   >
-                    <div className="text-xs">{doc.title}</div>
+                    <div className="text-sm font-bold">{doc.title}</div>
                     <div
-                      className={`text-[10px] mt-0.5 ${
+                      className={`text-[11px] mt-0.5 font-medium ${
                         selectedLegalSlug === doc.slug
                           ? 'text-neutral-300'
                           : 'text-neutral-400'

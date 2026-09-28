@@ -84,13 +84,13 @@ export const Sidebar: React.FC = () => {
             I
           </div>
           <div>
-            <div className="font-extrabold text-sm tracking-tight text-neutral-900 flex items-center gap-1.5">
+            <div className="font-black text-sm tracking-tight text-neutral-950 flex items-center gap-1.5">
               <span>INFLUVERSE</span>
-              <span className="text-[9px] uppercase tracking-wider font-bold bg-neutral-100 text-neutral-600 px-1.5 py-0.5 rounded">
+              <span className="text-[9px] uppercase tracking-wider font-extrabold bg-neutral-100 text-neutral-700 px-1.5 py-0.5 rounded">
                 HQ
               </span>
             </div>
-            <p className="text-[10px] text-neutral-400 font-medium">
+            <p className="text-[10px] text-neutral-400 font-semibold">
               Admin & Escrow Back-Office
             </p>
           </div>
@@ -99,7 +99,7 @@ export const Sidebar: React.FC = () => {
 
       {/* Navigation Links */}
       <div className="flex-1 py-4 px-3 overflow-y-auto space-y-1">
-        <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+        <div className="px-3 pb-2 text-[11px] font-black uppercase tracking-wider text-neutral-400">
           Core Operations
         </div>
         {navItems.map((item) => (
@@ -109,10 +109,10 @@ export const Sidebar: React.FC = () => {
             end={item.path === ROUTES.DASHBOARD.OVERVIEW}
             className={({ isActive }) =>
               cn(
-                'flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 group',
+                'flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-150 group',
                 isActive
                   ? 'bg-brand-black text-white shadow-sm'
-                  : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/70'
+                  : 'text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100/80'
               )
             }
           >
@@ -133,7 +133,7 @@ export const Sidebar: React.FC = () => {
                 {item.badge !== undefined && (
                   <span
                     className={cn(
-                      'px-2 py-0.5 text-xs font-bold rounded-full',
+                      'px-2 py-0.5 text-xs font-black rounded-full',
                       item.badgeColor === 'rose'
                         ? 'bg-rose-500 text-white'
                         : isActive
@@ -155,13 +155,13 @@ export const Sidebar: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[11px] font-bold text-neutral-800">
+            <span className="text-[11px] font-black text-neutral-900">
               Escrow Shield Active
             </span>
           </div>
           <Lock className="w-3.5 h-3.5 text-neutral-400" />
         </div>
-        <p className="text-[10px] text-neutral-500 mt-1 leading-tight">
+        <p className="text-[10px] text-neutral-500 mt-1 leading-tight font-medium">
           PCI-DSS Level 1 & EU GDPR Enforced
         </p>
       </div>
@@ -176,10 +176,10 @@ export const Sidebar: React.FC = () => {
             statusIndicator="online"
           />
           <div className="min-w-0">
-            <p className="text-xs font-bold text-neutral-900 truncate">
+            <p className="text-xs font-black text-neutral-950 truncate">
               {currentUser?.name}
             </p>
-            <p className="text-[10px] font-medium text-neutral-400 capitalize truncate">
+            <p className="text-[10px] font-bold text-neutral-400 capitalize truncate">
               {currentUser?.role?.replace('_', ' ')}
             </p>
           </div>

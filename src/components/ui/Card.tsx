@@ -50,7 +50,7 @@ export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
 }) => {
   return (
     <h3
-      className={cn('text-base font-bold text-neutral-900 tracking-tight', className)}
+      className={cn('text-base font-extrabold text-neutral-950 tracking-tight font-sans', className)}
       {...props}
     >
       {children}
@@ -64,7 +64,7 @@ export const CardDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement
   ...props
 }) => {
   return (
-    <p className={cn('text-xs text-neutral-500', className)} {...props}>
+    <p className={cn('text-xs text-neutral-500 font-medium', className)} {...props}>
       {children}
     </p>
   );

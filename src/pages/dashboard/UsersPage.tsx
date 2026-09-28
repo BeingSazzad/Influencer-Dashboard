@@ -174,15 +174,15 @@ export const UsersPage: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <Avatar src={user.avatar} name={user.name} size="sm" />
                       <div>
-                        <div className="font-bold text-neutral-900 flex items-center gap-1.5">
+                        <div className="font-extrabold text-neutral-950 flex items-center gap-1.5 text-sm">
                           <span>{user.name}</span>
                           {user.role === 'creator' && user.rating && (
-                            <span className="text-[11px] font-semibold text-amber-600 bg-amber-50 px-1 rounded">
+                            <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60">
                               ★ {user.rating}
                             </span>
                           )}
                         </div>
-                        <div className="text-xs text-neutral-400">@{user.handle} • {user.email}</div>
+                        <div className="text-xs text-neutral-400 font-medium">@{user.handle} • {user.email}</div>
                       </div>
                     </div>
                   </TableCell>
@@ -211,21 +211,21 @@ export const UsersPage: React.FC = () => {
                       {user.status}
                     </Badge>
                     {user.banReason && (
-                      <p className="text-[10px] text-rose-600 mt-0.5 max-w-[200px] truncate" title={user.banReason}>
+                      <p className="text-[10px] text-rose-600 font-bold mt-0.5 max-w-[200px] truncate" title={user.banReason}>
                         {user.banReason}
                       </p>
                     )}
                   </TableCell>
 
-                  <TableCell className="font-bold text-neutral-900 tabular-nums">
+                  <TableCell className="font-black text-neutral-950 tabular-nums text-sm">
                     {formatCurrency(user.totalVolumeEur)}
                   </TableCell>
 
-                  <TableCell className="text-neutral-600 tabular-nums font-medium">
+                  <TableCell className="text-neutral-800 tabular-nums font-bold">
                     {user.ordersCount} campaigns
                   </TableCell>
 
-                  <TableCell className="text-neutral-500 text-xs">
+                  <TableCell className="text-neutral-500 text-xs font-semibold">
                     {formatDate(user.joinedDate)}
                   </TableCell>
 
