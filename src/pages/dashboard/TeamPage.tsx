@@ -5,7 +5,6 @@ import {
   removeAdminMember,
   toggleAdminStatus,
   setTeamSearch,
-  setTeamRoleFilter,
 } from '@/store/slices/teamSlice';
 import { AdminRole } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
@@ -17,10 +16,11 @@ import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
 import { UserPlus, Trash2, Search, ChevronDown } from 'lucide-react';
+import { formatDate } from '@/lib/utils';
 
 export const TeamPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { members, filterRole, searchQuery } = useAppSelector((state) => state.team);
+  const { members, searchQuery } = useAppSelector((state) => state.team);
   const currentUser = useAppSelector((state) => state.auth.currentUser);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
@@ -29,11 +29,12 @@ export const TeamPage: React.FC = () => {
   const [role, setRole] = useState<AdminRole>('admin');
 
   const filteredMembers = members.filter((m) => {
-    const matchesSearch =
-      m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = filterRole === 'all' || m.role === filterRole;
-    return matchesSearch && matchesRole;
+    const query = searchQuery.toLowerCase().trim();
+    if (!query) return true;
+    return (
+      m.name.toLowerCase().includes(query) ||
+      m.email.toLowerCase().includes(query)
+    );
   });
 
   const handleCreateAdmin = (e: React.FormEvent) => {
@@ -74,40 +75,17 @@ export const TeamPage: React.FC = () => {
         }
       />
 
-      {/* Control Bar */}
+      {/* Search Bar */}
       <Card className="p-4">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start">
-            {[
-              { id: 'all', label: 'All Roles' },
-              { id: 'super_admin', label: 'Super Admin' },
-              { id: 'admin', label: 'Admin' },
-              { id: 'moderator', label: 'Moderator' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => dispatch(setTeamRoleFilter(tab.id as 'all' | AdminRole))}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                  filterRole === tab.id
-                    ? 'bg-white text-neutral-900 shadow-sm'
-                    : 'text-neutral-700 hover:text-neutral-950'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search admin name..."
-              value={searchQuery}
-              onChange={(e) => dispatch(setTeamSearch(e.target.value))}
-              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 text-neutral-900 font-medium"
-            />
-          </div>
+        <div className="relative w-full max-w-sm">
+          <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            value={searchQuery}
+            onChange={(e) => dispatch(setTeamSearch(e.target.value))}
+            className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 text-neutral-900 font-medium"
+          />
         </div>
       </Card>
 
@@ -117,7 +95,9 @@ export const TeamPage: React.FC = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Admin</TableHead>
+              <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Joined</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -130,23 +110,24 @@ export const TeamPage: React.FC = () => {
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Avatar src={member.avatar} name={member.name} size="sm" />
-                    <div>
-                      <div className="font-bold text-neutral-950 flex items-center gap-1.5 text-sm">
-                        <span>{member.name}</span>
-                        {member.id === currentUser?.id && (
-                          <span className="text-[10px] bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded font-bold">
-                            You
-                          </span>
-                        )}
-                        {member.status === 'suspended' && (
-                          <span className="text-[10px] bg-rose-50 text-rose-600 px-1.5 py-0.5 rounded font-bold">
-                            Suspended
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-xs text-neutral-700 font-semibold">{member.email}</div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-extrabold text-neutral-950 text-xs">{member.name}</span>
+                      {member.id === currentUser?.id && (
+                        <span className="text-[10px] bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded font-bold">
+                          You
+                        </span>
+                      )}
+                      {member.status === 'suspended' && (
+                        <span className="text-[10px] bg-rose-50 text-rose-600 px-1.5 py-0.5 rounded font-bold">
+                          Suspended
+                        </span>
+                      )}
                     </div>
                   </div>
+                </TableCell>
+
+                <TableCell>
+                  <span className="text-xs text-neutral-700 font-semibold">{member.email}</span>
                 </TableCell>
 
                 <TableCell>
@@ -166,6 +147,12 @@ export const TeamPage: React.FC = () => {
                       ? 'Moderator'
                       : 'Admin'}
                   </Badge>
+                </TableCell>
+
+                <TableCell>
+                  <span className="text-xs text-neutral-500 font-medium">
+                    {formatDate(member.createdAt || '2025-01-10')}
+                  </span>
                 </TableCell>
 
                 <TableCell className="text-right">
