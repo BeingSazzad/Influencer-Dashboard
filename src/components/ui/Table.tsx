@@ -23,7 +23,7 @@ export const TableHeader: React.FC<
 > = ({ className, children, ...props }) => {
   return (
     <thead
-      className={cn('bg-neutral-50 border-b border-neutral-200 text-[11px] font-extrabold uppercase tracking-wider text-neutral-700', className)}
+      className={cn('bg-neutral-50 border-b border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-500', className)}
       {...props}
     >
       {children}
@@ -67,7 +67,7 @@ export const TableHead: React.FC<
 > = ({ className, children, ...props }) => {
   return (
     <th
-      className={cn('px-4 py-3.5 font-extrabold text-neutral-700 text-[11px] uppercase tracking-wider align-middle', className)}
+      className={cn('px-4 py-3.5 font-bold text-neutral-500 text-xs uppercase tracking-wider align-middle', className)}
       {...props}
     >
       {children}

@@ -5,7 +5,7 @@ import { INITIAL_ORDERS } from '@/lib/constants';
 interface OrdersState {
   orders: MarketplaceOrder[];
   searchQuery: string;
-  statusFilter: OrderStatus | 'all';
+  statusFilter: OrderStatus | 'all' | 'active';
   slaFilter: 'all' | 'overdue' | 'at_risk';
   selectedOrderId: string | null;
 }
@@ -25,7 +25,7 @@ export const ordersSlice = createSlice({
     setOrderSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
     },
-    setOrderStatusFilter: (state, action: PayloadAction<OrderStatus | 'all'>) => {
+    setOrderStatusFilter: (state, action: PayloadAction<OrderStatus | 'all' | 'active'>) => {
       state.statusFilter = action.payload;
     },
     setOrderSlaFilter: (state, action: PayloadAction<'all' | 'overdue' | 'at_risk'>) => {

@@ -49,13 +49,13 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div
-      className={`flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 pb-2 px-2 text-xs select-none ${className}`}
+      className={`flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 pb-2 px-2 text-sm select-none ${className}`}
     >
       {/* Left: Summary Count */}
-      <div className="text-neutral-500 font-medium order-2 sm:order-1 text-center sm:text-left">
-        Showing <span className="font-black text-neutral-950">{startItem}</span> to{' '}
-        <span className="font-black text-neutral-950">{endItem}</span> of{' '}
-        <span className="font-black text-neutral-950">{totalItems}</span> {itemLabel}
+      <div className="text-neutral-500 font-medium order-2 sm:order-1 text-center sm:text-left text-xs">
+        Showing <span className="font-bold text-neutral-900">{startItem}</span> to{' '}
+        <span className="font-bold text-neutral-900">{endItem}</span> of{' '}
+        <span className="font-bold text-neutral-900">{totalItems}</span> {itemLabel}
       </div>
 
       {/* Right: Controls & Page Numbers */}
@@ -115,7 +115,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 return (
                   <span
                     key={`ellipsis-${idx}`}
-                    className="w-6 text-center text-neutral-400 font-bold tracking-widest text-[11px]"
+                    className="w-6 text-center text-neutral-400 font-bold tracking-widest text-xs"
                   >
                     …
                   </span>

@@ -365,15 +365,26 @@ export const UsersPage: React.FC = () => {
               paginatedUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-3">
                       <Avatar
                         src={user.avatar}
                         name={user.name}
                         size="sm"
-                        className="cursor-pointer hover:ring-2 hover:ring-brand-pink/50 transition-all"
+                        className="cursor-pointer hover:ring-2 hover:ring-brand-pink/50 transition-all shrink-0"
                         onClick={() => setInspectedUser(user)}
                         title={`${user.name} (@${user.handle})`}
                       />
+                      <div>
+                        <span
+                          className="font-bold text-neutral-900 text-sm block cursor-pointer hover:text-brand-pink transition-colors truncate max-w-[180px]"
+                          onClick={() => setInspectedUser(user)}
+                        >
+                          {user.name}
+                        </span>
+                        <span className="text-xs text-neutral-500 font-medium">
+                          @{user.handle}
+                        </span>
+                      </div>
                     </div>
                   </TableCell>
 
@@ -404,7 +415,7 @@ export const UsersPage: React.FC = () => {
                     {user.ordersCount} campaigns
                   </TableCell>
 
-                  <TableCell className="text-neutral-700 text-xs font-bold">
+                  <TableCell className="text-neutral-600 text-sm font-semibold">
                     {formatDate(user.joinedDate)}
                   </TableCell>
 

@@ -343,7 +343,7 @@ export const TicketsPage: React.FC = () => {
                 >
                   {/* Ticket ID */}
                   <TableCell>
-                    <span className="font-mono text-xs font-bold text-neutral-900">
+                    <span className="font-mono text-sm font-bold text-neutral-900">
                       {ticket.id}
                     </span>
                   </TableCell>
@@ -352,7 +352,7 @@ export const TicketsPage: React.FC = () => {
                   <TableCell>
                     <div className="flex items-center gap-2 max-w-[260px]">
                       {ticket.type === 'user_report' && (
-                        <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200">
+                        <span className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200">
                           Report
                         </span>
                       )}
@@ -369,7 +369,7 @@ export const TicketsPage: React.FC = () => {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Avatar src={ticket.userAvatar} name={ticket.userName} size="xs" />
-                      <span className="text-xs font-bold text-neutral-900 truncate max-w-[120px]">
+                      <span className="text-sm font-bold text-neutral-900 truncate max-w-[120px]">
                         {ticket.userName}
                       </span>
                     </div>
@@ -377,7 +377,7 @@ export const TicketsPage: React.FC = () => {
 
                   {/* Category */}
                   <TableCell>
-                    <span className="text-xs font-semibold text-neutral-700">
+                    <span className="text-sm font-semibold text-neutral-700">
                       {getCategoryLabel(ticket.category)}
                     </span>
                   </TableCell>

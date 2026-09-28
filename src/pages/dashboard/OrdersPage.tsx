@@ -82,7 +82,12 @@ export const OrdersPage: React.FC = () => {
       order.creatorName.toLowerCase().includes(q) ||
       order.creatorHandle.toLowerCase().includes(q);
 
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+    const matchesStatus =
+      statusFilter === 'all'
+        ? true
+        : statusFilter === 'active'
+        ? order.status !== 'completed' && order.status !== 'cancelled'
+        : order.status === statusFilter;
 
     let matchesSla = true;
     if (slaFilter === 'overdue') {
@@ -104,6 +109,7 @@ export const OrdersPage: React.FC = () => {
 
   // High-level KPI Calculations
   const activeOrdersCount = orders.filter((o) => o.status !== 'completed' && o.status !== 'cancelled').length;
+  const completedOrdersCount = orders.filter((o) => o.status === 'completed').length;
   const escrowLockedEur = orders
     .filter((o) => o.status !== 'completed' && o.status !== 'cancelled')
     .reduce((sum, o) => sum + o.grossAmountEur, 0);
@@ -240,14 +246,11 @@ export const OrdersPage: React.FC = () => {
       <Card className="p-4 space-y-3">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Status Filter Tabs */}
-          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
+          <div className="flex items-center gap-1.5 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             {[
               { id: 'all', label: 'All', count: orders.length },
-              { id: 'in_progress', label: 'In Progress', count: orders.filter((o) => o.status === 'in_progress').length },
-              { id: 'deliverable_submitted', label: 'In Review', count: orders.filter((o) => o.status === 'deliverable_submitted').length },
-              { id: 'revision_requested', label: 'Revision', count: orders.filter((o) => o.status === 'revision_requested').length },
-              { id: 'escrow_funded', label: 'Awaiting Script', count: orders.filter((o) => o.status === 'escrow_funded').length },
-              { id: 'completed', label: 'Completed', count: orders.filter((o) => o.status === 'completed').length },
+              { id: 'active', label: 'Active', count: activeOrdersCount },
+              { id: 'completed', label: 'Completed', count: completedOrdersCount },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -387,7 +390,7 @@ export const OrdersPage: React.FC = () => {
                     <td className="py-4 px-5" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-2.5">
                         <Avatar src={order.brandAvatar} name={order.brandName} size="xs" />
-                        <span className="text-xs font-extrabold text-neutral-900 truncate max-w-[150px]">
+                        <span className="text-sm font-bold text-neutral-900 truncate max-w-[150px]">
                           {order.brandName}
                         </span>
                       </div>
@@ -397,7 +400,7 @@ export const OrdersPage: React.FC = () => {
                     <td className="py-4 px-5" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-2.5">
                         <Avatar src={order.creatorAvatar} name={order.creatorName} size="xs" />
-                        <span className="text-xs font-bold text-neutral-700 truncate max-w-[150px]">
+                        <span className="text-sm font-semibold text-neutral-800 truncate max-w-[150px]">
                           {order.creatorName}
                         </span>
                       </div>
