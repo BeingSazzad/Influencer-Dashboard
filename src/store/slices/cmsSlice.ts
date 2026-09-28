@@ -18,7 +18,7 @@ const initialState: CmsState = {
   legalDocs: INITIAL_LEGAL_DOCS,
   faqs: INITIAL_FAQS,
   brandAssets: INITIAL_BRAND_ASSETS,
-  selectedLegalSlug: 'terms-of-service',
+  selectedLegalSlug: 'terms',
   faqCategoryFilter: 'all',
 };
 

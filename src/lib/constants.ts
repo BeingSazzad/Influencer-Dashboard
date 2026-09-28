@@ -209,7 +209,7 @@ export const INITIAL_LEGAL_DOCS: CmsLegalDoc[] = [
     id: 'CMS-TOS',
     slug: 'terms',
     title: 'Terms of Service',
-    version: '2.4',
+    version: '1.0',
     lastModified: 'September 2026',
     isPublished: true,
     contentMarkdown: `# Terms of Service — Influverse Marketplace
@@ -217,17 +217,23 @@ export const INITIAL_LEGAL_DOCS: CmsLegalDoc[] = [
 ## 1. Introduction and Acceptance
 By registering as a Brand or Creator on Influverse, you accept full adherence to these terms, our 15% escrow policy, and our dispute arbitration procedures.
 
-## 2. Escrow Protection & Deposit Policy
-All brand collaboration funds are placed into segregated escrow holding accounts before creator production begins. Escrow is released only upon brand approval or admin dispute resolution.
+## 2. Escrow Protection & Platform Fee (15%)
+Influverse operates a non-custodial milestone escrow mechanism for all campaign agreements. When a Brand funds a collaboration, the total contract amount plus a transparent 15% marketplace platform fee is authorized and funded into secure escrow.
 
-## 3. Commercial Ad Rights and Whitelisting
-Creators grant brands standard digital advertising rights for a minimum of 12 months unless specified otherwise in custom package add-ons.`,
+## 3. Creator Obligations & Deliverables
+Creators agree to produce and submit original, high-fidelity content adhering strictly to the campaign brief, guidelines, and agreed delivery dates. Unless specified otherwise, creators provide up to 2 revisions.
+
+## 4. Brand Usage Rights & Licensing
+Upon release of escrow funds, the Brand receives commercial licensing rights defined in the purchased Creator package (e.g. 30-day, 90-day, or perpetual paid ad usage).
+
+## 5. Dispute Resolution & Mediation
+In the event of a disagreement regarding deliverable compliance, either party may request Influverse mediation. Our trust team reviews the brief and deliverables to render an impartial determination.`,
   },
   {
     id: 'CMS-PRIVACY',
     slug: 'privacy',
-    title: 'Privacy Policy & GDPR',
-    version: '1.9',
+    title: 'Privacy Policy',
+    version: '1.0',
     lastModified: 'September 2026',
     isPublished: true,
     contentMarkdown: `# Privacy Policy & GDPR Compliance
@@ -235,76 +241,35 @@ Creators grant brands standard digital advertising rights for a minimum of 12 mo
 ## 1. Information We Collect
 We collect personal identification, business legal registration, social media statistics, and billing information necessary to execute contracts and deliver tax-compliant invoices.
 
-## 2. Escrow Financial Data
-We do not store full credit card numbers. All payments are processed through PCI-DSS Level 1 compliant partners (Stripe & Wise).
+## 2. Social API Data & Analytics
+When creators authenticate their social accounts (Instagram, TikTok, YouTube), we receive read-only public profile metrics, follower counts, and engagement percentages. We never ask for or store passwords.
 
-## 3. Data Subject Rights (GDPR)
-EU and international users may request full data deletion or data portability by emailing privacy@influverse.com.`,
+## 3. Payment Processing & Escrow Security
+All payment processing is handled via PCI-DSS Level 1 compliant financial payment gateways (Stripe & Wise). We do not store raw credit card numbers.
+
+## 4. GDPR & Your Privacy Rights
+Under the EU GDPR, users have full rights to access, rectify, port, or request deletion of their personal data. Requests can be submitted anytime via privacy@influverse.com.`,
   },
   {
-    id: 'CMS-ESCROW',
-    slug: 'escrow-refund',
-    title: 'Escrow Custody & Refund Policy',
-    version: '2.1',
+    id: 'CMS-ABOUT',
+    slug: 'about',
+    title: 'About Us',
+    version: '1.0',
     lastModified: 'September 2026',
     isPublished: true,
-    contentMarkdown: `# Escrow Custody & Refund Policy
+    contentMarkdown: `# About Influverse — The Premier Creator Marketplace
 
-## 1. 100% Escrow Protection
-Every brand deposit is held in a segregated client trust account. Creators are never paid until the brand inspects and signs off on the completed creative deliverables.
+## Good Work Starts With The Right Connection
+Influverse connects forward-thinking brands with verified content creators worldwide for sponsored collaborations and bespoke UGC. We bring creator discovery, clear offers, and content delivery into one place.
 
-## 2. 72-Hour Auto-Disbursement Clock
-Once a creator submits the final deliverable files, the brand has exactly 72 hours to review and either request allowable revisions or approve. If the brand does not take action within 72 hours and does not open a dispute, funds auto-release to protect the creator.
+## Why We Built Influverse
+Finding the right collaborator should feel simple. Influverse eliminates back-and-forth negotiations, opaque pricing, and payment uncertainty with automated milestone escrows and verified creator analytics.
 
-## 3. Refund Circumstances
-Brands are eligible for a 100% refund if:
-- The creator fails to submit content within the agreed delivery SLA window.
-- The creator is sanctioned or banned for terms violation before production begins.`,
-  },
-  {
-    id: 'CMS-CONDUCT',
-    slug: 'creator-guidelines',
-    title: 'Creator Code of Conduct & Ad Disclosure',
-    version: '1.4',
-    lastModified: 'September 2026',
-    isPublished: true,
-    contentMarkdown: `# Creator Code of Conduct & FTC/EU Guidelines
-
-## 1. Mandatory Ad Disclosures
-All sponsored content, gifted placements, and paid TikTok/Reels must clearly display compliant commercial tags (#ad, #sponsored, or platform Paid Partnership labels) in accordance with EU Consumer Protection and FTC mandates.
-
-## 2. Authentic Metrics Guarantee
-Creators are prohibited from using bot engagement, fake followers, or click pods. Any account discovered inflating view counts will face immediate ban and forfeiture of pending escrow.`,
-  },
-  {
-    id: 'CMS-COOKIES',
-    slug: 'cookies',
-    title: 'Cookie & Tracking Policy',
-    version: '1.2',
-    lastModified: 'September 2026',
-    isPublished: true,
-    contentMarkdown: `# Cookie & Tracking Technologies Policy
-
-## 1. Essential Cookies
-We use secure session cookies strictly required for authentication, CSRF tokens, and escrow ledger navigation.
-
-## 2. Analytics & Preference Cookies
-We use privacy-preserving analytics to track conversion funnel metrics and marketplace search performance. Users can opt out anytime via cookie preferences.`,
-  },
-  {
-    id: 'CMS-COMMUNITY',
-    slug: 'community-standards',
-    title: 'Community Guidelines & Anti-Fraud Standards',
-    version: '2.0',
-    lastModified: 'September 2026',
-    isPublished: true,
-    contentMarkdown: `# Community Guidelines & Anti-Fraud Rules
-
-## 1. Platform Fee Circumvention
-Attempting to communicate off-platform to avoid the 15% escrow protection fee will result in immediate permanent suspension of both Brand and Creator accounts.
-
-## 2. Professionalism & Harassment
-Zero tolerance for abusive language, extortion over review scores, or non-consensual sharing of proprietary brand campaign briefs.`,
+## Core Guarantees
+- 100% Escrow Protection on every collaboration
+- Direct SEPA & SWIFT creator payouts within 48 hours
+- Transparent 15% marketplace take-rate with no hidden deductions
+- Verified engagement metrics directly audited from social APIs`,
   },
 ];
 
@@ -312,25 +277,57 @@ export const INITIAL_FAQS: CmsFaqItem[] = [
   {
     id: 'FAQ-01',
     category: 'brands',
-    question: 'How does escrow protection guarantee our campaign delivery?',
-    answer: 'When you fund an order, your capital is locked in secure platform escrow. The creator is not paid until you review the video and approve the deliverable.',
+    question: 'How does the Influverse escrow system protect my budget?',
+    answer: 'When a brand sends an offer, the campaign budget (creator rate + 15% platform fee) is placed into a secure escrow account. The creator starts working with complete confidence that funds are secured. Funds are only transferred to the creator once you review and approve the submitted content.',
     order: 1,
     isPublished: true,
   },
   {
     id: 'FAQ-02',
-    category: 'creators',
-    question: 'When do I receive payment for approved deliverables?',
-    answer: 'Escrow is disbursed instantly to your connected bank account or Wise wallet within 24 hours of brand approval.',
+    category: 'general',
+    question: 'Why is Influverse different from traditional influencer agencies?',
+    answer: 'Influverse eliminates middleman markups, slow email chains, and opaque pricing. Brands get direct access to verified creator rate cards, 100% escrow milestone protection, on-demand portfolio previews, and automated EU VAT invoicing.',
     order: 2,
     isPublished: true,
   },
   {
     id: 'FAQ-03',
-    category: 'escrow',
-    question: 'What is the platform commission fee?',
-    answer: 'Influverse charges a transparent 15% platform fee on all transactions, paid by the hiring brand with zero creator deductions.',
+    category: 'creators',
+    question: 'Do creators have to pay any fee or commission?',
+    answer: 'No. Creators keep 100% of their listed package price. The 15% platform fee is covered by the hiring brand to fund escrow protection, contract guarantees, dispute mediation, and secure instant payouts.',
     order: 3,
+    isPublished: true,
+  },
+  {
+    id: 'FAQ-04',
+    category: 'brands',
+    question: 'What is the difference between UGC Content and a Sponsored Post?',
+    answer: 'UGC (User Generated Content) is custom high-converting photo/video assets produced by the creator for your brand to run on your own official channels or paid ad campaigns. A Sponsored Post includes the creator publishing the content directly to their own engaged audience on Instagram, TikTok, or YouTube.',
+    order: 4,
+    isPublished: true,
+  },
+  {
+    id: 'FAQ-05',
+    category: 'general',
+    question: 'How do revisions work if I need changes on the content?',
+    answer: 'Each creator package includes specified revision rounds (typically 1 to 2 revisions). When a creator submits draft deliverables, you can request adjustments directly inside your order workspace with timestamped notes before final escrow sign-off.',
+    order: 5,
+    isPublished: true,
+  },
+  {
+    id: 'FAQ-06',
+    category: 'creators',
+    question: 'Are all creators verified on Influverse?',
+    answer: 'Yes. Our talent team manually verifies creator identity, authentic audience engagement metrics, past brand collaborations, and channel handles across Instagram, TikTok, and YouTube before granting the verified checkmark badge.',
+    order: 6,
+    isPublished: true,
+  },
+  {
+    id: 'FAQ-07',
+    category: 'escrow',
+    question: 'What currencies and payment methods are supported?',
+    answer: 'All packages, custom offers, and balance transactions are standardized in EUR (€) with support for major credit cards (Visa, Mastercard, Amex), SEPA bank transfers, Apple Pay, and Google Pay.',
+    order: 7,
     isPublished: true,
   },
 ];

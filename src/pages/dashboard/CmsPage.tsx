@@ -170,7 +170,7 @@ export const CmsPage: React.FC = () => {
           }`}
         >
           <FileText className="w-4 h-4" />
-          <span>Policies ({legalDocs.length})</span>
+          <span>Pages ({legalDocs.length})</span>
         </button>
 
         <button
