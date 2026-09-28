@@ -159,4 +159,52 @@ export interface MarketplacePackage {
   createdAt: string;
 }
 
+export type OrderStatus =
+  | 'escrow_funded'
+  | 'in_progress'
+  | 'deliverable_submitted'
+  | 'revision_requested'
+  | 'completed'
+  | 'disputed'
+  | 'cancelled';
+
+export interface OrderMilestone {
+  title: string;
+  status: 'completed' | 'current' | 'pending';
+  timestamp?: string;
+  notes?: string;
+}
+
+export interface MarketplaceOrder {
+  id: string; // e.g. "ORD-84920"
+  packageTitle: string;
+  packageTier: PackageTier;
+  category: string;
+  brandName: string;
+  brandAvatar: string;
+  brandEmail: string;
+  creatorName: string;
+  creatorAvatar: string;
+  creatorHandle: string;
+  grossAmountEur: number;
+  platformFeeEur: number; // 15%
+  creatorNetEur: number;
+  status: OrderStatus;
+  progressPercent: number; // 0 to 100
+  deliveryDaysTotal: number;
+  daysRemaining: number; // positive = days left, negative = overdue, 0 = due today
+  dueDate: string;
+  revisionCurrent: number;
+  revisionMax: number;
+  deliverablesSummary: string[];
+  deliverableLink?: string;
+  escrowDepositId: string;
+  milestones: OrderMilestone[];
+  createdAt: string;
+  lastActivity: string;
+  brandNotes?: string;
+  slaWarning?: boolean;
+}
+
+
 

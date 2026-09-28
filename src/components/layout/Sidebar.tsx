@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Users,
   ShieldCheck,
+  ShoppingBag,
   Package,
   Scale,
   Receipt,
@@ -30,6 +31,9 @@ export const Sidebar: React.FC = () => {
   const openDisputes = useAppSelector(
     (state) => state.escrow.disputes.filter((d) => d.status === 'open').length
   );
+  const activeOrdersCount = useAppSelector(
+    (state) => state.orders.orders.filter((o) => o.status !== 'completed' && o.status !== 'cancelled').length
+  );
 
   const navItems = [
     {
@@ -47,6 +51,12 @@ export const Sidebar: React.FC = () => {
       path: ROUTES.DASHBOARD.VERIFICATION,
       icon: <ShieldCheck className="w-[18px] h-[18px]" />,
       badge: pendingVerifications > 0 ? pendingVerifications : undefined,
+    },
+    {
+      label: 'Active Orders',
+      path: ROUTES.DASHBOARD.ORDERS,
+      icon: <ShoppingBag className="w-[18px] h-[18px]" />,
+      badge: activeOrdersCount > 0 ? activeOrdersCount : undefined,
     },
     {
       label: 'Packages & Catalog',

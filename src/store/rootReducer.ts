@@ -7,11 +7,13 @@ import cmsReducer from './slices/cmsSlice';
 import teamReducer from './slices/teamSlice';
 import transactionsReducer from './slices/transactionsSlice';
 import packagesReducer from './slices/packagesSlice';
+import { ordersReducer } from './slices/ordersSlice';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   users: usersReducer,
   verification: verificationReducer,
+  orders: ordersReducer,
   escrow: escrowReducer,
   transactions: transactionsReducer,
   packages: packagesReducer,

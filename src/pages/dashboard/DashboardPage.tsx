@@ -20,6 +20,7 @@ import {
   Euro,
   FileCheck,
   Receipt,
+  ShoppingBag,
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 
@@ -33,6 +34,9 @@ export const DashboardPage: React.FC = () => {
   const pendingVerifications = verifications.filter((r) => r.status === 'pending');
 
   const users = useAppSelector((state) => state.users.users);
+  const activeOrdersCount = useAppSelector(
+    (state) => state.orders.orders.filter((o) => o.status !== 'completed' && o.status !== 'cancelled').length
+  );
 
   return (
     <div className="space-y-8">
@@ -47,6 +51,15 @@ export const DashboardPage: React.FC = () => {
         }
         actions={
           <>
+            <Button
+              variant="outline"
+              size="sm"
+              className="font-bold"
+              onClick={() => navigate(ROUTES.DASHBOARD.ORDERS)}
+              leftIcon={<ShoppingBag className="w-3.5 h-3.5" />}
+            >
+              Active Orders ({activeOrdersCount})
+            </Button>
             <Button
               variant="outline"
               size="sm"
