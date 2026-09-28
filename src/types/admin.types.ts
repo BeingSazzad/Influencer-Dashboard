@@ -139,3 +139,24 @@ export interface MarketplaceTransaction {
   invoiceNumber: string;
 }
 
+export type PackageTier = 'starter' | 'standard' | 'premium' | 'enterprise';
+
+export interface MarketplacePackage {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  tier: PackageTier;
+  priceEur: number;
+  deliveryDays: number;
+  revisionsCount: number;
+  adRightsMonths: number;
+  deliverables: string[];
+  isFeatured: boolean;
+  isPublished: boolean;
+  ordersCount: number;
+  creatorCount: number;
+  createdAt: string;
+}
+
+

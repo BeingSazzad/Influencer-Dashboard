@@ -10,6 +10,7 @@ export const ROUTES = {
     VERIFICATION: '/verification',
     ESCROW: '/escrow',
     TRANSACTIONS: '/transactions',
+    PACKAGES: '/packages',
     CMS: '/cms',
     TEAM: '/team',
     SETTINGS: '/settings',

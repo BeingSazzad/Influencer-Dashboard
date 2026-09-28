@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Users,
   ShieldCheck,
+  Package,
   Scale,
   Receipt,
   FileEdit,
@@ -46,6 +47,11 @@ export const Sidebar: React.FC = () => {
       path: ROUTES.DASHBOARD.VERIFICATION,
       icon: <ShieldCheck className="w-[18px] h-[18px]" />,
       badge: pendingVerifications > 0 ? pendingVerifications : undefined,
+    },
+    {
+      label: 'Packages & Catalog',
+      path: ROUTES.DASHBOARD.PACKAGES,
+      icon: <Package className="w-[18px] h-[18px]" />,
     },
     {
       label: 'Escrow Disputes',
