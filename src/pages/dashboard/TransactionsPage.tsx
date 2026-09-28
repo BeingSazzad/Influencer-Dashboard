@@ -11,7 +11,6 @@ import {
   TransactionStatus,
 } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { StatCard } from '@/components/shared/StatCard';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/Table';
 import { Button } from '@/components/ui/Button';
@@ -21,21 +20,9 @@ import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import {
-  Receipt,
   Download,
   Search,
-  Filter,
-  ArrowUpRight,
-  ArrowDownLeft,
-  Lock,
-  RotateCcw,
-  Percent,
-  CreditCard,
-  Building,
   CheckCircle2,
-  ExternalLink,
-  Eye,
-  FileSpreadsheet,
 } from 'lucide-react';
 
 export const TransactionsPage: React.FC = () => {
@@ -131,40 +118,23 @@ export const TransactionsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Financial KPIs Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Total Volume"
-          value="€1,248,500"
-          change={18.4}
-          icon={<Receipt className="w-5 h-5" />}
-          accentColor="black"
-          changePeriod="vs last month"
-        />
-        <StatCard
-          title="In Escrow"
-          value="€148,500"
-          change={6.2}
-          icon={<Lock className="w-5 h-5" />}
-          accentColor="pink"
-          changePeriod="vs last month"
-        />
-        <StatCard
-          title="Platform Fees"
-          value="€187,275"
-          change={21.8}
-          icon={<Percent className="w-5 h-5" />}
-          accentColor="emerald"
-          changePeriod="vs last month"
-        />
-        <StatCard
-          title="Payouts"
-          value="€912,725"
-          change={14.1}
-          icon={<ArrowUpRight className="w-5 h-5" />}
-          accentColor="amber"
-          changePeriod="vs last month"
-        />
+      {/* Financial KPIs Minimal Bar */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          { label: 'Total Volume', value: '€1,248,500' },
+          { label: 'In Escrow', value: '€148,500' },
+          { label: 'Platform Fees', value: '€187,275' },
+          { label: 'Payouts', value: '€912,725' },
+        ].map((item) => (
+          <Card key={item.label} className="p-3.5">
+            <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block">
+              {item.label}
+            </span>
+            <div className="text-base font-bold text-neutral-900 mt-1 tabular-nums">
+              {item.value}
+            </div>
+          </Card>
+        ))}
       </div>
 
       {/* Filters & Control Panel */}
@@ -227,11 +197,10 @@ export const TransactionsPage: React.FC = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Transaction</TableHead>
-              <TableHead>Campaign</TableHead>
+              <TableHead>Date</TableHead>
               <TableHead>Parties</TableHead>
               <TableHead>Type</TableHead>
-              <TableHead>Gross</TableHead>
-              <TableHead>Net</TableHead>
+              <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
@@ -239,7 +208,7 @@ export const TransactionsPage: React.FC = () => {
           <TableBody>
             {filteredTransactions.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-12 text-neutral-400 font-medium">
+                <TableCell colSpan={7} className="text-center py-12 text-neutral-400 font-medium">
                   No transaction records found matching your filters.
                 </TableCell>
               </TableRow>
@@ -247,21 +216,13 @@ export const TransactionsPage: React.FC = () => {
               filteredTransactions.map((txn) => (
                 <TableRow key={txn.id}>
                   <TableCell>
-                    <div className="font-mono text-xs font-bold text-neutral-900">
+                    <span className="font-mono text-xs font-bold text-neutral-900">
                       {txn.id}
-                    </div>
-                    <div className="text-[11px] text-neutral-400 mt-0.5">
-                      {formatDate(txn.createdAt)}
-                    </div>
+                    </span>
                   </TableCell>
 
-                  <TableCell>
-                    <div className="text-xs font-semibold text-neutral-900 truncate max-w-[180px]" title={txn.campaignTitle}>
-                      {txn.campaignTitle}
-                    </div>
-                    <div className="text-[11px] text-neutral-400 font-mono mt-0.5">
-                      #{txn.orderId}
-                    </div>
+                  <TableCell className="text-xs text-neutral-500 whitespace-nowrap">
+                    {formatDate(txn.createdAt)}
                   </TableCell>
 
                   <TableCell>
@@ -278,13 +239,8 @@ export const TransactionsPage: React.FC = () => {
                     </Badge>
                   </TableCell>
 
-                  <TableCell className="text-xs font-semibold text-neutral-900 tabular-nums">
-                    <div>{formatCurrency(txn.grossAmountEur)}</div>
-                    <div className="text-[10px] text-neutral-400">Fee: {formatCurrency(txn.platformFeeEur)}</div>
-                  </TableCell>
-
-                  <TableCell className="text-xs font-bold text-neutral-950 tabular-nums">
-                    {formatCurrency(txn.netAmountEur)}
+                  <TableCell className="text-xs font-bold text-neutral-900 tabular-nums">
+                    {formatCurrency(txn.grossAmountEur)}
                   </TableCell>
 
                   <TableCell>
@@ -301,6 +257,7 @@ export const TransactionsPage: React.FC = () => {
                     <Button
                       variant="ghost"
                       size="sm"
+                      className="text-xs h-7 px-2.5 font-bold"
                       onClick={() => setInspectedTxn(txn)}
                     >
                       View
