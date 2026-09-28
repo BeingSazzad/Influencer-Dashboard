@@ -78,25 +78,25 @@ export const VerificationPage: React.FC = () => {
       </div>
 
       {/* Verification Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredRequests.map((request) => (
-          <Card key={request.id} hoverEffect className="flex flex-col justify-between">
+          <Card key={request.id} hoverEffect className="p-4 sm:p-5 flex flex-col justify-between">
             <div>
               {/* Card Header with Creator Info */}
-              <div className="p-6 border-b border-neutral-100 flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <Avatar src={request.avatar} name={request.creatorName} size="lg" />
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <Avatar src={request.avatar} name={request.creatorName} size="md" />
                   <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-base font-black text-neutral-950">
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="text-sm font-bold text-neutral-900">
                         {request.creatorName}
                       </h3>
                       {request.status === 'approved' && (
-                        <Award className="w-4 h-4 text-brand-pink fill-brand-pink/20" />
+                        <Award className="w-3.5 h-3.5 text-brand-pink fill-brand-pink/20" />
                       )}
                     </div>
-                    <p className="text-xs text-neutral-400 font-semibold">@{request.handle}</p>
-                    <span className="inline-block mt-1 text-[11px] font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded">
+                    <p className="text-xs text-neutral-400">@{request.handle}</p>
+                    <span className="inline-block mt-0.5 text-[10px] font-semibold text-neutral-600 bg-neutral-100 px-1.5 py-0.2 rounded">
                       {request.category}
                     </span>
                   </div>
@@ -117,89 +117,58 @@ export const VerificationPage: React.FC = () => {
                 </Badge>
               </div>
 
-              {/* Card Body with Proofs */}
-              <div className="p-6 space-y-4">
-                {/* Social Audiences */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                      Total Audience Reach
-                    </span>
-                    <p className="text-base font-black text-neutral-950 mt-0.5 tabular-nums">
-                      {request.followersTotal}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                      Verified Views
-                    </span>
-                    <p className="text-base font-black text-neutral-950 mt-0.5 tabular-nums">
-                      {request.sampleWorkViews}
-                    </p>
-                  </div>
-                </div>
+              {/* Stats strip */}
+              <div className="flex items-center justify-between text-xs py-2 px-3 rounded-lg bg-neutral-50 border border-neutral-100 font-medium text-neutral-700 mt-3">
+                <span><strong>{request.followersTotal}</strong> reach</span>
+                <span className="text-neutral-300">•</span>
+                <span><strong>{request.sampleWorkViews}</strong> views</span>
+              </div>
 
-                {/* Connected Handles */}
-                <div className="space-y-1.5 text-xs">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wide">
-                    Connected Platforms
+              {/* Connected Platforms */}
+              <div className="mt-2.5 flex items-center gap-1.5 flex-wrap">
+                {request.platforms.instagram && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-pink-50 text-pink-700 font-medium">
+                    <Instagram className="w-3 h-3" />
+                    {request.platforms.instagram}
                   </span>
-                  <div className="flex flex-wrap gap-2">
-                    {request.platforms.instagram && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-pink-50 text-pink-800 font-bold">
-                        <Instagram className="w-3.5 h-3.5" />
-                        {request.platforms.instagram}
-                      </span>
-                    )}
-                    {request.platforms.tiktok && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-neutral-100 text-neutral-900 font-bold">
-                        <Video className="w-3.5 h-3.5" />
-                        {request.platforms.tiktok}
-                      </span>
-                    )}
-                    {request.platforms.youtube && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-50 text-rose-800 font-bold">
-                        <Youtube className="w-3.5 h-3.5" />
-                        {request.platforms.youtube}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Sample Portfolio Submission */}
-                <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200/70 space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-neutral-800">
-                      Audited Video Submission:
-                    </span>
-                    <span className="text-neutral-400 text-[11px]">
-                      {formatDate(request.submittedDate)}
-                    </span>
-                  </div>
-                  <p className="text-xs text-neutral-600 italic">
-                    "{request.sampleWorkTitle}"
-                  </p>
-                </div>
-
-                {/* If rejected, show reason */}
-                {request.rejectionReason && (
-                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700">
-                    <span className="font-bold">Rejection Note: </span>
-                    {request.rejectionReason}
-                  </div>
+                )}
+                {request.platforms.tiktok && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-neutral-100 text-neutral-800 font-medium">
+                    <Video className="w-3 h-3" />
+                    {request.platforms.tiktok}
+                  </span>
+                )}
+                {request.platforms.youtube && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-rose-50 text-rose-700 font-medium">
+                    <Youtube className="w-3 h-3" />
+                    {request.platforms.youtube}
+                  </span>
                 )}
               </div>
+
+              {/* Audited Video Submission */}
+              <div className="mt-2.5 p-2.5 bg-neutral-50 rounded-lg border border-neutral-100 text-xs">
+                <span className="text-[10px] text-neutral-400 block font-medium">Audited Sample ({formatDate(request.submittedDate)}):</span>
+                <p className="text-xs text-neutral-700 line-clamp-1 italic mt-0.5">
+                  "{request.sampleWorkTitle}"
+                </p>
+              </div>
+
+              {request.rejectionReason && (
+                <div className="mt-2 p-2 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-700">
+                  <span className="font-semibold">Reason: </span>{request.rejectionReason}
+                </div>
+              )}
             </div>
 
             {/* Actions Bar */}
             {request.status === 'pending' && (
-              <div className="p-4 px-6 border-t border-neutral-100 bg-neutral-50/50 flex items-center justify-between gap-3">
+              <div className="pt-3 mt-3 border-t border-neutral-100 flex items-center justify-end gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-rose-600 border-rose-200 hover:bg-rose-50"
+                  className="text-rose-600 border-rose-200 hover:bg-rose-50 text-xs h-8"
                   onClick={() => setRejectingItem(request)}
-                  leftIcon={<XCircle className="w-4 h-4" />}
                 >
                   Decline
                 </Button>
@@ -207,10 +176,10 @@ export const VerificationPage: React.FC = () => {
                 <Button
                   variant="accent"
                   size="sm"
+                  className="text-xs h-8"
                   onClick={() => handleApprove(request.id)}
-                  leftIcon={<CheckCircle className="w-4 h-4" />}
                 >
-                  Approve Verified Badge
+                  Approve
                 </Button>
               </div>
             )}

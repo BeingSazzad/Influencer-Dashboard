@@ -219,112 +219,84 @@ export const PackagesPage: React.FC = () => {
       </Card>
 
       {/* Packages Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredPackages.map((pkg) => (
-          <Card key={pkg.id} hoverEffect className="flex flex-col justify-between">
+          <Card key={pkg.id} hoverEffect className="p-4 sm:p-5 flex flex-col justify-between">
             <div>
               {/* Card Header */}
-              <div className="p-6 border-b border-neutral-100 flex items-start justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-black text-neutral-950 bg-neutral-100 px-1.5 py-0.5 rounded">
-                      {pkg.id}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-neutral-900 bg-neutral-100 px-1.5 py-0.5 rounded">
+                    {pkg.id}
+                  </span>
+                  <Badge variant={getTierBadgeVariant(pkg.tier)} size="sm">
+                    {pkg.tier}
+                  </Badge>
+                  {pkg.isFeatured && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-full border border-amber-200/60">
+                      <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
+                      Featured
                     </span>
-                    <Badge variant={getTierBadgeVariant(pkg.tier)} size="sm">
-                      {pkg.tier}
-                    </Badge>
-                    {pkg.isFeatured && (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60">
-                        <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
-                        Featured
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-base font-black text-neutral-950 tracking-tight pt-1">
-                    {pkg.title}
-                  </h3>
-                  <p className="text-xs text-neutral-500 font-medium">
-                    {pkg.category}
-                  </p>
+                  )}
                 </div>
 
                 <div className="text-right shrink-0">
-                  <div className="text-2xl font-black text-neutral-950 tabular-nums">
+                  <div className="text-base font-bold text-neutral-900 tabular-nums">
                     {formatCurrency(pkg.priceEur)}
                   </div>
-                  <div className="text-[11px] text-neutral-400 font-semibold">
-                    15% Escrow Fee: {formatCurrency(Math.round(pkg.priceEur * 0.15))}
+                  <div className="text-[10px] text-neutral-400">
+                    Fee: {formatCurrency(Math.round(pkg.priceEur * 0.15))}
                   </div>
                 </div>
               </div>
 
-              {/* Card Body */}
-              <div className="p-6 space-y-4">
-                <p className="text-xs text-neutral-600 font-medium leading-relaxed">
-                  {pkg.description}
+              {/* Title & Category */}
+              <div className="mt-2.5">
+                <h3 className="text-sm font-bold text-neutral-900 tracking-tight line-clamp-1" title={pkg.title}>
+                  {pkg.title}
+                </h3>
+                <p className="text-xs text-neutral-500 font-medium mt-0.5">
+                  {pkg.category}
                 </p>
+              </div>
 
-                {/* Key Spec Badges */}
-                <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                  <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <span className="text-[10px] uppercase font-bold text-neutral-400">
-                      Turnaround
-                    </span>
-                    <p className="font-extrabold text-neutral-900 mt-0.5">
-                      {pkg.deliveryDays} Days
-                    </p>
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <span className="text-[10px] uppercase font-bold text-neutral-400">
-                      Revisions
-                    </span>
-                    <p className="font-extrabold text-neutral-900 mt-0.5">
-                      {pkg.revisionsCount} Included
-                    </p>
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <span className="text-[10px] uppercase font-bold text-neutral-400">
-                      Ad Rights
-                    </span>
-                    <p className="font-extrabold text-neutral-900 mt-0.5">
-                      {pkg.adRightsMonths} Months
-                    </p>
-                  </div>
-                </div>
+              {/* Description */}
+              <p className="text-xs text-neutral-600 line-clamp-2 mt-2 leading-relaxed">
+                {pkg.description}
+              </p>
 
-                {/* Deliverables Checklist */}
-                <div className="space-y-1.5 pt-1">
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wide">
-                    Included Deliverables:
-                  </span>
-                  <div className="space-y-1 text-xs">
-                    {pkg.deliverables.map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-neutral-700 font-medium">
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {/* Key Specs Strip */}
+              <div className="flex items-center justify-between text-xs py-2 px-3 rounded-lg bg-neutral-50 border border-neutral-100 font-medium text-neutral-700 mt-3">
+                <span>{pkg.deliveryDays}d delivery</span>
+                <span className="text-neutral-300">•</span>
+                <span>{pkg.revisionsCount} revs</span>
+                <span className="text-neutral-300">•</span>
+                <span>{pkg.adRightsMonths}m rights</span>
+              </div>
+
+              {/* Deliverables summary */}
+              <div className="mt-2.5 flex items-center justify-between text-xs text-neutral-500">
+                <span className="font-semibold text-neutral-700 flex items-center gap-1.5">
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  {pkg.deliverables.length} Deliverables
+                </span>
+                <span className="text-[11px] text-neutral-400 truncate max-w-[130px]">
+                  {pkg.deliverables[0]}
+                </span>
               </div>
             </div>
 
             {/* Card Actions Footer */}
-            <div className="p-4 px-6 border-t border-neutral-100 bg-neutral-50/50 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-3">
-                <span className="font-semibold text-neutral-500">
-                  <strong className="text-neutral-900 font-bold">{pkg.ordersCount}</strong> Orders
-                </span>
-                <span>•</span>
-                <span className="font-semibold text-neutral-500">
-                  <strong className="text-neutral-900 font-bold">{pkg.creatorCount}</strong> Creators Offering
-                </span>
-              </div>
+            <div className="pt-3 mt-4 border-t border-neutral-100 flex items-center justify-between text-xs">
+              <span className="font-medium text-neutral-500 text-[11px]">
+                <strong className="text-neutral-900 font-semibold">{pkg.ordersCount}</strong> Orders • <strong className="text-neutral-900 font-semibold">{pkg.creatorCount}</strong> Creators
+              </span>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
+                  className="h-7 w-7"
                   onClick={() => dispatch(togglePackageFeatured(pkg.id))}
                   title="Toggle Featured"
                 >
@@ -334,6 +306,7 @@ export const PackagesPage: React.FC = () => {
                 <Button
                   variant="ghost"
                   size="sm"
+                  className="h-7 px-2 text-xs"
                   onClick={() => dispatch(togglePackagePublish(pkg.id))}
                 >
                   {pkg.isPublished ? 'Unpublish' : 'Publish'}
@@ -341,8 +314,8 @@ export const PackagesPage: React.FC = () => {
 
                 <Button
                   variant="ghost"
-                  size="sm"
-                  className="text-rose-600 hover:bg-rose-50"
+                  size="icon"
+                  className="h-7 w-7 text-rose-600 hover:bg-rose-50"
                   onClick={() => dispatch(deletePackage(pkg.id))}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
