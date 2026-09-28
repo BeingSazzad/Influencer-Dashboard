@@ -23,14 +23,11 @@ export const TeamPage: React.FC = () => {
   const { members, filterRole, searchQuery } = useAppSelector((state) => state.team);
   const currentUser = useAppSelector((state) => state.auth.currentUser);
 
-  // Invite Admin Modal State
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<AdminRole>('admin');
-  const [avatar, setAvatar] = useState(
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
-  );
+  const [avatar, setAvatar] = useState('');
 
   const filteredMembers = members.filter((m) => {
     const matchesSearch =
@@ -49,7 +46,7 @@ export const TeamPage: React.FC = () => {
         name,
         email,
         role,
-        avatar,
+        avatar: avatar.trim() || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         status: 'active',
         twoFactorEnabled: false,
       })
@@ -57,6 +54,7 @@ export const TeamPage: React.FC = () => {
 
     setName('');
     setEmail('');
+    setAvatar('');
     setIsInviteModalOpen(false);
   };
 
@@ -65,11 +63,6 @@ export const TeamPage: React.FC = () => {
       <PageHeader
         title="Team"
         subtitle="Manage administrator seats and access permissions."
-        badge={
-          <Badge variant="default" size="sm">
-            {members.length} Admins
-          </Badge>
-        }
         actions={
           <Button
             variant="accent"
@@ -152,7 +145,7 @@ export const TeamPage: React.FC = () => {
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-neutral-400 font-medium">{member.email}</div>
+                      <div className="text-xs text-neutral-500 font-medium">{member.email}</div>
                     </div>
                   </div>
                 </TableCell>

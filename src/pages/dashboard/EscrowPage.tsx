@@ -142,13 +142,13 @@ export const EscrowPage: React.FC = () => {
                     >
                       {dispute.status.replace('_', ' ')}
                     </Badge>
-                    <span className="text-xs text-neutral-400 font-medium">
+                    <span className="text-xs text-neutral-500 font-medium">
                       Contract Order #{dispute.orderId}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-4 text-xs">
-                    <span className="text-neutral-400 font-medium">
+                    <span className="text-neutral-500 font-medium">
                       Filed: {formatDate(dispute.submittedDate)}
                     </span>
                     <div className="text-right">
@@ -166,7 +166,7 @@ export const EscrowPage: React.FC = () => {
                   {/* Parties & Campaign */}
                   <div className="space-y-3">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
                         Campaign
                       </span>
                       <h4 className="text-base font-extrabold text-neutral-950">
@@ -176,7 +176,7 @@ export const EscrowPage: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-3 pt-1">
                       <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                        <span className="text-[10px] uppercase font-bold text-neutral-400">
+                        <span className="text-[10px] uppercase font-bold text-neutral-500">
                           Brand
                         </span>
                         <div className="flex items-center gap-2 mt-1">
@@ -188,7 +188,7 @@ export const EscrowPage: React.FC = () => {
                       </div>
 
                       <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                        <span className="text-[10px] uppercase font-bold text-neutral-400">
+                        <span className="text-[10px] uppercase font-bold text-neutral-500">
                           Creator
                         </span>
                         <div className="flex items-center gap-2 mt-1">
@@ -200,7 +200,7 @@ export const EscrowPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="text-xs text-neutral-600 bg-neutral-50 p-3 rounded-xl border border-neutral-100 font-medium">
+                    <div className="text-xs text-neutral-700 bg-neutral-50 p-3 rounded-xl border border-neutral-100 font-medium">
                       <span className="font-bold text-neutral-900">Scope: </span>
                       {dispute.briefSummary}
                     </div>
@@ -209,7 +209,7 @@ export const EscrowPage: React.FC = () => {
                   {/* Grievance & Evidence */}
                   <div className="space-y-3 flex flex-col justify-between">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
                         Grievance
                       </span>
                       <div className="mt-1 p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-xs text-rose-950 leading-relaxed font-semibold">
@@ -258,7 +258,7 @@ export const EscrowPage: React.FC = () => {
           isOpen={true}
           onClose={() => setActiveDisputeForArbitration(null)}
           title={`Arbitrate Case: ${activeDisputeForArbitration.id}`}
-          description={`Issue a legally binding platform ruling for €${activeDisputeForArbitration.amountEur} currently locked in escrow custody.`}
+          description={`Issue a platform ruling for €${activeDisputeForArbitration.amountEur} held in escrow custody.`}
           maxWidth="lg"
           footer={
             <>
@@ -272,9 +272,10 @@ export const EscrowPage: React.FC = () => {
               <Button
                 variant="primary"
                 size="sm"
+                className="font-bold"
                 onClick={handleConfirmArbitration}
               >
-                Execute Escrow Release & Notify Parties
+                Confirm Ruling & Disburse
               </Button>
             </>
           }
@@ -365,7 +366,7 @@ export const EscrowPage: React.FC = () => {
 
             {/* Mediator Official Ruling Remarks */}
             <Textarea
-              label="Official Arbitration Reasoning (Sent via Certified Email to Both Parties)"
+              label="Arbitration Ruling Reason"
               value={mediatorNotes}
               onChange={(e) => setMediatorNotes(e.target.value)}
               rows={4}

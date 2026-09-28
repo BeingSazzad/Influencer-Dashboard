@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
+import { Pagination } from '@/components/ui/Pagination';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import {
   Download,
@@ -34,6 +35,9 @@ export const TransactionsPage: React.FC = () => {
   const [inspectedTxn, setInspectedTxn] = useState<MarketplaceTransaction | null>(null);
   const [exportNotice, setExportNotice] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
+
   const filteredTransactions = transactions.filter((t) => {
     const matchesSearch =
       t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -48,6 +52,13 @@ export const TransactionsPage: React.FC = () => {
 
     return matchesSearch && matchesType && matchesStatus;
   });
+
+  const totalPages = Math.ceil(filteredTransactions.length / pageSize) || 1;
+  const validCurrentPage = Math.min(currentPage, totalPages);
+  const paginatedTransactions = filteredTransactions.slice(
+    (validCurrentPage - 1) * pageSize,
+    validCurrentPage * pageSize
+  );
 
   const handleExportCSV = () => {
     setExportNotice(true);
@@ -93,11 +104,6 @@ export const TransactionsPage: React.FC = () => {
       <PageHeader
         title="Transactions"
         subtitle="Escrow deposits, creator payouts, and platform fee records."
-        badge={
-          <Badge variant="default" size="sm">
-            {transactions.length} Records
-          </Badge>
-        }
         actions={
           <Button
             variant="outline"
@@ -126,11 +132,11 @@ export const TransactionsPage: React.FC = () => {
           { label: 'Platform Fees', value: '€187,275' },
           { label: 'Payouts', value: '€912,725' },
         ].map((item) => (
-          <Card key={item.label} className="p-3.5">
-            <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block">
+          <Card key={item.label} className="p-4">
+            <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider block">
               {item.label}
             </span>
-            <div className="text-base font-bold text-neutral-900 mt-1 tabular-nums">
+            <div className="text-2xl font-black text-neutral-950 mt-1 tabular-nums">
               {item.value}
             </div>
           </Card>
@@ -151,8 +157,11 @@ export const TransactionsPage: React.FC = () => {
             ].map((t) => (
               <button
                 key={t.id}
-                onClick={() => dispatch(setTransactionTypeFilter(t.id as any))}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all shrink-0 ${
+                onClick={() => {
+                  dispatch(setTransactionTypeFilter(t.id as any));
+                  setCurrentPage(1);
+                }}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all shrink-0 cursor-pointer ${
                   typeFilter === t.id
                     ? 'bg-white text-neutral-950 shadow-sm'
                     : 'text-neutral-500 hover:text-neutral-900'
@@ -171,15 +180,21 @@ export const TransactionsPage: React.FC = () => {
                 type="text"
                 placeholder="Search transactions..."
                 value={searchQuery}
-                onChange={(e) => dispatch(setTransactionSearchQuery(e.target.value))}
-                className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink font-medium"
+                onChange={(e) => {
+                  dispatch(setTransactionSearchQuery(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink font-medium text-neutral-900 placeholder:text-neutral-400"
               />
             </div>
 
             <select
               value={statusFilter}
-              onChange={(e) => dispatch(setTransactionStatusFilter(e.target.value as any))}
-              className="h-9 px-3 text-xs font-semibold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-700 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
+              onChange={(e) => {
+                dispatch(setTransactionStatusFilter(e.target.value as any));
+                setCurrentPage(1);
+              }}
+              className="h-9 px-3 text-xs font-semibold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer w-full sm:w-auto"
             >
               <option value="all">All Status</option>
               <option value="completed">Completed</option>
@@ -206,30 +221,30 @@ export const TransactionsPage: React.FC = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredTransactions.length === 0 ? (
+            {paginatedTransactions.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-neutral-400 font-medium">
+                <TableCell colSpan={7} className="text-center py-12 text-neutral-500 font-medium">
                   No transaction records found matching your filters.
                 </TableCell>
               </TableRow>
             ) : (
-              filteredTransactions.map((txn) => (
+              paginatedTransactions.map((txn) => (
                 <TableRow key={txn.id}>
                   <TableCell>
-                    <span className="font-mono text-xs font-bold text-neutral-900">
+                    <span className="font-mono text-xs font-bold text-neutral-950">
                       {txn.id}
                     </span>
                   </TableCell>
 
-                  <TableCell className="text-xs text-neutral-500 whitespace-nowrap">
+                  <TableCell className="text-xs font-semibold text-neutral-500 whitespace-nowrap">
                     {formatDate(txn.createdAt)}
                   </TableCell>
 
                   <TableCell>
-                    <div className="text-xs text-neutral-700">
-                      <span className="font-semibold text-neutral-900">{txn.brandName}</span>
+                    <div className="text-xs">
+                      <span className="font-bold text-neutral-950">{txn.brandName}</span>
                       <span className="text-neutral-400 mx-1.5">→</span>
-                      <span className="text-neutral-600">{txn.creatorName}</span>
+                      <span className="text-neutral-700 font-medium">{txn.creatorName}</span>
                     </div>
                   </TableCell>
 
@@ -239,7 +254,7 @@ export const TransactionsPage: React.FC = () => {
                     </Badge>
                   </TableCell>
 
-                  <TableCell className="text-xs font-bold text-neutral-900 tabular-nums">
+                  <TableCell className="text-xs font-black text-neutral-950 tabular-nums">
                     {formatCurrency(txn.grossAmountEur)}
                   </TableCell>
 
@@ -257,7 +272,7 @@ export const TransactionsPage: React.FC = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-xs h-7 px-2.5 font-bold"
+                      className="text-xs h-7 px-2.5 font-bold text-neutral-700 hover:text-neutral-950"
                       onClick={() => setInspectedTxn(txn)}
                     >
                       View
@@ -268,6 +283,23 @@ export const TransactionsPage: React.FC = () => {
             )}
           </TableBody>
         </Table>
+
+        {/* Bottom Pagination */}
+        <div className="border-t border-neutral-100 px-4 py-1.5">
+          <Pagination
+            currentPage={validCurrentPage}
+            totalPages={totalPages}
+            totalItems={filteredTransactions.length}
+            pageSize={pageSize}
+            pageSizeOptions={[8, 16, 24]}
+            onPageChange={(page) => setCurrentPage(page)}
+            onPageSizeChange={(size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+            }}
+            itemLabel="transactions"
+          />
+        </div>
       </Card>
 
       {/* Transaction Details Modal */}
@@ -293,7 +325,7 @@ export const TransactionsPage: React.FC = () => {
           maxWidth="lg"
           footer={
             <div className="flex items-center justify-between w-full">
-              <span className="text-[11px] font-mono text-neutral-400 truncate max-w-xs">
+              <span className="text-[11px] font-mono text-neutral-500 truncate max-w-xs">
                 Stripe ID: {inspectedTxn.stripePaymentIntentId}
               </span>
               <Button
@@ -309,9 +341,9 @@ export const TransactionsPage: React.FC = () => {
         >
           <div className="space-y-6">
             {/* Financial Summary Card */}
-            <div className="p-4 bg-neutral-50 rounded-2xl border border-neutral-200/80 grid grid-cols-3 gap-4 text-center">
+            <div className="p-4 bg-neutral-50 rounded-2xl border border-neutral-200 grid grid-cols-3 gap-4 text-center">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-neutral-400">
+                <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
                   Gross Escrow
                 </span>
                 <p className="text-lg font-black text-neutral-950 mt-0.5 tabular-nums">
@@ -339,27 +371,27 @@ export const TransactionsPage: React.FC = () => {
             {/* Campaign & Parties */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="p-4 rounded-xl border border-neutral-200 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-wider text-neutral-400">
+                <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
                   Originating Brand
                 </span>
                 <div className="flex items-center gap-2.5">
                   <Avatar src={inspectedTxn.brandAvatar} name={inspectedTxn.brandName} size="sm" />
                   <div>
                     <h5 className="font-extrabold text-neutral-950">{inspectedTxn.brandName}</h5>
-                    <p className="text-neutral-400 text-[11px]">Primary Payer</p>
+                    <p className="text-neutral-500 text-[11px] font-medium">Primary Payer</p>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 rounded-xl border border-neutral-200 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-wider text-neutral-400">
+                <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
                   Commissioned Creator
                 </span>
                 <div className="flex items-center gap-2.5">
                   <Avatar src={inspectedTxn.creatorAvatar} name={inspectedTxn.creatorName} size="sm" />
                   <div>
                     <h5 className="font-extrabold text-neutral-950">{inspectedTxn.creatorName}</h5>
-                    <p className="text-neutral-400 text-[11px]">Beneficiary Recipient</p>
+                    <p className="text-neutral-500 text-[11px] font-medium">Beneficiary Recipient</p>
                   </div>
                 </div>
               </div>

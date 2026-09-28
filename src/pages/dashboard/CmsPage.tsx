@@ -251,7 +251,7 @@ export const CmsPage: React.FC = () => {
                         Active
                       </Badge>
                     </h3>
-                    <p className="text-xs text-neutral-400 font-medium mt-0.5">
+                    <p className="text-xs text-neutral-500 font-medium mt-0.5">
                       Last updated: {currentLegalDoc?.lastModified}
                     </p>
                   </div>
@@ -310,7 +310,7 @@ export const CmsPage: React.FC = () => {
 
           <div className="space-y-3">
             {filteredFaqs.length === 0 ? (
-              <div className="p-12 text-center bg-white rounded-2xl border border-neutral-200 text-neutral-400 text-xs font-medium">
+              <div className="p-12 text-center bg-white rounded-2xl border border-neutral-200 text-neutral-500 text-xs font-medium">
                 No FAQ items found matching "{faqSearchQuery}".
               </div>
             ) : (

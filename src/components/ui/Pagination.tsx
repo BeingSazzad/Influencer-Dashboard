@@ -70,7 +70,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 onPageSizeChange(Number(e.target.value));
                 onPageChange(1);
               }}
-              className="h-8 px-2 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg text-neutral-800 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer"
+              className="h-8 px-2 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt}>
@@ -82,14 +82,14 @@ export const Pagination: React.FC<PaginationProps> = ({
         )}
 
         {/* Page Nav Buttons */}
-        <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/5 p-1 rounded-xl">
+        <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl">
           {/* First Page Button */}
           <button
             type="button"
             onClick={() => onPageChange(1)}
             disabled={currentPage <= 1}
             title="First Page"
-            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 disabled:opacity-30 disabled:pointer-events-none transition-colors"
           >
             <ChevronsLeft className="w-3.5 h-3.5" />
           </button>
@@ -100,7 +100,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage <= 1}
             title="Previous Page"
-            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 disabled:opacity-30 disabled:pointer-events-none transition-colors"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
           </button>
@@ -127,8 +127,8 @@ export const Pagination: React.FC<PaginationProps> = ({
                   onClick={() => onPageChange(Number(page))}
                   className={`w-7 h-7 text-xs font-bold rounded-lg transition-all ${
                     isCurrent
-                      ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-sm'
-                      : 'text-neutral-600 hover:text-neutral-900 dark:hover:text-white hover:bg-white/60 dark:hover:bg-white/10'
+                      ? 'bg-neutral-900 text-white shadow-sm'
+                      : 'text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                   }`}
                 >
                   {page}
@@ -143,7 +143,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage >= totalPages}
             title="Next Page"
-            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 disabled:opacity-30 disabled:pointer-events-none transition-colors"
           >
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
@@ -154,7 +154,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage >= totalPages}
             title="Last Page"
-            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            className="w-7 h-7 flex items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 disabled:opacity-30 disabled:pointer-events-none transition-colors"
           >
             <ChevronsRight className="w-3.5 h-3.5" />
           </button>

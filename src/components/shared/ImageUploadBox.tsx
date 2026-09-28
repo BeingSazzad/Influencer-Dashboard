@@ -83,11 +83,11 @@ export const ImageUploadBox: React.FC<ImageUploadBoxProps> = ({
 
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <label className="text-xs font-bold text-neutral-800 dark:text-neutral-200 block">
+      <label className="text-xs font-bold text-neutral-900 block">
         {label}
       </label>
       {description && (
-        <p className="text-[11px] text-neutral-400 font-medium">{description}</p>
+        <p className="text-[11px] text-neutral-500 font-medium">{description}</p>
       )}
 
       {/* Hidden File Input */}
@@ -101,10 +101,10 @@ export const ImageUploadBox: React.FC<ImageUploadBoxProps> = ({
 
       {/* Preview or Upload Box */}
       {value ? (
-        <div className="border border-neutral-200 dark:border-white/10 rounded-xl p-3 bg-neutral-50/50 dark:bg-white/5 flex items-center justify-between gap-3">
+        <div className="border border-neutral-200 rounded-xl p-3 bg-neutral-50/50 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <div
-              className={`flex items-center justify-center overflow-hidden border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-900 shrink-0 ${
+              className={`flex items-center justify-center overflow-hidden border border-neutral-200 bg-white shrink-0 ${
                 aspectRatio === 'avatar'
                   ? 'w-12 h-12 rounded-full'
                   : aspectRatio === 'square'
@@ -122,7 +122,7 @@ export const ImageUploadBox: React.FC<ImageUploadBoxProps> = ({
               />
             </div>
             {recommendedDimensions && (
-              <span className="text-[11px] text-neutral-400 font-medium truncate">
+              <span className="text-[11px] text-neutral-500 font-medium truncate">
                 {recommendedDimensions}
               </span>
             )}
@@ -141,7 +141,7 @@ export const ImageUploadBox: React.FC<ImageUploadBoxProps> = ({
             <button
               type="button"
               onClick={handleRemove}
-              className="p-1 rounded-lg text-neutral-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors"
+              className="p-1 rounded-lg text-neutral-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
               title="Remove"
             >
               <X className="w-4 h-4" />
@@ -157,15 +157,15 @@ export const ImageUploadBox: React.FC<ImageUploadBoxProps> = ({
           className={`cursor-pointer border border-dashed rounded-xl p-4 text-center transition-all ${
             isDragging
               ? 'border-brand-pink bg-pink-50/50'
-              : 'border-neutral-200 dark:border-white/10 hover:border-neutral-400 bg-neutral-50/50 dark:bg-white/5'
+              : 'border-neutral-200 hover:border-neutral-400 bg-neutral-50/50'
           }`}
         >
           <Upload className="w-5 h-5 mx-auto mb-1 text-neutral-400" />
-          <p className="text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+          <p className="text-xs font-semibold text-neutral-800">
             Upload {label.toLowerCase()}
           </p>
           {recommendedDimensions && (
-            <p className="text-[10px] text-neutral-400 mt-0.5">
+            <p className="text-[10px] text-neutral-500 mt-0.5 font-medium">
               {recommendedDimensions}
             </p>
           )}

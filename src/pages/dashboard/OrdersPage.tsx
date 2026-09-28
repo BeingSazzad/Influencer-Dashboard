@@ -280,7 +280,7 @@ export const OrdersPage: React.FC = () => {
       <Card className="p-4 space-y-3">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Status Filter Tabs */}
-          <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/5 p-1 rounded-xl self-start overflow-x-auto max-w-full">
+          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             {[
               { id: 'all', label: 'All', count: orders.length },
               { id: 'in_progress', label: 'In Progress', count: orders.filter((o) => o.status === 'in_progress').length },
@@ -297,16 +297,16 @@ export const OrdersPage: React.FC = () => {
                 }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shrink-0 ${
                   statusFilter === tab.id
-                    ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm'
-                    : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    ? 'bg-white text-neutral-950 shadow-sm'
+                    : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >
                 <span>{tab.label}</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                     statusFilter === tab.id
-                      ? 'bg-neutral-100 dark:bg-white/10 text-neutral-800 dark:text-white'
-                      : 'bg-neutral-200/60 dark:bg-white/5 text-neutral-400'
+                      ? 'bg-neutral-100 text-neutral-900'
+                      : 'bg-neutral-200/60 text-neutral-500'
                   }`}
                 >
                   {tab.count}
@@ -327,7 +327,7 @@ export const OrdersPage: React.FC = () => {
                   setCurrentPage(1);
                 }}
                 placeholder="Search orders, brands, creators..."
-                className="w-full h-9 pl-9 pr-8 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 dark:text-white placeholder:text-neutral-400 transition-all font-medium"
+                className="w-full h-9 pl-9 pr-8 text-xs bg-neutral-50 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 placeholder:text-neutral-400 transition-all font-medium"
               />
               {searchQuery && (
                 <button

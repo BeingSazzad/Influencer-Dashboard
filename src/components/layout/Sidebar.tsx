@@ -17,7 +17,6 @@ import {
   LifeBuoy,
   LogOut,
   ExternalLink,
-  Lock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -152,22 +151,6 @@ export const Sidebar: React.FC = () => {
             )}
           </NavLink>
         ))}
-      </div>
-
-      {/* Security Status Capsule */}
-      <div className="p-3 mx-3 mb-3 bg-neutral-50 rounded-xl border border-neutral-200/60">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[11px] font-black text-neutral-900">
-              Escrow Shield Active
-            </span>
-          </div>
-          <Lock className="w-3.5 h-3.5 text-neutral-400" />
-        </div>
-        <p className="text-[10px] text-neutral-500 mt-1 leading-tight font-medium">
-          PCI-DSS Level 1 & EU GDPR Enforced
-        </p>
       </div>
 
       {/* User Footer Profile */}

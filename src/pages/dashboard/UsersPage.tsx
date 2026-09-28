@@ -181,18 +181,13 @@ export const UsersPage: React.FC = () => {
       <PageHeader
         title="Users"
         subtitle="Manage registered creators and brand accounts."
-        badge={
-          <Badge variant="neutral" size="sm">
-            {users.length} Users
-          </Badge>
-        }
       />
 
       {/* Control Panel: Filters, Search & Sorting */}
       <Card className="p-4 space-y-3">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Role Filter Tabs (All / Creators / Brands) */}
-          <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/5 p-1 rounded-xl self-start">
+          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start">
             {[
               { label: 'All', value: 'all' as const, count: users.length },
               { label: 'Creators', value: 'creator' as const, count: users.filter((u) => u.role === 'creator').length },
@@ -206,16 +201,16 @@ export const UsersPage: React.FC = () => {
                 }}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                   roleFilter === tab.value
-                    ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm'
-                    : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                    ? 'bg-white text-neutral-950 shadow-sm'
+                    : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >
                 <span>{tab.label}</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                     roleFilter === tab.value
-                      ? 'bg-neutral-100 dark:bg-white/10 text-neutral-800 dark:text-white'
-                      : 'bg-neutral-200/60 dark:bg-white/5 text-neutral-400'
+                      ? 'bg-neutral-100 text-neutral-900'
+                      : 'bg-neutral-200/60 text-neutral-500'
                   }`}
                 >
                   {tab.count}
@@ -236,7 +231,7 @@ export const UsersPage: React.FC = () => {
                   dispatch(setSearchQuery(e.target.value));
                   setCurrentPage(1);
                 }}
-                className="w-full h-9 pl-9 pr-8 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 dark:text-white placeholder:text-neutral-400 transition-all"
+                className="w-full h-9 pl-9 pr-8 text-xs bg-neutral-50 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink text-neutral-900 placeholder:text-neutral-400 transition-all font-medium"
               />
               {searchQuery && (
                 <button
@@ -260,7 +255,7 @@ export const UsersPage: React.FC = () => {
                 setSortBy(e.target.value as SortOption);
                 setCurrentPage(1);
               }}
-              className="h-9 px-3 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer"
+              className="h-9 px-3 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer"
               title="Sort directory"
             >
               <option value="recent">Sort: Recently Joined</option>
@@ -278,7 +273,7 @@ export const UsersPage: React.FC = () => {
                 dispatch(setStatusFilter(e.target.value as any));
                 setCurrentPage(1);
               }}
-              className="h-9 px-3 text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg text-neutral-700 dark:text-neutral-200 outline-none focus:border-brand-pink cursor-pointer"
+              className="h-9 px-3 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-800 outline-none focus:border-brand-pink cursor-pointer"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -439,7 +434,7 @@ export const UsersPage: React.FC = () => {
                             </span>
                           )}
                         </div>
-                        <div className="text-xs text-neutral-400 font-medium">@{user.handle} • {user.email}</div>
+                        <div className="text-xs text-neutral-500 font-medium">@{user.handle} • {user.email}</div>
                       </div>
                     </div>
                   </TableCell>
@@ -527,7 +522,7 @@ export const UsersPage: React.FC = () => {
         </Table>
 
         {/* Bottom Pagination Bar */}
-        <div className="border-t border-neutral-100 dark:border-white/5 px-4 py-1.5">
+        <div className="border-t border-neutral-100 px-4 py-1.5">
           <Pagination
             currentPage={validCurrentPage}
             totalPages={totalPages}
@@ -713,19 +708,19 @@ export const UsersPage: React.FC = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-neutral-50 p-4 rounded-xl border border-neutral-100">
               <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-400">Account Type</span>
+                <span className="text-[10px] uppercase font-bold text-neutral-500">Account Type</span>
                 <p className="text-xs font-bold text-neutral-900 capitalize">{inspectedUser.role}</p>
               </div>
               <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-400">Status</span>
+                <span className="text-[10px] uppercase font-bold text-neutral-500">Status</span>
                 <p className="text-xs font-bold capitalize">{inspectedUser.status}</p>
               </div>
               <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-400">Location</span>
+                <span className="text-[10px] uppercase font-bold text-neutral-500">Location</span>
                 <p className="text-xs font-bold text-neutral-900">{inspectedUser.location}</p>
               </div>
               <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-400">Volume</span>
+                <span className="text-[10px] uppercase font-bold text-neutral-500">Volume</span>
                 <p className="text-xs font-bold text-neutral-900 tabular-nums">{formatCurrency(inspectedUser.totalVolumeEur)}</p>
               </div>
             </div>

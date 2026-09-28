@@ -18,12 +18,16 @@ import { Textarea } from '@/components/ui/Textarea';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
+import { Pagination } from '@/components/ui/Pagination';
 import {
   LifeBuoy,
   Search,
   CheckCircle2,
   Send,
   ShieldAlert,
+  Clock,
+  AlertCircle,
+  X,
 } from 'lucide-react';
 
 export const TicketsPage: React.FC = () => {
@@ -37,25 +41,39 @@ export const TicketsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [replyMessage, setReplyMessage] = useState('');
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
+
   // KPIs
   const openCount = tickets.filter((t) => t.status === 'open').length;
   const inProgressCount = tickets.filter((t) => t.status === 'in_progress').length;
   const reportCount = tickets.filter((t) => t.type === 'user_report').length;
   const urgentCount = tickets.filter((t) => t.priority === 'urgent' && t.status !== 'resolved').length;
 
+  const q = searchQuery.toLowerCase().trim();
   const filteredTickets = tickets.filter((t) => {
     const matchesSearch =
-      t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.userEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (t.reportedUser && t.reportedUser.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      !q ||
+      t.id.toLowerCase().includes(q) ||
+      t.subject.toLowerCase().includes(q) ||
+      t.userName.toLowerCase().includes(q) ||
+      t.userEmail.toLowerCase().includes(q) ||
+      (t.reportedUser && t.reportedUser.name.toLowerCase().includes(q));
 
     const matchesStatus = statusFilter === 'all' || t.status === statusFilter;
     const matchesType = typeFilter === 'all' || t.type === typeFilter;
 
     return matchesSearch && matchesStatus && matchesType;
   });
+
+  // Pagination calculation
+  const totalPages = Math.ceil(filteredTickets.length / pageSize) || 1;
+  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const paginatedTickets = filteredTickets.slice(
+    (validCurrentPage - 1) * pageSize,
+    validCurrentPage * pageSize
+  );
 
   const handleOpenTicket = (ticket: SupportTicket) => {
     setActiveTicket(ticket);
@@ -155,31 +173,31 @@ export const TicketsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-12">
       {/* Page Header */}
       <PageHeader
         title="Support"
-        subtitle="Customer tickets and reported platform issues."
+        subtitle="Manage customer support inquiries and user reports."
         badge={
-          <Badge variant="default" size="sm">
+          <Badge variant="neutral" size="sm">
             {openCount} Open
           </Badge>
         }
       />
 
-      {/* KPI Minimal Bar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* KPI Stat Cards: High Contrast & Punchy Bold */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Open Tickets', value: openCount.toString() },
-          { label: 'Reports', value: reportCount.toString() },
-          { label: 'Urgent', value: urgentCount.toString() },
-          { label: 'In Progress', value: inProgressCount.toString() },
+          { label: 'Open Tickets', value: openCount.toString(), color: 'text-neutral-950' },
+          { label: 'User Reports', value: reportCount.toString(), color: 'text-rose-600' },
+          { label: 'Urgent', value: urgentCount.toString(), color: 'text-amber-600' },
+          { label: 'In Progress', value: inProgressCount.toString(), color: 'text-neutral-950' },
         ].map((item) => (
-          <Card key={item.label} className="p-3.5">
-            <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block">
+          <Card key={item.label} className="p-4 border-neutral-200/80">
+            <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block">
               {item.label}
             </span>
-            <div className="text-base font-bold text-neutral-900 dark:text-white mt-1 tabular-nums">
+            <div className={`text-2xl sm:text-[28px] font-black mt-1.5 tabular-nums ${item.color}`}>
               {item.value}
             </div>
           </Card>
@@ -187,82 +205,180 @@ export const TicketsPage: React.FC = () => {
       </div>
 
       {/* Filter Tabs & Search */}
-      <Card className="p-4">
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+      <Card className="p-4 space-y-3">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Status & Type Pills */}
-          <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/5 p-1 rounded-xl self-start overflow-x-auto max-w-full">
+          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             <button
+              type="button"
               onClick={() => {
                 dispatch(setTicketStatusFilter('all'));
                 dispatch(setTicketTypeFilter('all'));
+                setCurrentPage(1);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'all' && typeFilter === 'all'
-                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-white text-neutral-950 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               All ({tickets.length})
             </button>
             <button
-              onClick={() => dispatch(setTicketTypeFilter('user_report'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
+              type="button"
+              onClick={() => {
+                dispatch(setTicketTypeFilter('user_report'));
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
                 typeFilter === 'user_report'
-                  ? 'bg-white dark:bg-neutral-800 text-rose-700 dark:text-rose-400 shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-white text-rose-700 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
               Reports ({reportCount})
             </button>
             <button
-              onClick={() => dispatch(setTicketStatusFilter('open'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+              type="button"
+              onClick={() => {
+                dispatch(setTicketStatusFilter('open'));
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'open'
-                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-white text-neutral-950 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               Open ({openCount})
             </button>
             <button
-              onClick={() => dispatch(setTicketStatusFilter('in_progress'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+              type="button"
+              onClick={() => {
+                dispatch(setTicketStatusFilter('in_progress'));
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'in_progress'
-                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-white text-neutral-950 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               In Progress ({inProgressCount})
             </button>
             <button
-              onClick={() => dispatch(setTicketStatusFilter('resolved'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+              type="button"
+              onClick={() => {
+                dispatch(setTicketStatusFilter('resolved'));
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'resolved'
-                  ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-sm'
-                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-white text-neutral-950 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               Resolved ({tickets.filter((t) => t.status === 'resolved').length})
             </button>
           </div>
 
-          {/* Search Box */}
-          <div className="relative w-full sm:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+          {/* Search Box with Clear */}
+          <div className="relative w-full sm:w-72 lg:w-80">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => dispatch(setTicketSearchQuery(e.target.value))}
-              placeholder="Search tickets..."
-              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 font-medium text-neutral-900 dark:text-white"
+              onChange={(e) => {
+                dispatch(setTicketSearchQuery(e.target.value));
+                setCurrentPage(1);
+              }}
+              placeholder="Search tickets, users, issues..."
+              className="w-full h-9 pl-9 pr-8 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 focus:border-brand-pink font-medium text-neutral-900 placeholder:text-neutral-400 transition-all"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  dispatch(setTicketSearchQuery(''));
+                  setCurrentPage(1);
+                }}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 p-0.5 rounded transition-colors"
+                title="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Active Filter Summary */}
+        {(searchQuery || statusFilter !== 'all' || typeFilter !== 'all') && (
+          <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-neutral-500 border-t border-neutral-100">
+            <span className="font-semibold text-neutral-400">Active filters:</span>
+            {searchQuery && (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px]">
+                Search: "{searchQuery}"
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setTicketSearchQuery(''));
+                    setCurrentPage(1);
+                  }}
+                  className="hover:text-rose-600 cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {statusFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px] capitalize">
+                Status: {statusFilter.replace('_', ' ')}
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setTicketStatusFilter('all'));
+                    setCurrentPage(1);
+                  }}
+                  className="hover:text-rose-600 cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {typeFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-200/60 font-semibold text-[11px]">
+                User Reports Only
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(setTicketTypeFilter('all'));
+                    setCurrentPage(1);
+                  }}
+                  className="hover:text-rose-800 cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(setTicketSearchQuery(''));
+                dispatch(setTicketStatusFilter('all'));
+                dispatch(setTicketTypeFilter('all'));
+                setCurrentPage(1);
+              }}
+              className="text-[11px] font-bold text-brand-pink hover:underline ml-auto cursor-pointer"
+            >
+              Reset all
+            </button>
+          </div>
+        )}
       </Card>
 
       {/* Tickets List Table */}
-      <Card>
+      <Card className="border-neutral-200/80 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -277,35 +393,57 @@ export const TicketsPage: React.FC = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredTickets.length === 0 ? (
+            {paginatedTickets.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="py-12 text-center text-neutral-400 font-medium">
-                  No tickets match the selected filters.
+                <TableCell colSpan={8} className="py-12 text-center text-neutral-500 font-medium">
+                  <div className="max-w-xs mx-auto space-y-2">
+                    <LifeBuoy className="w-8 h-8 mx-auto text-neutral-300" />
+                    <p className="font-bold text-neutral-900">No support tickets found</p>
+                    <p className="text-xs text-neutral-400">
+                      Try adjusting your keywords or clearing the active filters.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => {
+                        dispatch(setTicketSearchQuery(''));
+                        dispatch(setTicketStatusFilter('all'));
+                        dispatch(setTicketTypeFilter('all'));
+                        setCurrentPage(1);
+                      }}
+                    >
+                      Reset All Filters
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
-              filteredTickets.map((ticket) => (
+              paginatedTickets.map((ticket) => (
                 <TableRow
                   key={ticket.id}
                   onClick={() => handleOpenTicket(ticket)}
-                  className="cursor-pointer"
+                  className="hover:bg-neutral-50/80 transition-colors cursor-pointer"
                 >
                   {/* Ticket ID */}
                   <TableCell>
-                    <span className="font-mono text-xs font-bold text-neutral-900 dark:text-white">
+                    <span className="font-mono text-xs font-bold text-neutral-900">
                       {ticket.id}
                     </span>
                   </TableCell>
 
                   {/* Subject */}
                   <TableCell>
-                    <div className="flex items-center gap-1.5 max-w-[240px]">
+                    <div className="flex items-center gap-2 max-w-[260px]">
                       {ticket.type === 'user_report' && (
-                        <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-200 dark:border-rose-900/40">
+                        <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200">
                           Report
                         </span>
                       )}
-                      <span className="text-xs font-semibold text-neutral-900 dark:text-white truncate" title={ticket.subject}>
+                      <span
+                        className="text-sm font-bold text-neutral-950 truncate"
+                        title={ticket.subject}
+                      >
                         {ticket.subject}
                       </span>
                     </div>
@@ -314,8 +452,8 @@ export const TicketsPage: React.FC = () => {
                   {/* User */}
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Avatar src={ticket.userAvatar} name={ticket.userName} size="sm" />
-                      <span className="text-xs font-bold text-neutral-900 dark:text-white truncate max-w-[120px]">
+                      <Avatar src={ticket.userAvatar} name={ticket.userName} size="xs" />
+                      <span className="text-xs font-bold text-neutral-900 truncate max-w-[120px]">
                         {ticket.userName}
                       </span>
                     </div>
@@ -323,28 +461,34 @@ export const TicketsPage: React.FC = () => {
 
                   {/* Category */}
                   <TableCell>
-                    <span className="text-xs text-neutral-600 dark:text-neutral-300">
+                    <span className="text-xs font-semibold text-neutral-700">
                       {getCategoryLabel(ticket.category)}
                     </span>
                   </TableCell>
 
                   {/* Priority */}
-                  <TableCell>{renderPriorityBadge(ticket.priority)}</TableCell>
+                  <TableCell>
+                    {renderPriorityBadge(ticket.priority)}
+                  </TableCell>
 
                   {/* Status */}
-                  <TableCell>{renderStatusBadge(ticket.status)}</TableCell>
+                  <TableCell>
+                    {renderStatusBadge(ticket.status)}
+                  </TableCell>
 
                   {/* Updated */}
-                  <TableCell className="text-xs text-neutral-500 whitespace-nowrap">
-                    {ticket.lastUpdated}
+                  <TableCell>
+                    <span className="text-xs font-semibold text-neutral-500">
+                      {ticket.lastUpdated}
+                    </span>
                   </TableCell>
 
                   {/* Actions */}
                   <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      className="text-xs h-7 px-2.5 font-bold"
+                      className="text-xs font-bold"
                       onClick={() => handleOpenTicket(ticket)}
                     >
                       View
@@ -355,14 +499,32 @@ export const TicketsPage: React.FC = () => {
             )}
           </TableBody>
         </Table>
+
+        {/* Bottom Pagination */}
+        <div className="border-t border-neutral-100 px-4 py-1.5">
+          <Pagination
+            currentPage={validCurrentPage}
+            totalPages={totalPages}
+            totalItems={filteredTickets.length}
+            pageSize={pageSize}
+            pageSizeOptions={[8, 16, 24]}
+            onPageChange={(page) => setCurrentPage(page)}
+            onPageSizeChange={(size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+            }}
+            itemLabel="tickets"
+          />
+        </div>
       </Card>
 
-      {/* TICKET DETAILS & REPLY MODAL */}
+      {/* TICKET DETAILS & REPLY MODAL (Light Mode) */}
       {activeTicket && (
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title={`Ticket ${activeTicket.id}`}
+          description="Direct customer conversation, dispute reason, and resolution."
           maxWidth="lg"
           footer={
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
@@ -371,7 +533,7 @@ export const TicketsPage: React.FC = () => {
                 <select
                   value={activeTicket.status}
                   onChange={(e) => handleStatusChange(e.target.value as TicketStatus)}
-                  className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg px-2.5 py-1 text-xs text-neutral-800 dark:text-neutral-200 font-medium outline-none"
+                  className="bg-neutral-50 border border-neutral-200 rounded-lg px-2.5 py-1 text-xs text-neutral-900 font-bold outline-none cursor-pointer"
                 >
                   <option value="open">Open</option>
                   <option value="in_progress">In Progress</option>
@@ -383,7 +545,7 @@ export const TicketsPage: React.FC = () => {
                 <select
                   value={activeTicket.priority}
                   onChange={(e) => handlePriorityChange(e.target.value as TicketPriority)}
-                  className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-lg px-2.5 py-1 text-xs text-neutral-800 dark:text-neutral-200 font-medium outline-none"
+                  className="bg-neutral-50 border border-neutral-200 rounded-lg px-2.5 py-1 text-xs text-neutral-900 font-bold outline-none cursor-pointer"
                 >
                   <option value="urgent">Urgent</option>
                   <option value="high">High</option>
@@ -411,27 +573,27 @@ export const TicketsPage: React.FC = () => {
             </div>
           }
         >
-          <div className="space-y-5 text-xs">
+          <div className="space-y-4 text-xs">
             {/* Header Subject Banner */}
-            <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className="text-sm font-extrabold text-neutral-900 dark:text-white">
+                  <span className="text-sm font-extrabold text-neutral-950">
                     {activeTicket.subject}
                   </span>
                   {renderPriorityBadge(activeTicket.priority)}
                   {renderStatusBadge(activeTicket.status)}
                 </div>
-                <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
-                  Category: <span className="font-semibold text-neutral-800 dark:text-neutral-200">{getCategoryLabel(activeTicket.category)}</span> • Created on {activeTicket.createdAt}
+                <p className="text-[11px] text-neutral-500">
+                  Category: <span className="font-bold text-neutral-900">{getCategoryLabel(activeTicket.category)}</span> • Created {activeTicket.createdAt}
                 </p>
               </div>
 
               <div className="sm:text-right shrink-0">
                 <span className="text-[10px] text-neutral-400 uppercase font-bold tracking-wider block">
-                  Assigned
+                  Assigned Agent
                 </span>
-                <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200">
+                <span className="text-xs font-bold text-neutral-900">
                   {activeTicket.assignedAdmin || 'Unassigned'}
                 </span>
               </div>
@@ -440,15 +602,15 @@ export const TicketsPage: React.FC = () => {
             {/* Inquiring User & Reported Target */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Inquirer */}
-              <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 space-y-2">
-                <span className="text-[10px] font-bold uppercase text-neutral-400 tracking-wider block">
+              <div className="p-3.5 rounded-xl bg-white border border-neutral-200 space-y-2">
+                <span className="text-[10px] font-bold uppercase text-neutral-500 tracking-wider block">
                   Submitted By
                 </span>
                 <div className="flex items-center gap-3">
                   <Avatar src={activeTicket.userAvatar} name={activeTicket.userName} size="md" />
                   <div>
-                    <p className="font-extrabold text-neutral-900 dark:text-white text-xs">{activeTicket.userName}</p>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400">{activeTicket.userEmail}</p>
+                    <p className="font-extrabold text-neutral-950 text-xs">{activeTicket.userName}</p>
+                    <p className="text-[11px] text-neutral-500">{activeTicket.userEmail}</p>
                     <Badge variant="neutral" size="sm" className="mt-1 capitalize">
                       {activeTicket.userRole}
                     </Badge>
@@ -458,9 +620,9 @@ export const TicketsPage: React.FC = () => {
 
               {/* Reported User (if applicable) */}
               {activeTicket.reportedUser ? (
-                <div className="p-3.5 rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/30 space-y-2">
+                <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase text-rose-700 dark:text-rose-400 tracking-wider flex items-center gap-1">
+                    <span className="text-[10px] font-bold uppercase text-rose-800 tracking-wider flex items-center gap-1">
                       <ShieldAlert className="w-3.5 h-3.5" />
                       Reported Account
                     </span>
@@ -469,24 +631,24 @@ export const TicketsPage: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <Avatar src={activeTicket.reportedUser.avatar} name={activeTicket.reportedUser.name} size="md" />
                     <div>
-                      <p className="font-extrabold text-neutral-900 dark:text-white text-xs">
+                      <p className="font-extrabold text-neutral-950 text-xs">
                         {activeTicket.reportedUser.name}
                       </p>
                       {activeTicket.reportedUser.handle && (
-                        <p className="text-[11px] text-rose-600 font-bold">{activeTicket.reportedUser.handle}</p>
+                        <p className="text-[11px] text-rose-700 font-bold">{activeTicket.reportedUser.handle}</p>
                       )}
-                      <p className="text-[11px] text-neutral-600 dark:text-neutral-300 mt-1 italic leading-relaxed">
+                      <p className="text-[11px] text-neutral-700 mt-1 italic leading-relaxed">
                         "{activeTicket.reportedUser.reason}"
                       </p>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="p-3.5 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 flex items-center justify-center text-center">
+                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 flex items-center justify-center text-center">
                   <div className="space-y-0.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
-                    <p className="text-xs font-bold text-neutral-800 dark:text-white">Standard Inquiry</p>
-                    <p className="text-[11px] text-neutral-400">No account sanction reported.</p>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mx-auto" />
+                    <p className="text-xs font-bold text-neutral-900">Standard Inquiry</p>
+                    <p className="text-[11px] text-neutral-500">No account sanctions reported.</p>
                   </div>
                 </div>
               )}
@@ -494,52 +656,47 @@ export const TicketsPage: React.FC = () => {
 
             {/* Conversation Messages */}
             <div className="space-y-2.5">
-              <span className="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider block">
+              <span className="text-xs font-bold text-neutral-900 uppercase tracking-wider block">
                 Messages ({activeTicket.messages.length})
               </span>
 
-              <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+              <div className="space-y-3 max-h-60 overflow-y-auto p-3 bg-neutral-50 rounded-xl border border-neutral-200">
                 {activeTicket.messages.map((msg) => (
                   <div
                     key={msg.id}
-                    className={`p-3 rounded-xl border text-xs space-y-1 ${
+                    className={`p-3 rounded-xl text-xs space-y-1 ${
                       msg.isAdminReply
-                        ? 'bg-neutral-900 text-white border-neutral-800 ml-6 dark:bg-neutral-800 dark:text-white'
-                        : 'bg-neutral-50 dark:bg-white/5 border-neutral-200/80 dark:border-white/10 mr-6 text-neutral-800 dark:text-neutral-200'
+                        ? 'bg-neutral-900 text-white ml-6'
+                        : 'bg-white text-neutral-900 border border-neutral-200 mr-6 shadow-2xs'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Avatar src={msg.senderAvatar} name={msg.senderName} size="xs" />
-                        <span className="font-bold">
-                          {msg.senderName}
-                        </span>
-                      </div>
+                      <span className={`font-bold ${msg.isAdminReply ? 'text-white' : 'text-neutral-900'}`}>
+                        {msg.senderName}
+                      </span>
                       <span className={`text-[10px] ${msg.isAdminReply ? 'text-neutral-400' : 'text-neutral-400'}`}>
                         {msg.timestamp}
                       </span>
                     </div>
-                    <p className="leading-relaxed pl-6">{msg.message}</p>
+                    <p className="leading-relaxed whitespace-pre-wrap">{msg.message}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Reply Composer */}
-            <form onSubmit={handleSendReply} className="space-y-2.5 pt-3 border-t border-neutral-200/80 dark:border-white/10">
-              <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300 block">
-                Reply to User
-              </label>
+            {/* Reply Form */}
+            <form onSubmit={handleSendReply} className="space-y-2.5 pt-1">
               <Textarea
+                placeholder="Type your official administrative reply..."
                 value={replyMessage}
                 onChange={(e) => setReplyMessage(e.target.value)}
-                placeholder="Type your response to the user..."
-                className="text-xs min-h-[70px]"
+                rows={3}
+                className="text-xs"
               />
-              <div className="flex items-center justify-end">
+              <div className="flex justify-end">
                 <Button
                   type="submit"
-                  variant="accent"
+                  variant="primary"
                   size="sm"
                   disabled={!replyMessage.trim()}
                   className="text-xs font-bold"

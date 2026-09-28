@@ -448,14 +448,14 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         </div>
 
         {/* View Mode Switcher */}
-        <div className="flex items-center gap-1 bg-neutral-200/60 p-0.5 rounded-lg text-xs font-bold">
+        <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl text-xs font-bold">
           <button
             type="button"
             onClick={() => setViewMode('edit')}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               viewMode === 'edit'
-                ? 'bg-white text-neutral-950 shadow-sm'
-                : 'text-neutral-600 hover:text-neutral-950'
+                ? 'bg-white text-neutral-950 shadow-sm font-black'
+                : 'text-neutral-500 hover:text-neutral-900'
             }`}
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -465,10 +465,10 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => setViewMode('split')}
-            className={`hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all ${
+            className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               viewMode === 'split'
-                ? 'bg-white text-neutral-950 shadow-sm'
-                : 'text-neutral-600 hover:text-neutral-950'
+                ? 'bg-white text-neutral-950 shadow-sm font-black'
+                : 'text-neutral-500 hover:text-neutral-900'
             }`}
           >
             <Columns className="w-3.5 h-3.5" />
@@ -478,10 +478,10 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <button
             type="button"
             onClick={() => setViewMode('preview')}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               viewMode === 'preview'
-                ? 'bg-white text-neutral-950 shadow-sm'
-                : 'text-neutral-600 hover:text-neutral-950'
+                ? 'bg-white text-neutral-950 shadow-sm font-black'
+                : 'text-neutral-500 hover:text-neutral-900'
             }`}
           >
             <Eye className="w-3.5 h-3.5" />

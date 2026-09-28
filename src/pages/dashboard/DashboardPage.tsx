@@ -295,17 +295,17 @@ export const DashboardPage: React.FC = () => {
 
             {/* Bottom Summary Bar */}
             <div className="grid grid-cols-3 gap-2 pt-3 text-center">
-              <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">Total Users</div>
-                <div className="text-sm font-black text-neutral-900 tabular-nums">2,840</div>
+              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200/80">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-600">Total Users</div>
+                <div className="text-sm font-black text-neutral-950 tabular-nums mt-0.5">2,840</div>
               </div>
-              <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">Ratio</div>
-                <div className="text-sm font-black text-brand-pink tabular-nums">2.9 : 1</div>
+              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200/80">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-600">Ratio</div>
+                <div className="text-sm font-black text-brand-pink tabular-nums mt-0.5">2.9 : 1</div>
               </div>
-              <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">Retention</div>
-                <div className="text-sm font-black text-emerald-600 tabular-nums">94.2%</div>
+              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200/80">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-600">Retention</div>
+                <div className="text-sm font-black text-emerald-600 tabular-nums mt-0.5">94.2%</div>
               </div>
             </div>
           </div>
@@ -469,7 +469,7 @@ export const DashboardPage: React.FC = () => {
                       className={`text-xs transition-colors cursor-pointer ${
                         isHovered
                           ? 'font-black text-emerald-600'
-                          : 'font-extrabold text-neutral-400 hover:text-neutral-700'
+                          : 'font-extrabold text-neutral-500 hover:text-neutral-900'
                       }`}
                     >
                       {item.month}
@@ -481,17 +481,17 @@ export const DashboardPage: React.FC = () => {
 
             {/* Bottom Summary Bar */}
             <div className="grid grid-cols-3 gap-2 pt-3 text-center">
-              <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">GMV</div>
-                <div className="text-sm font-black text-neutral-900 tabular-nums">€1.25M</div>
+              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200/80">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-600">GMV</div>
+                <div className="text-sm font-black text-neutral-950 tabular-nums mt-0.5">€1.25M</div>
               </div>
-              <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">Take-Rate</div>
-                <div className="text-sm font-black text-emerald-600 tabular-nums">15%</div>
+              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200/80">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-600">Take-Rate</div>
+                <div className="text-sm font-black text-emerald-600 tabular-nums mt-0.5">15%</div>
               </div>
-              <div className="p-2 rounded-xl bg-neutral-50 border border-neutral-100">
-                <div className="text-[10px] font-black uppercase text-neutral-400">Net Fees</div>
-                <div className="text-sm font-black text-neutral-900 tabular-nums">€187.3k</div>
+              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200/80">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-600">Net Fees</div>
+                <div className="text-sm font-black text-neutral-950 tabular-nums mt-0.5">€187.3k</div>
               </div>
             </div>
           </div>
