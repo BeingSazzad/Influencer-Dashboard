@@ -7,7 +7,8 @@ import {
 } from '@/store/slices/verificationSlice';
 import { VerificationRequest } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
@@ -15,15 +16,10 @@ import { Modal } from '@/components/ui/Modal';
 import { Textarea } from '@/components/ui/Textarea';
 import { formatDate } from '@/lib/utils';
 import {
-  ShieldCheck,
-  CheckCircle,
-  XCircle,
   Instagram,
   Youtube,
-  ExternalLink,
-  Award,
   Video,
-  FileCheck,
+  Award,
 } from 'lucide-react';
 
 export const VerificationPage: React.FC = () => {
@@ -31,7 +27,9 @@ export const VerificationPage: React.FC = () => {
   const { requests, filterStatus } = useAppSelector((state) => state.verification);
 
   const [rejectingItem, setRejectingItem] = useState<VerificationRequest | null>(null);
-  const [rejectionReason, setRejectionReason] = useState('Audience engagement metrics fell below our 3.5% verified benchmark.');
+  const [rejectionReason, setRejectionReason] = useState(
+    'Audience engagement metrics fell below our 3.5% verified benchmark.'
+  );
 
   const filteredRequests = requests.filter((r) => {
     if (filterStatus === 'all') return true;
@@ -77,115 +75,149 @@ export const VerificationPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Verification Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredRequests.map((request) => (
-          <Card key={request.id} hoverEffect className="p-4 sm:p-5 flex flex-col justify-between">
-            <div>
-              {/* Card Header with Creator Info */}
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-2.5">
-                  <Avatar src={request.avatar} name={request.creatorName} size="md" />
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="text-sm font-bold text-neutral-900">
-                        {request.creatorName}
-                      </h3>
-                      {request.status === 'approved' && (
-                        <Award className="w-3.5 h-3.5 text-brand-pink fill-brand-pink/20" />
+      {/* Verification Applications Table */}
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Creator</TableHead>
+              <TableHead>Audience & Reach</TableHead>
+              <TableHead>Platforms</TableHead>
+              <TableHead>Sample Submission</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredRequests.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center py-12 text-neutral-400 font-medium">
+                  No verification applications found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredRequests.map((request) => (
+                <TableRow key={request.id}>
+                  {/* Creator */}
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar src={request.avatar} name={request.creatorName} size="sm" />
+                      <div>
+                        <div className="font-extrabold text-neutral-900 flex items-center gap-1.5 text-xs">
+                          <span>{request.creatorName}</span>
+                          {request.status === 'approved' && (
+                            <Award className="w-3.5 h-3.5 text-brand-pink fill-brand-pink/20" />
+                          )}
+                        </div>
+                        <div className="text-[11px] text-neutral-400 font-medium">
+                          @{request.handle}
+                        </div>
+                        <span className="inline-block mt-0.5 text-[10px] font-semibold text-neutral-600 bg-neutral-100 px-1.5 py-0.5 rounded">
+                          {request.category}
+                        </span>
+                      </div>
+                    </div>
+                  </TableCell>
+
+                  {/* Audience & Reach */}
+                  <TableCell>
+                    <div className="text-xs font-bold text-neutral-900 tabular-nums">
+                      {request.followersTotal}
+                    </div>
+                    <div className="text-[11px] text-neutral-400 font-medium mt-0.5">
+                      {request.sampleWorkViews} views
+                    </div>
+                  </TableCell>
+
+                  {/* Platforms */}
+                  <TableCell>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {request.platforms.instagram && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-pink-50 text-pink-700 font-medium">
+                          <Instagram className="w-3 h-3" />
+                          {request.platforms.instagram}
+                        </span>
+                      )}
+                      {request.platforms.tiktok && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-neutral-100 text-neutral-800 font-medium">
+                          <Video className="w-3 h-3" />
+                          {request.platforms.tiktok}
+                        </span>
+                      )}
+                      {request.platforms.youtube && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-rose-50 text-rose-700 font-medium">
+                          <Youtube className="w-3 h-3" />
+                          {request.platforms.youtube}
+                        </span>
                       )}
                     </div>
-                    <p className="text-xs text-neutral-400">@{request.handle}</p>
-                    <span className="inline-block mt-0.5 text-[10px] font-semibold text-neutral-600 bg-neutral-100 px-1.5 py-0.2 rounded">
-                      {request.category}
+                  </TableCell>
+
+                  {/* Sample Work */}
+                  <TableCell className="max-w-xs">
+                    <p className="text-xs font-semibold text-neutral-900 line-clamp-1" title={request.sampleWorkTitle}>
+                      "{request.sampleWorkTitle}"
+                    </p>
+                    <span className="text-[11px] text-neutral-400 font-medium block mt-0.5">
+                      Submitted {formatDate(request.submittedDate)}
                     </span>
-                  </div>
-                </div>
+                    {request.rejectionReason && (
+                      <p className="text-[10px] text-rose-600 font-medium mt-0.5">
+                        {request.rejectionReason}
+                      </p>
+                    )}
+                  </TableCell>
 
-                <Badge
-                  variant={
-                    request.status === 'approved'
-                      ? 'success'
-                      : request.status === 'rejected'
-                      ? 'danger'
-                      : 'warning'
-                  }
-                  size="sm"
-                  dot
-                >
-                  {request.status}
-                </Badge>
-              </div>
+                  {/* Status */}
+                  <TableCell>
+                    <Badge
+                      variant={
+                        request.status === 'approved'
+                          ? 'success'
+                          : request.status === 'rejected'
+                          ? 'danger'
+                          : 'warning'
+                      }
+                      size="sm"
+                      dot
+                    >
+                      {request.status}
+                    </Badge>
+                  </TableCell>
 
-              {/* Stats strip */}
-              <div className="flex items-center justify-between text-xs py-2 px-3 rounded-lg bg-neutral-50 border border-neutral-100 font-medium text-neutral-700 mt-3">
-                <span><strong>{request.followersTotal}</strong> reach</span>
-                <span className="text-neutral-300">•</span>
-                <span><strong>{request.sampleWorkViews}</strong> views</span>
-              </div>
-
-              {/* Connected Platforms */}
-              <div className="mt-2.5 flex items-center gap-1.5 flex-wrap">
-                {request.platforms.instagram && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-pink-50 text-pink-700 font-medium">
-                    <Instagram className="w-3 h-3" />
-                    {request.platforms.instagram}
-                  </span>
-                )}
-                {request.platforms.tiktok && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-neutral-100 text-neutral-800 font-medium">
-                    <Video className="w-3 h-3" />
-                    {request.platforms.tiktok}
-                  </span>
-                )}
-                {request.platforms.youtube && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-rose-50 text-rose-700 font-medium">
-                    <Youtube className="w-3 h-3" />
-                    {request.platforms.youtube}
-                  </span>
-                )}
-              </div>
-
-              {/* Audited Video Submission */}
-              <div className="mt-2.5 p-2.5 bg-neutral-50 rounded-lg border border-neutral-100 text-xs">
-                <span className="text-[10px] text-neutral-400 block font-medium">Audited Sample ({formatDate(request.submittedDate)}):</span>
-                <p className="text-xs text-neutral-700 line-clamp-1 italic mt-0.5">
-                  "{request.sampleWorkTitle}"
-                </p>
-              </div>
-
-              {request.rejectionReason && (
-                <div className="mt-2 p-2 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-700">
-                  <span className="font-semibold">Reason: </span>{request.rejectionReason}
-                </div>
-              )}
-            </div>
-
-            {/* Actions Bar */}
-            {request.status === 'pending' && (
-              <div className="pt-3 mt-3 border-t border-neutral-100 flex items-center justify-end gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-rose-600 border-rose-200 hover:bg-rose-50 text-xs h-8"
-                  onClick={() => setRejectingItem(request)}
-                >
-                  Decline
-                </Button>
-
-                <Button
-                  variant="accent"
-                  size="sm"
-                  className="text-xs h-8"
-                  onClick={() => handleApprove(request.id)}
-                >
-                  Approve
-                </Button>
-              </div>
+                  {/* Actions */}
+                  <TableCell className="text-right">
+                    {request.status === 'pending' ? (
+                      <div className="flex items-center justify-end gap-1.5">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-rose-600 border-rose-200 hover:bg-rose-50 text-xs h-7 px-2.5 font-bold"
+                          onClick={() => setRejectingItem(request)}
+                        >
+                          Decline
+                        </Button>
+                        <Button
+                          variant="accent"
+                          size="sm"
+                          className="text-xs h-7 px-2.5 font-bold"
+                          onClick={() => handleApprove(request.id)}
+                        >
+                          Approve
+                        </Button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-neutral-400 font-medium">
+                        Reviewed
+                      </span>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
             )}
-          </Card>
-        ))}
-      </div>
+          </TableBody>
+        </Table>
+      </Card>
 
       {/* Reject Modal */}
       {rejectingItem && (
