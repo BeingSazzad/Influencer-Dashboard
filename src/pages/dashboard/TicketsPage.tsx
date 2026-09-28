@@ -185,7 +185,7 @@ export const TicketsPage: React.FC = () => {
       <Card className="p-4 space-y-3">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Status & Type Pills */}
-          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
+          <div className="flex items-center gap-1.5 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             <button
               type="button"
               onClick={() => {
@@ -193,7 +193,7 @@ export const TicketsPage: React.FC = () => {
                 dispatch(setTicketTypeFilter('all'));
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'all' && typeFilter === 'all'
                   ? 'bg-white text-neutral-950 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'
@@ -208,13 +208,13 @@ export const TicketsPage: React.FC = () => {
                 dispatch(setTicketStatusFilter('all'));
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
                 typeFilter === 'user_report'
                   ? 'bg-white text-rose-700 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
+              <ShieldAlert className="w-4 h-4 text-rose-500" />
               Reports ({reportCount})
             </button>
             <button
@@ -224,7 +224,7 @@ export const TicketsPage: React.FC = () => {
                 dispatch(setTicketTypeFilter('all'));
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'open' && typeFilter === 'all'
                   ? 'bg-white text-neutral-950 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'
@@ -239,7 +239,7 @@ export const TicketsPage: React.FC = () => {
                 dispatch(setTicketTypeFilter('all'));
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'in_progress' && typeFilter === 'all'
                   ? 'bg-white text-neutral-950 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'
@@ -254,7 +254,7 @@ export const TicketsPage: React.FC = () => {
                 dispatch(setTicketTypeFilter('all'));
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all shrink-0 cursor-pointer ${
                 statusFilter === 'resolved' && typeFilter === 'all'
                   ? 'bg-white text-neutral-950 shadow-sm'
                   : 'text-neutral-500 hover:text-neutral-900'

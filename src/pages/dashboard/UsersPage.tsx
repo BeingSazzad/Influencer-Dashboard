@@ -200,7 +200,7 @@ export const UsersPage: React.FC = () => {
                   dispatch(setRoleFilter(tab.value));
                   setCurrentPage(1);
                 }}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                className={`flex items-center gap-2 px-3.5 py-2 text-sm font-bold rounded-lg transition-all cursor-pointer ${
                   roleFilter === tab.value
                     ? 'bg-white text-neutral-950 shadow-sm'
                     : 'text-neutral-500 hover:text-neutral-900'
@@ -208,7 +208,7 @@ export const UsersPage: React.FC = () => {
               >
                 <span>{tab.label}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                  className={`text-xs px-2 py-0.5 rounded-full font-bold ${
                     roleFilter === tab.value
                       ? 'bg-neutral-100 text-neutral-900'
                       : 'bg-neutral-200/60 text-neutral-500'
