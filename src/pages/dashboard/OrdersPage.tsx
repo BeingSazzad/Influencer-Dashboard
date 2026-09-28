@@ -12,7 +12,6 @@ import {
 } from '@/store/slices/ordersSlice';
 import { MarketplaceOrder, OrderStatus } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { StatCard } from '@/components/shared/StatCard';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -36,7 +35,6 @@ import {
   FileText,
   User,
   Building,
-  RotateCcw,
   Scale,
   X,
   Bell,
@@ -238,40 +236,6 @@ export const OrdersPage: React.FC = () => {
         }
       />
 
-      {/* Top Stat Cards: Clean & Punchy */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Active Orders"
-          value={activeOrdersCount.toString()}
-          icon={<ShoppingBag className="w-5 h-5" />}
-          change={14.2}
-          accentColor="pink"
-          changePeriod="vs last month"
-        />
-        <StatCard
-          title="In Escrow"
-          value={formatCurrency(escrowLockedEur)}
-          icon={<Lock className="w-5 h-5" />}
-          change={8.5}
-          accentColor="emerald"
-          changePeriod="vs last month"
-        />
-        <StatCard
-          title="In Review"
-          value={reviewPendingCount.toString()}
-          icon={<Clock className="w-5 h-5" />}
-          accentColor="amber"
-          subtitle="Awaiting client sign-off"
-        />
-        <StatCard
-          title="At Risk"
-          value={atRiskCount.toString()}
-          icon={<AlertTriangle className="w-5 h-5" />}
-          accentColor="black"
-          subtitle={atRiskCount > 0 ? 'Requires attention' : 'All contracts healthy'}
-        />
-      </div>
-
       {/* Filter Tabs & Search Bar */}
       <Card className="p-4 space-y-3">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
@@ -430,10 +394,10 @@ export const OrdersPage: React.FC = () => {
             <thead className="bg-neutral-50 text-neutral-500 text-xs border-b border-neutral-100 font-bold uppercase tracking-wider">
               <tr>
                 <th className="py-3 px-5">Order</th>
-                <th className="py-3 px-5">Parties</th>
+                <th className="py-3 px-5">Brand</th>
+                <th className="py-3 px-5">Creator</th>
                 <th className="py-3 px-5">Amount</th>
                 <th className="py-3 px-5">Status</th>
-                <th className="py-3 px-5">Deadline</th>
                 <th className="py-3 px-5 text-right">Action</th>
               </tr>
             </thead>
@@ -476,28 +440,30 @@ export const OrdersPage: React.FC = () => {
                         #{order.id}
                       </span>
                       <p
-                        className="text-sm font-bold text-neutral-950 truncate max-w-[280px] mt-0.5"
+                        className="text-sm font-bold text-neutral-950 truncate max-w-[260px] mt-0.5"
                         title={order.packageTitle}
                       >
                         {order.packageTitle}
                       </p>
                     </td>
 
-                    {/* Clean Parties (Brand & Creator) */}
+                    {/* Brand Column */}
                     <td className="py-4 px-5" onClick={(e) => e.stopPropagation()}>
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-2">
-                          <Avatar src={order.brandAvatar} name={order.brandName} size="xs" />
-                          <span className="text-xs font-bold text-neutral-900 truncate max-w-[140px]">
-                            {order.brandName}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Avatar src={order.creatorAvatar} name={order.creatorName} size="xs" />
-                          <span className="text-xs text-neutral-600 truncate max-w-[140px]">
-                            {order.creatorName}
-                          </span>
-                        </div>
+                      <div className="flex items-center gap-2.5">
+                        <Avatar src={order.brandAvatar} name={order.brandName} size="xs" />
+                        <span className="text-xs font-extrabold text-neutral-900 truncate max-w-[150px]">
+                          {order.brandName}
+                        </span>
+                      </div>
+                    </td>
+
+                    {/* Creator Column */}
+                    <td className="py-4 px-5" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center gap-2.5">
+                        <Avatar src={order.creatorAvatar} name={order.creatorName} size="xs" />
+                        <span className="text-xs font-bold text-neutral-700 truncate max-w-[150px]">
+                          {order.creatorName}
+                        </span>
                       </div>
                     </td>
 
@@ -511,30 +477,6 @@ export const OrdersPage: React.FC = () => {
                     {/* Status Badge */}
                     <td className="py-4 px-5">
                       {renderStatusBadge(order.status)}
-                    </td>
-
-                    {/* Single-line Clean Deadline */}
-                    <td className="py-4 px-5">
-                      {order.status === 'completed' ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          Delivered
-                        </span>
-                      ) : order.daysRemaining < 0 ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200/60">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          {Math.abs(order.daysRemaining)}d overdue
-                        </span>
-                      ) : order.daysRemaining <= 1 ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/60">
-                          <Clock className="w-3.5 h-3.5" />
-                          Due in 1 day
-                        </span>
-                      ) : (
-                        <span className="text-xs font-semibold text-neutral-700">
-                          Due {order.dueDate}
-                        </span>
-                      )}
                     </td>
 
                     {/* Actions */}
@@ -869,8 +811,8 @@ export const OrdersPage: React.FC = () => {
       <Modal
         isOpen={isExtendModalOpen}
         onClose={() => setIsExtendModalOpen(false)}
-        title="Extend Delivery Turnaround SLA"
-        description="Add production days to prevent premature default and allow shipping delays."
+        title="Extend Deadline"
+        description="Add production days to prevent premature default."
         maxWidth="md"
         footer={
           <div className="flex items-center justify-end gap-2">
@@ -886,7 +828,7 @@ export const OrdersPage: React.FC = () => {
         <form onSubmit={handleExtendDeadlineSubmit} className="space-y-4">
           <div>
             <label className="text-xs font-bold text-neutral-700 block mb-1">
-              Additional Days to Add
+              Additional Days
             </label>
             <div className="relative">
               <select
@@ -920,8 +862,8 @@ export const OrdersPage: React.FC = () => {
       <Modal
         isOpen={isNudgeModalOpen}
         onClose={() => setIsNudgeModalOpen(false)}
-        title="Send Urgent Operational Nudge"
-        description="Dispatches a priority notification and email alert to the selected party."
+        title="Send Nudge"
+        description="Dispatches a reminder to the selected party."
         maxWidth="md"
         footer={
           <div className="flex items-center justify-end gap-2">
@@ -930,7 +872,7 @@ export const OrdersPage: React.FC = () => {
             </Button>
             <Button variant="accent" size="sm" onClick={handleNudgeSubmit}>
               <Send className="w-3.5 h-3.5 mr-1.5" />
-              Dispatch Nudge
+              Send Nudge
             </Button>
           </div>
         }
@@ -938,7 +880,7 @@ export const OrdersPage: React.FC = () => {
         <form onSubmit={handleNudgeSubmit} className="space-y-4">
           <div>
             <label className="text-xs font-bold text-neutral-700 block mb-1">
-              Target Counterparty
+              Recipient
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -967,7 +909,7 @@ export const OrdersPage: React.FC = () => {
           </div>
           <div>
             <label className="text-xs font-bold text-neutral-700 block mb-1">
-              Message Content
+              Message
             </label>
             <Input
               value={nudgeMessage}
@@ -978,11 +920,11 @@ export const OrdersPage: React.FC = () => {
         </form>
       </Modal>
 
-      {/* FORCE AUTO-RELEASE MODAL (Light Mode) */}
+      {/* FORCE RELEASE MODAL (Light Mode) */}
       <Modal
         isOpen={isForceReleaseModalOpen}
         onClose={() => setIsForceReleaseModalOpen(false)}
-        title="Override: Force Escrow Auto-Disbursement"
+        title="Force Escrow Release"
         description="Immediately releases funds to creator when brand fails to review in time."
         maxWidth="md"
         footer={
@@ -991,19 +933,19 @@ export const OrdersPage: React.FC = () => {
               Cancel
             </Button>
             <Button variant="accent" size="sm" onClick={handleForceReleaseSubmit}>
-              Confirm Force Release
+              Confirm Release
             </Button>
           </div>
         }
       >
         <form onSubmit={handleForceReleaseSubmit} className="space-y-4">
           <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-800">
-            <span className="font-bold block mb-1">Administrative Financial Release:</span>
+            <span className="font-bold block mb-1">Escrow Release:</span>
             This action immediately releases <strong className="text-neutral-950 font-black">€{activeDossierOrder?.creatorNetEur.toLocaleString()}</strong> from escrow to the creator's payout balance and credits Influverse with its 15% platform take-rate.
           </div>
           <div>
             <label className="text-xs font-bold text-neutral-700 block mb-1">
-              Official Override Reason
+              Reason
             </label>
             <Input
               value={forceReason}

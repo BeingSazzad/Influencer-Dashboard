@@ -82,6 +82,7 @@ export const TeamPage: React.FC = () => {
               { id: 'all', label: 'All Roles' },
               { id: 'super_admin', label: 'Super Admin' },
               { id: 'admin', label: 'Admin' },
+              { id: 'moderator', label: 'Moderator' },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -149,8 +150,21 @@ export const TeamPage: React.FC = () => {
                 </TableCell>
 
                 <TableCell>
-                  <Badge variant={member.role === 'super_admin' ? 'default' : 'neutral'} size="sm">
-                    {member.role === 'super_admin' ? 'Super Admin' : 'Admin'}
+                  <Badge
+                    variant={
+                      member.role === 'super_admin'
+                        ? 'default'
+                        : member.role === 'moderator'
+                        ? 'neutral'
+                        : 'pink'
+                    }
+                    size="sm"
+                  >
+                    {member.role === 'super_admin'
+                      ? 'Super Admin'
+                      : member.role === 'moderator'
+                      ? 'Moderator'
+                      : 'Admin'}
                   </Badge>
                 </TableCell>
 
@@ -234,7 +248,7 @@ export const TeamPage: React.FC = () => {
                   className="w-full h-10 pl-3 pr-8 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink appearance-none cursor-pointer text-neutral-800 font-semibold"
                 >
                   <option value="admin">Admin</option>
-                  <option value="super_admin">Super Admin</option>
+                  <option value="moderator">Moderator</option>
                 </select>
                 <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>

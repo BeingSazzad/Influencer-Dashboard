@@ -259,7 +259,7 @@ export const CmsPage: React.FC = () => {
                       onClick={handleSaveLegal}
                       leftIcon={<Save className="w-3.5 h-3.5" />}
                     >
-                      Save & Publish
+                      Save Policy
                     </Button>
                   </div>
                 </div>
@@ -299,7 +299,7 @@ export const CmsPage: React.FC = () => {
               onClick={handleOpenNewFaq}
               leftIcon={<Plus className="w-4 h-4" />}
             >
-              Add New Question
+              Add Question
             </Button>
           </div>
 
@@ -319,11 +319,11 @@ export const CmsPage: React.FC = () => {
                         </span>
                         {faq.isPublished ? (
                           <Badge variant="success" size="sm" dot>
-                            Published on Web
+                            Live
                           </Badge>
                         ) : (
                           <Badge variant="neutral" size="sm">
-                            Draft / Hidden
+                            Draft
                           </Badge>
                         )}
                       </div>
@@ -372,7 +372,7 @@ export const CmsPage: React.FC = () => {
             <Modal
               isOpen={true}
               onClose={() => setIsFaqModalOpen(false)}
-              title={editingFaq ? 'Edit FAQ Item' : 'Create New FAQ Item'}
+              title={editingFaq ? 'Edit FAQ' : 'Add FAQ'}
               maxWidth="md"
               footer={
                 <>
@@ -390,14 +390,14 @@ export const CmsPage: React.FC = () => {
                     className="font-bold"
                     onClick={handleSaveFaq}
                   >
-                    {editingFaq ? 'Save Changes' : 'Publish Question'}
+                    {editingFaq ? 'Save' : 'Add Question'}
                   </Button>
                 </>
               }
             >
               <div className="space-y-4">
                 <Input
-                  label="Question Title"
+                  label="Question"
                   value={faqQuestion}
                   onChange={(e) => setFaqQuestion(e.target.value)}
                   placeholder="e.g. When are funds released from escrow?"
@@ -406,7 +406,7 @@ export const CmsPage: React.FC = () => {
                 />
 
                 <Textarea
-                  label="Answer Explanation"
+                  label="Answer"
                   value={faqAnswer}
                   onChange={(e) => setFaqAnswer(e.target.value)}
                   placeholder="Provide a concise, direct explanation visible to both brands and creators..."

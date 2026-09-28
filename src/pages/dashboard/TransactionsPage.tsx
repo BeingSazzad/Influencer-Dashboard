@@ -22,7 +22,6 @@ import {
   Search,
   CheckCircle2,
   ChevronDown,
-  Eye,
   FileText,
 } from 'lucide-react';
 
@@ -86,7 +85,7 @@ export const TransactionsPage: React.FC = () => {
     <div className="space-y-6">
       <PageHeader
         title="Transactions"
-        subtitle="Platform commission revenue ledger and 15% marketplace take-rate settlements."
+        subtitle="Platform commission revenue ledger and marketplace settlements."
         actions={
           <Button
             variant="outline"
@@ -107,27 +106,6 @@ export const TransactionsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Financial KPIs Minimal Bar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {[
-          { label: 'Total Platform Revenue', value: '€187,275', note: '15% fee on all completed deals' },
-          { label: 'Platform Take-Rate', value: '15.0%', note: 'Fixed contract margin' },
-          { label: 'In Escrow (Pending Fees)', value: '€22,275', note: 'Releasing upon sign-off' },
-          { label: 'Settled Transactions', value: '1,420', note: 'Directly deposited to treasury' },
-        ].map((item) => (
-          <Card key={item.label} className="p-4">
-            <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider block">
-              {item.label}
-            </span>
-            <div className="text-2xl font-black text-neutral-950 mt-1 tabular-nums">
-              {item.value}
-            </div>
-            <span className="text-[10px] text-neutral-600 font-semibold block mt-0.5">
-              {item.note}
-            </span>
-          </Card>
-        ))}
-      </div>
 
       {/* Minimal Control Panel: Search & Status Selector (No Unnecessary Tabs) */}
       <Card className="p-4">
@@ -173,9 +151,7 @@ export const TransactionsPage: React.FC = () => {
             <TableRow>
               <TableHead>Invoice & Order</TableHead>
               <TableHead>Campaign & Collaborators</TableHead>
-              <TableHead>Deal Value</TableHead>
-              <TableHead>Take-Rate</TableHead>
-              <TableHead>Platform Revenue</TableHead>
+              <TableHead>Revenue</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Receipt</TableHead>
@@ -184,7 +160,7 @@ export const TransactionsPage: React.FC = () => {
           <TableBody>
             {paginatedTransactions.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-12 text-neutral-500 font-medium">
+                <TableCell colSpan={6} className="text-center py-12 text-neutral-500 font-medium">
                   No platform revenue transactions found matching your filters.
                 </TableCell>
               </TableRow>
@@ -217,19 +193,7 @@ export const TransactionsPage: React.FC = () => {
                     </div>
                   </TableCell>
 
-                  {/* Deal Volume (Gross) */}
-                  <TableCell className="text-xs font-bold text-neutral-700 tabular-nums">
-                    {formatCurrency(txn.grossAmountEur)}
-                  </TableCell>
-
-                  {/* Take-Rate Badge */}
-                  <TableCell>
-                    <Badge variant="pink" size="sm">
-                      15% Fee
-                    </Badge>
-                  </TableCell>
-
-                  {/* Admin Platform Revenue Earned */}
+                  {/* Revenue */}
                   <TableCell>
                     <span className="text-xs font-black text-emerald-700 tabular-nums">
                       +{formatCurrency(txn.platformFeeEur)}

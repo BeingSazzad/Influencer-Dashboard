@@ -71,7 +71,7 @@ export const VerificationPage: React.FC = () => {
 
       {/* Filter Tabs */}
       <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start max-w-sm">
-        {(['all', 'pending', 'approved', 'rejected'] as const).map((s) => (
+        {(['all', 'pending', 'approved'] as const).map((s) => (
           <button
             key={s}
             type="button"

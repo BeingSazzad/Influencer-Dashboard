@@ -290,7 +290,7 @@ export const UsersPage: React.FC = () => {
         </div>
 
         {/* Active Filter Chips / Reset */}
-        {(searchQuery || roleFilter !== 'all' || statusFilter !== 'all') && (
+        {(searchQuery || statusFilter !== 'all') && (
           <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-neutral-500 border-t border-neutral-100">
             <span className="font-semibold text-neutral-400">Active filters:</span>
             {searchQuery && (
@@ -300,21 +300,6 @@ export const UsersPage: React.FC = () => {
                   type="button"
                   onClick={() => {
                     dispatch(setSearchQuery(''));
-                    setCurrentPage(1);
-                  }}
-                  className="hover:text-rose-600 cursor-pointer"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            {roleFilter !== 'all' && (
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-800 font-semibold text-[11px] capitalize">
-                Role: {roleFilter}
-                <button
-                  type="button"
-                  onClick={() => {
-                    dispatch(setRoleFilter('all'));
                     setCurrentPage(1);
                   }}
                   className="hover:text-rose-600 cursor-pointer"
@@ -429,14 +414,15 @@ export const UsersPage: React.FC = () => {
               paginatedUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar src={user.avatar} name={user.name} size="sm" />
-                      <div>
-                        <div className="font-extrabold text-neutral-950 text-sm">
-                          {user.name}
-                        </div>
-                        <div className="text-xs text-neutral-600 font-semibold">@{user.handle} • {user.email}</div>
-                      </div>
+                    <div className="flex items-center">
+                      <Avatar
+                        src={user.avatar}
+                        name={user.name}
+                        size="sm"
+                        className="cursor-pointer hover:ring-2 hover:ring-brand-pink/50 transition-all"
+                        onClick={() => setInspectedUser(user)}
+                        title={`${user.name} (@${user.handle})`}
+                      />
                     </div>
                   </TableCell>
 
@@ -457,11 +443,6 @@ export const UsersPage: React.FC = () => {
                     >
                       {user.status === 'active' ? 'Active' : 'Suspended'}
                     </Badge>
-                    {user.banReason && (
-                      <p className="text-[10px] text-amber-700 font-bold mt-0.5 max-w-[200px] truncate" title={user.banReason}>
-                        {user.banReason}
-                      </p>
-                    )}
                   </TableCell>
 
                   <TableCell className="font-black text-neutral-950 tabular-nums text-sm">
@@ -636,7 +617,7 @@ export const UsersPage: React.FC = () => {
         </Modal>
       )}
 
-      {/* User Details View Drawer */}
+      {/* User Details View Modal */}
       {inspectedUser && (
         <Modal
           isOpen={true}
@@ -645,72 +626,100 @@ export const UsersPage: React.FC = () => {
             <div className="flex items-center gap-3">
               <Avatar src={inspectedUser.avatar} name={inspectedUser.name} size="md" />
               <div>
-                <h3 className="text-base font-bold text-neutral-900">{inspectedUser.name}</h3>
-                <p className="text-xs text-neutral-400">@{inspectedUser.handle} • {inspectedUser.id}</p>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-extrabold text-neutral-950">{inspectedUser.name}</h3>
+                  <Badge variant={inspectedUser.role === 'creator' ? 'pink' : 'neutral'} size="sm">
+                    {inspectedUser.role}
+                  </Badge>
+                  <Badge
+                    variant={inspectedUser.status === 'active' ? 'success' : 'warning'}
+                    size="sm"
+                    dot
+                  >
+                    {inspectedUser.status === 'active' ? 'Active' : 'Suspended'}
+                  </Badge>
+                </div>
+                <p className="text-xs text-neutral-500 font-medium mt-0.5">
+                  @{inspectedUser.handle} • ID: {inspectedUser.id}
+                </p>
               </div>
             </div>
           }
           maxWidth="lg"
           footer={
-            <Button variant="primary" size="sm" onClick={() => setInspectedUser(null)}>
-              Close Audit View
-            </Button>
+            <div className="flex justify-end w-full">
+              <Button variant="outline" size="sm" className="font-bold text-xs" onClick={() => setInspectedUser(null)}>
+                Close
+              </Button>
+            </div>
           }
         >
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-neutral-50 p-4 rounded-xl border border-neutral-100">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-500">Account Type</span>
-                <p className="text-xs font-bold text-neutral-900 capitalize">{inspectedUser.role}</p>
+          <div className="space-y-5 text-xs">
+            {/* Key KPI Highlights Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3 bg-neutral-50/80 rounded-xl border border-neutral-100">
+                <span className="text-[11px] font-bold text-neutral-500 block">Total Volume</span>
+                <p className="text-base font-black text-neutral-950 mt-0.5 tabular-nums">
+                  {formatCurrency(inspectedUser.totalVolumeEur)}
+                </p>
               </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-500">Status</span>
-                <p className="text-xs font-bold capitalize">{inspectedUser.status}</p>
+              <div className="p-3 bg-neutral-50/80 rounded-xl border border-neutral-100">
+                <span className="text-[11px] font-bold text-neutral-500 block">Campaigns</span>
+                <p className="text-base font-black text-neutral-950 mt-0.5 tabular-nums">
+                  {inspectedUser.ordersCount}
+                </p>
               </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-500">Location</span>
-                <p className="text-xs font-bold text-neutral-900">{inspectedUser.location}</p>
+              <div className="p-3 bg-neutral-50/80 rounded-xl border border-neutral-100">
+                <span className="text-[11px] font-bold text-neutral-500 block">Location</span>
+                <p className="text-xs font-bold text-neutral-900 mt-1 truncate">
+                  {inspectedUser.location}
+                </p>
               </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-neutral-500">Volume</span>
-                <p className="text-xs font-bold text-neutral-900 tabular-nums">{formatCurrency(inspectedUser.totalVolumeEur)}</p>
+              <div className="p-3 bg-neutral-50/80 rounded-xl border border-neutral-100">
+                <span className="text-[11px] font-bold text-neutral-500 block">Joined</span>
+                <p className="text-xs font-bold text-neutral-900 mt-1">
+                  {formatDate(inspectedUser.joinedDate)}
+                </p>
               </div>
             </div>
 
             {inspectedUser.banReason && (
-              <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
-                <span className="text-xs font-bold text-amber-800 uppercase tracking-wide">
+              <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
+                <span className="text-xs font-bold text-amber-900 block">
                   Account Suspension Notice
                 </span>
-                <p className="text-xs text-amber-700">{inspectedUser.banReason}</p>
+                <p className="text-xs text-amber-800">{inspectedUser.banReason}</p>
                 {inspectedUser.notes && (
-                  <p className="text-[11px] text-amber-600 italic mt-2">
+                  <p className="text-[11px] text-amber-700 italic mt-1.5">
                     Internal notes: {inspectedUser.notes}
                   </p>
                 )}
               </div>
             )}
 
+            {/* Profile & Trust Information */}
             <div className="space-y-2">
-              <h4 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
-                Platform Activity & Trust Score
-              </h4>
-              <div className="border border-neutral-200 rounded-xl p-4 divide-y divide-neutral-100 text-xs">
-                <div className="py-2 flex justify-between">
-                  <span className="text-neutral-500">Corporate / Legal Entity</span>
-                  <span className="font-semibold text-neutral-800">{inspectedUser.companyName || 'Individual Creator'}</span>
+              <span className="text-xs font-bold text-neutral-800 uppercase tracking-wider block">
+                Account Details & Trust
+              </span>
+              <div className="bg-white border border-neutral-200 rounded-xl divide-y divide-neutral-100 overflow-hidden text-xs">
+                <div className="px-4 py-2.5 flex items-center justify-between">
+                  <span className="font-medium text-neutral-600">Legal Entity</span>
+                  <span className="font-bold text-neutral-950">{inspectedUser.companyName || inspectedUser.name}</span>
                 </div>
-                <div className="py-2 flex justify-between">
-                  <span className="text-neutral-500">Contact Email</span>
-                  <span className="font-semibold text-neutral-800">{inspectedUser.email}</span>
+                <div className="px-4 py-2.5 flex items-center justify-between">
+                  <span className="font-medium text-neutral-600">Contact Email</span>
+                  <span className="font-bold text-neutral-950">{inspectedUser.email}</span>
                 </div>
-                <div className="py-2 flex justify-between">
-                  <span className="text-neutral-500">Stripe Connect ID</span>
-                  <span className="font-mono text-neutral-700">acct_1N9xInfluverse28</span>
+                <div className="px-4 py-2.5 flex items-center justify-between">
+                  <span className="font-medium text-neutral-600">Stripe Connect ID</span>
+                  <span className="font-mono text-xs font-bold text-neutral-800">acct_1N9xInfluverse28</span>
                 </div>
-                <div className="py-2 flex justify-between">
-                  <span className="text-neutral-500">Escrow Dispute History</span>
-                  <span className="font-semibold text-emerald-600">0 Disputes Filed Against</span>
+                <div className="px-4 py-2.5 flex items-center justify-between">
+                  <span className="font-medium text-neutral-600">Escrow Dispute History</span>
+                  <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    Clean Record • 0 Disputes
+                  </span>
                 </div>
               </div>
             </div>

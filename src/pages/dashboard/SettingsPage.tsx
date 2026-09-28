@@ -6,14 +6,14 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { ImageUploadBox } from '@/components/shared/ImageUploadBox';
 import {
   User,
   Lock,
-  KeyRound,
   CheckCircle,
   Save,
   Sliders,
+  Camera,
+  KeyRound,
   AlertTriangle,
 } from 'lucide-react';
 
@@ -155,16 +155,81 @@ export const SettingsPage: React.FC = () => {
             )}
           </div>
 
-          <form onSubmit={handleUpdateProfile} className="space-y-5">
-            <ImageUploadBox
-              label="Avatar"
-              value={avatar}
-              onChange={setAvatar}
-              aspectRatio="avatar"
-              previewBg="light"
-              recommendedDimensions="Square JPG or PNG"
-            />
+          <form onSubmit={handleUpdateProfile} className="space-y-6">
+            {/* Centered Standard Circular Avatar */}
+            <div className="flex flex-col items-center justify-center py-2">
+              <div className="relative group">
+                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-neutral-200 shadow-sm bg-neutral-100 flex items-center justify-center">
+                  {avatar ? (
+                    <img
+                      src={avatar}
+                      alt={name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="w-10 h-10 text-neutral-400" />
+                  )}
+                </div>
+                <label className="absolute inset-0 rounded-full bg-black/40 text-white flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                  <Camera className="w-5 h-5 mb-0.5" />
+                  <span className="text-[10px] font-bold">Change</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                          if (event.target?.result) {
+                            setAvatar(event.target.result as string);
+                          }
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                </label>
+              </div>
 
+              <div className="mt-2.5 flex items-center gap-2">
+                <label className="text-xs font-bold text-brand-pink hover:underline cursor-pointer">
+                  Change Photo
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                          if (event.target?.result) {
+                            setAvatar(event.target.result as string);
+                          }
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                </label>
+                {avatar && (
+                  <>
+                    <span className="text-neutral-300">•</span>
+                    <button
+                      type="button"
+                      onClick={() => setAvatar('')}
+                      className="text-xs font-semibold text-neutral-400 hover:text-rose-600 transition-colors cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Name & Email Below Avatar */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Full Name"

@@ -6,7 +6,6 @@ import {
 } from '@/store/slices/escrowSlice';
 import { EscrowDispute } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
-import { StatCard } from '@/components/shared/StatCard';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -23,15 +22,13 @@ import {
   ExternalLink,
   Split,
   Undo2,
-  Lock,
   FileText,
   ChevronDown,
 } from 'lucide-react';
 
 export const EscrowPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { disputes, filterStatus, totalEscrowHeldEur, totalVolumeArbitratedEur } =
-    useAppSelector((state) => state.escrow);
+  const { disputes, filterStatus } = useAppSelector((state) => state.escrow);
 
   const [activeDisputeForArbitration, setActiveDisputeForArbitration] =
     useState<EscrowDispute | null>(null);
@@ -70,34 +67,8 @@ export const EscrowPage: React.FC = () => {
     <div className="space-y-6">
       <PageHeader
         title="Disputes"
-        subtitle="Arbitrate escrow conflicts and payment settlements."
+        subtitle="Arbitrate escrow conflicts, evidence audits, and binding financial settlements."
       />
-
-      {/* Escrow High-Level Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <StatCard
-          title="Escrow Capital In Hold"
-          value={formatCurrency(totalEscrowHeldEur)}
-          icon={<Lock className="w-5 h-5" />}
-          accentColor="pink"
-          subtitle="Segregated client accounts"
-        />
-        <StatCard
-          title="Total Volume Arbitrated"
-          value={formatCurrency(totalVolumeArbitratedEur)}
-          icon={<Scale className="w-5 h-5" />}
-          accentColor="black"
-          subtitle="Lifetime resolved disputes"
-        />
-        <StatCard
-          title="Platform Dispute Ratio"
-          value="0.74%"
-          change={-0.12}
-          icon={<CheckCircle2 className="w-5 h-5" />}
-          accentColor="emerald"
-          subtitle="Industry benchmark: 2.5%"
-        />
-      </div>
 
       {/* Filter Tabs */}
       <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start max-w-xs">

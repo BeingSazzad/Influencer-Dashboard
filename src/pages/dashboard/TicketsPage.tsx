@@ -50,7 +50,6 @@ export const TicketsPage: React.FC = () => {
   const openCount = tickets.filter((t) => t.status === 'open').length;
   const inProgressCount = tickets.filter((t) => t.status === 'in_progress').length;
   const reportCount = tickets.filter((t) => t.type === 'user_report').length;
-  const urgentCount = tickets.filter((t) => t.priority === 'urgent' && t.status !== 'resolved').length;
 
   const q = searchQuery.toLowerCase().trim();
   const filteredTickets = tickets.filter((t) => {
@@ -181,24 +180,6 @@ export const TicketsPage: React.FC = () => {
         subtitle="Manage customer support inquiries and user reports."
       />
 
-      {/* KPI Stat Cards: High Contrast & Punchy Bold */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: 'Open Tickets', value: openCount.toString(), color: 'text-neutral-950' },
-          { label: 'User Reports', value: reportCount.toString(), color: 'text-rose-600' },
-          { label: 'Urgent', value: urgentCount.toString(), color: 'text-amber-600' },
-          { label: 'In Progress', value: inProgressCount.toString(), color: 'text-neutral-950' },
-        ].map((item) => (
-          <Card key={item.label} className="p-4 border-neutral-200/80">
-            <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider block">
-              {item.label}
-            </span>
-            <div className={`text-2xl sm:text-[28px] font-black mt-1.5 tabular-nums ${item.color}`}>
-              {item.value}
-            </div>
-          </Card>
-        ))}
-      </div>
 
       {/* Filter Tabs & Search */}
       <Card className="p-4 space-y-3">
@@ -384,14 +365,13 @@ export const TicketsPage: React.FC = () => {
               <TableHead>Category</TableHead>
               <TableHead>Priority</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Updated</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedTickets.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="py-12 text-center text-neutral-500 font-medium">
+                <TableCell colSpan={7} className="py-12 text-center text-neutral-500 font-medium">
                   <div className="max-w-xs mx-auto space-y-2">
                     <LifeBuoy className="w-8 h-8 mx-auto text-neutral-300" />
                     <p className="font-bold text-neutral-900">No support tickets found</p>
@@ -470,13 +450,6 @@ export const TicketsPage: React.FC = () => {
                   {/* Status */}
                   <TableCell>
                     {renderStatusBadge(ticket.status)}
-                  </TableCell>
-
-                  {/* Updated */}
-                  <TableCell>
-                    <span className="text-xs font-semibold text-neutral-500">
-                      {ticket.lastUpdated}
-                    </span>
                   </TableCell>
 
                   {/* Actions */}
@@ -576,107 +549,78 @@ export const TicketsPage: React.FC = () => {
           }
         >
           <div className="space-y-4 text-xs">
-            {/* Header Subject Banner */}
-            <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            {/* Clean Ticket Meta Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-100">
               <div>
-                <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className="text-sm font-extrabold text-neutral-950">
-                    {activeTicket.subject}
-                  </span>
-                  {renderPriorityBadge(activeTicket.priority)}
-                  {renderStatusBadge(activeTicket.status)}
-                </div>
-                <p className="text-[11px] text-neutral-500">
-                  Category: <span className="font-bold text-neutral-900">{getCategoryLabel(activeTicket.category)}</span> • Created {activeTicket.createdAt}
+                <h4 className="text-sm font-extrabold text-neutral-950">
+                  {activeTicket.subject}
+                </h4>
+                <p className="text-xs text-neutral-500 font-medium mt-0.5">
+                  {getCategoryLabel(activeTicket.category)} • Created {activeTicket.createdAt}
                 </p>
               </div>
-
-              <div className="sm:text-right shrink-0">
-                <span className="text-[10px] text-neutral-400 uppercase font-bold tracking-wider block">
-                  Assigned Agent
-                </span>
-                <span className="text-xs font-bold text-neutral-900">
-                  {activeTicket.assignedAdmin || 'Unassigned'}
-                </span>
+              <div className="flex items-center gap-2 shrink-0">
+                {renderPriorityBadge(activeTicket.priority)}
+                {renderStatusBadge(activeTicket.status)}
               </div>
             </div>
 
-            {/* Inquiring User & Reported Target */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* Inquirer */}
-              <div className="p-3.5 rounded-xl bg-white border border-neutral-200 space-y-2">
-                <span className="text-[10px] font-bold uppercase text-neutral-500 tracking-wider block">
-                  Submitted By
-                </span>
-                <div className="flex items-center gap-3">
-                  <Avatar src={activeTicket.userAvatar} name={activeTicket.userName} size="md" />
+            {/* Inquirer Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-neutral-50 border border-neutral-100">
+              <div className="flex items-center gap-2.5">
+                <Avatar src={activeTicket.userAvatar} name={activeTicket.userName} size="sm" />
+                <div>
+                  <span className="font-bold text-xs text-neutral-950">{activeTicket.userName}</span>
+                  <span className="text-xs text-neutral-500 ml-2 font-medium">{activeTicket.userEmail}</span>
+                </div>
+              </div>
+              <Badge variant="neutral" size="sm" className="capitalize self-start sm:self-auto">
+                {activeTicket.userRole}
+              </Badge>
+            </div>
+
+            {/* Reported User (only if present) */}
+            {activeTicket.reportedUser && (
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200/80 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <Avatar src={activeTicket.reportedUser.avatar} name={activeTicket.reportedUser.name} size="sm" />
                   <div>
-                    <p className="font-extrabold text-neutral-950 text-xs">{activeTicket.userName}</p>
-                    <p className="text-[11px] text-neutral-500">{activeTicket.userEmail}</p>
-                    <Badge variant="neutral" size="sm" className="mt-1 capitalize">
-                      {activeTicket.userRole}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-
-              {/* Reported User (if applicable) */}
-              {activeTicket.reportedUser ? (
-                <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase text-rose-800 tracking-wider flex items-center gap-1">
-                      <ShieldAlert className="w-3.5 h-3.5" />
-                      Reported Account
-                    </span>
-                    <Badge variant="danger" size="sm">Under Review</Badge>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Avatar src={activeTicket.reportedUser.avatar} name={activeTicket.reportedUser.name} size="md" />
-                    <div>
-                      <p className="font-extrabold text-neutral-950 text-xs">
-                        {activeTicket.reportedUser.name}
-                      </p>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-xs text-rose-950">{activeTicket.reportedUser.name}</span>
                       {activeTicket.reportedUser.handle && (
-                        <p className="text-[11px] text-rose-700 font-bold">{activeTicket.reportedUser.handle}</p>
+                        <span className="text-xs text-rose-700 font-medium">{activeTicket.reportedUser.handle}</span>
                       )}
-                      <p className="text-[11px] text-neutral-700 mt-1 italic leading-relaxed">
-                        "{activeTicket.reportedUser.reason}"
-                      </p>
                     </div>
+                    {activeTicket.reportedUser.reason && (
+                      <p className="text-xs text-rose-800 italic mt-0.5">"{activeTicket.reportedUser.reason}"</p>
+                    )}
                   </div>
                 </div>
-              ) : (
-                <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 flex items-center justify-center text-center">
-                  <div className="space-y-0.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mx-auto" />
-                    <p className="text-xs font-bold text-neutral-900">Standard Inquiry</p>
-                    <p className="text-[11px] text-neutral-500">No account sanctions reported.</p>
-                  </div>
-                </div>
-              )}
-            </div>
+                <Badge variant="danger" size="sm">Under Review</Badge>
+              </div>
+            )}
 
             {/* Conversation Messages */}
-            <div className="space-y-2.5">
-              <span className="text-xs font-bold text-neutral-900 uppercase tracking-wider block">
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider block">
                 Messages ({activeTicket.messages.length})
               </span>
 
-              <div className="space-y-3 max-h-60 overflow-y-auto p-3 bg-neutral-50 rounded-xl border border-neutral-200">
+              <div className="space-y-2.5 max-h-56 overflow-y-auto p-3 bg-neutral-50/50 rounded-xl border border-neutral-100">
                 {activeTicket.messages.map((msg) => (
                   <div
                     key={msg.id}
                     className={`p-3 rounded-xl text-xs space-y-1 ${
                       msg.isAdminReply
-                        ? 'bg-neutral-900 text-white ml-6'
-                        : 'bg-white text-neutral-900 border border-neutral-200 mr-6 shadow-2xs'
+                        ? 'bg-pink-50 border border-pink-200 text-neutral-950 ml-6'
+                        : 'bg-white text-neutral-900 border border-neutral-200/80 mr-6 shadow-2xs'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className={`font-bold ${msg.isAdminReply ? 'text-white' : 'text-neutral-900'}`}>
+                      <span className={`font-bold ${msg.isAdminReply ? 'text-brand-pink' : 'text-neutral-950'}`}>
                         {msg.senderName}
                       </span>
-                      <span className={`text-[10px] ${msg.isAdminReply ? 'text-neutral-400' : 'text-neutral-400'}`}>
+                      <span className="text-[10px] text-neutral-400">
                         {msg.timestamp}
                       </span>
                     </div>
