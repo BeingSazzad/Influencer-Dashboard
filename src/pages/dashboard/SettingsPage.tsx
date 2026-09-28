@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { updateAdminProfile, toggleTwoFactor } from '@/store/slices/authSlice';
+import { updateAdminProfile } from '@/store/slices/authSlice';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -266,33 +266,6 @@ export const SettingsPage: React.FC = () => {
                 </Button>
               </div>
             </form>
-
-            <div className="pt-6 border-t border-neutral-100 flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-neutral-900">
-                    Two-Factor Authentication
-                  </span>
-                  <Badge
-                    variant={currentUser?.twoFactorEnabled ? 'success' : 'neutral'}
-                    size="sm"
-                  >
-                    {currentUser?.twoFactorEnabled ? 'Enabled' : 'Disabled'}
-                  </Badge>
-                </div>
-                <p className="text-xs text-neutral-400 mt-0.5">
-                  Extra authentication step on login.
-                </p>
-              </div>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => dispatch(toggleTwoFactor())}
-              >
-                {currentUser?.twoFactorEnabled ? 'Disable' : 'Enable'}
-              </Button>
-            </div>
           </div>
         </Card>
       )}

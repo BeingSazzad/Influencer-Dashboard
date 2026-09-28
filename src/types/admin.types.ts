@@ -7,9 +7,9 @@ export interface AdminUser {
   avatar: string;
   role: AdminRole;
   status: 'active' | 'suspended';
-  twoFactorEnabled: boolean;
-  lastLogin: string;
-  createdAt: string;
+  twoFactorEnabled?: boolean;
+  lastLogin?: string;
+  createdAt?: string;
 }
 
 export type UserStatus = 'active' | 'pending_verification' | 'suspended' | 'banned';

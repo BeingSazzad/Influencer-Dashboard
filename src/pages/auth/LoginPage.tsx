@@ -71,18 +71,15 @@ export const LoginPage: React.FC = () => {
         />
       </div>
 
-      <div className="flex items-center justify-between text-xs">
+      <div className="flex items-center text-xs">
         <label className="flex items-center gap-2 cursor-pointer select-none text-neutral-600">
           <input
             type="checkbox"
             defaultChecked
             className="w-4 h-4 rounded text-brand-black border-neutral-300 focus:ring-brand-pink/20"
           />
-          <span>Remember session (14 days)</span>
+          <span>Remember me</span>
         </label>
-        <span className="text-neutral-400 font-medium cursor-not-allowed">
-          2FA Active
-        </span>
       </div>
 
       <Button
@@ -93,14 +90,8 @@ export const LoginPage: React.FC = () => {
         isLoading={isLoading}
         rightIcon={<KeyRound className="w-4 h-4" />}
       >
-        Authenticate Session
+        Sign In
       </Button>
-
-      <div className="pt-2 text-center">
-        <p className="text-[11px] text-neutral-400">
-          Default Super Admin preset loaded for staging review.
-        </p>
-      </div>
     </form>
   );
 };
