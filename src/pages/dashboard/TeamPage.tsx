@@ -18,14 +18,9 @@ import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
 import {
-  ShieldAlert,
   UserPlus,
-  ShieldCheck,
-  KeyRound,
   Trash2,
-  Lock,
   Search,
-  CheckCircle,
 } from 'lucide-react';
 
 export const TeamPage: React.FC = () => {
@@ -152,7 +147,7 @@ export const TeamPage: React.FC = () => {
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>2FA</TableHead>
-              <TableHead>Last Active</TableHead>
+              <TableHead>Active</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -193,16 +188,12 @@ export const TeamPage: React.FC = () => {
                 </TableCell>
 
                 <TableCell>
-                  {member.twoFactorEnabled ? (
-                    <span className="inline-flex items-center gap-1 text-xs text-emerald-700 font-semibold">
-                      <Lock className="w-3.5 h-3.5 text-emerald-600" />
-                      Hardware / App Active
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 text-xs text-neutral-400">
-                      Not configured
-                    </span>
-                  )}
+                  <Badge
+                    variant={member.twoFactorEnabled ? 'success' : 'neutral'}
+                    size="sm"
+                  >
+                    {member.twoFactorEnabled ? 'Active' : 'Off'}
+                  </Badge>
                 </TableCell>
 
                 <TableCell className="text-neutral-500 text-xs">
@@ -234,37 +225,6 @@ export const TeamPage: React.FC = () => {
             ))}
           </TableBody>
         </Table>
-      </Card>
-
-      {/* Role Authority Guide (RBAC Matrix) */}
-      <Card className="p-6">
-        <CardTitle className="text-sm">Role Privilege Hierarchy</CardTitle>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 text-xs">
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200/60 space-y-1.5">
-            <span className="font-bold text-neutral-900">Super Admin</span>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
-              Full unconstrained access to financial ledgers, arbitration override, CMS publishing, and team member provisioning.
-            </p>
-          </div>
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200/60 space-y-1.5">
-            <span className="font-bold text-neutral-900">Finance Lead</span>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
-              Escrow vault custody, Stripe Connect balance surveillance, 15% revenue transfers, and dispute payout settlement.
-            </p>
-          </div>
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200/60 space-y-1.5">
-            <span className="font-bold text-neutral-900">Operations</span>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
-              Creator verification approval, brand onboarding reviews, user status bans, and CMS copy updates.
-            </p>
-          </div>
-          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200/60 space-y-1.5">
-            <span className="font-bold text-neutral-900">Moderator</span>
-            <p className="text-neutral-500 text-[11px] leading-relaxed">
-              Audit suspicious creator accounts, view submitted deliverables, and file disciplinary reports.
-            </p>
-          </div>
-        </div>
       </Card>
 
       {/* Add Administrator Modal */}
