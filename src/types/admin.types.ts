@@ -105,3 +105,37 @@ export interface CmsBrandAssets {
     linkedin: string;
   };
 }
+
+export type TransactionType =
+  | 'escrow_deposit'
+  | 'creator_payout'
+  | 'platform_fee'
+  | 'brand_refund'
+  | 'arbitration_split';
+
+export type TransactionStatus =
+  | 'completed'
+  | 'escrow_locked'
+  | 'pending'
+  | 'failed'
+  | 'refunded';
+
+export interface MarketplaceTransaction {
+  id: string;
+  orderId: string;
+  brandName: string;
+  brandAvatar: string;
+  creatorName: string;
+  creatorAvatar: string;
+  campaignTitle: string;
+  type: TransactionType;
+  grossAmountEur: number;
+  platformFeeEur: number;
+  netAmountEur: number;
+  paymentMethod: 'stripe_connect' | 'sepa_transfer' | 'wise' | 'credit_card';
+  status: TransactionStatus;
+  createdAt: string;
+  stripePaymentIntentId: string;
+  invoiceNumber: string;
+}
+

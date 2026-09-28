@@ -10,6 +10,7 @@ import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 import { UsersPage } from '@/pages/dashboard/UsersPage';
 import { VerificationPage } from '@/pages/dashboard/VerificationPage';
 import { EscrowPage } from '@/pages/dashboard/EscrowPage';
+import { TransactionsPage } from '@/pages/dashboard/TransactionsPage';
 import { CmsPage } from '@/pages/dashboard/CmsPage';
 import { TeamPage } from '@/pages/dashboard/TeamPage';
 import { SettingsPage } from '@/pages/dashboard/SettingsPage';
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.DASHBOARD.ESCROW,
             element: <EscrowPage />,
+          },
+          {
+            path: ROUTES.DASHBOARD.TRANSACTIONS,
+            element: <TransactionsPage />,
           },
           {
             path: ROUTES.DASHBOARD.CMS,

@@ -19,6 +19,7 @@ import {
   ExternalLink,
   Euro,
   FileCheck,
+  Receipt,
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 
@@ -49,17 +50,28 @@ export const DashboardPage: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
+              className="font-bold"
+              onClick={() => navigate(ROUTES.DASHBOARD.TRANSACTIONS)}
+              leftIcon={<Receipt className="w-3.5 h-3.5" />}
+            >
+              Financial Ledger
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="font-bold"
               onClick={() => navigate(ROUTES.DASHBOARD.CMS)}
             >
-              Manage CMS & Legal
+              CMS & Legal
             </Button>
             <Button
               variant="accent"
               size="sm"
+              className="font-bold"
               onClick={() => navigate(ROUTES.DASHBOARD.ESCROW)}
               rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
             >
-              Review Disputes ({openDisputes.length})
+              Disputes ({openDisputes.length})
             </Button>
           </>
         }

@@ -9,6 +9,7 @@ import {
   Users,
   ShieldCheck,
   Scale,
+  Receipt,
   FileEdit,
   ShieldAlert,
   Settings,
@@ -52,6 +53,11 @@ export const Sidebar: React.FC = () => {
       icon: <Scale className="w-[18px] h-[18px]" />,
       badge: openDisputes > 0 ? openDisputes : undefined,
       badgeColor: 'rose',
+    },
+    {
+      label: 'Financial Ledger',
+      path: ROUTES.DASHBOARD.TRANSACTIONS,
+      icon: <Receipt className="w-[18px] h-[18px]" />,
     },
     {
       label: 'CMS & Legal Docs',
