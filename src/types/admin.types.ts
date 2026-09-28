@@ -39,21 +39,23 @@ export interface VerificationRequest {
   id: string;
   creatorId: string;
   creatorName: string;
+  email: string;
   handle: string;
   avatar: string;
   category: string;
-  followersTotal: string;
-  platforms: {
+  platform?: string;
+  submittedDate: string;
+  status: 'pending' | 'approved' | 'rejected';
+  rejectionReason?: string;
+  followersTotal?: string;
+  platforms?: {
     instagram?: string;
     tiktok?: string;
     youtube?: string;
   };
-  sampleWorkTitle: string;
-  sampleWorkViews: string;
+  sampleWorkTitle?: string;
+  sampleWorkViews?: string;
   sampleWorkUrl?: string;
-  submittedDate: string;
-  status: 'pending' | 'approved' | 'rejected';
-  rejectionReason?: string;
 }
 
 export interface EscrowDispute {
