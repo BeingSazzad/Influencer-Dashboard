@@ -175,43 +175,19 @@ export const OrdersPage: React.FC = () => {
   const renderStatusBadge = (status: OrderStatus) => {
     switch (status) {
       case 'deliverable_submitted':
-        return (
-          <Badge variant="warning" className="uppercase tracking-wider font-extrabold text-[11px] px-2.5 py-0.5">
-            Under Brand Review
-          </Badge>
-        );
+        return <Badge variant="warning" size="sm">Under Review</Badge>;
       case 'revision_requested':
-        return (
-          <Badge variant="warning" className="bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase tracking-wider font-extrabold text-[11px] px-2.5 py-0.5">
-            Revision Round
-          </Badge>
-        );
+        return <Badge variant="warning" size="sm">Revision</Badge>;
       case 'in_progress':
-        return (
-          <Badge variant="default" className="bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider font-extrabold text-[11px] px-2.5 py-0.5">
-            In Production
-          </Badge>
-        );
+        return <Badge variant="default" size="sm">In Progress</Badge>;
       case 'escrow_funded':
-        return (
-          <Badge variant="neutral" className="uppercase tracking-wider font-extrabold text-[11px] px-2.5 py-0.5">
-            Awaiting Script
-          </Badge>
-        );
+        return <Badge variant="neutral" size="sm">Awaiting Script</Badge>;
       case 'completed':
-        return (
-          <Badge variant="success" className="uppercase tracking-wider font-extrabold text-[11px] px-2.5 py-0.5">
-            Completed / Disbursed
-          </Badge>
-        );
+        return <Badge variant="success" size="sm">Completed</Badge>;
       case 'disputed':
-        return (
-          <Badge variant="danger" className="uppercase tracking-wider font-extrabold text-[11px] px-2.5 py-0.5">
-            Disputed in Escrow
-          </Badge>
-        );
+        return <Badge variant="danger" size="sm">Disputed</Badge>;
       default:
-        return <Badge variant="neutral">{status}</Badge>;
+        return <Badge variant="neutral" size="sm">{status}</Badge>;
     }
   };
 
@@ -293,81 +269,42 @@ export const OrdersPage: React.FC = () => {
       </div>
 
       {/* Filter Tabs & Search Bar */}
-      <Card className="p-4 sm:p-5 border-[#E7E7E2] dark:border-white/10">
+      <Card className="p-4">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Status Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 border-b lg:border-b-0 pb-3 lg:pb-0 border-white/5">
-            <button
-              onClick={() => dispatch(setOrderStatusFilter('all'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
-                statusFilter === 'all'
-                  ? 'bg-white text-black dark:bg-white dark:text-black shadow-sm'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              All Orders ({orders.length})
-            </button>
-            <button
-              onClick={() => dispatch(setOrderStatusFilter('in_progress'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
-                statusFilter === 'in_progress'
-                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              In Production ({orders.filter((o) => o.status === 'in_progress').length})
-            </button>
-            <button
-              onClick={() => dispatch(setOrderStatusFilter('deliverable_submitted'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
-                statusFilter === 'deliverable_submitted'
-                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              Under Review ({orders.filter((o) => o.status === 'deliverable_submitted').length})
-            </button>
-            <button
-              onClick={() => dispatch(setOrderStatusFilter('revision_requested'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
-                statusFilter === 'revision_requested'
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              Revision Round ({orders.filter((o) => o.status === 'revision_requested').length})
-            </button>
-            <button
-              onClick={() => dispatch(setOrderStatusFilter('escrow_funded'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
-                statusFilter === 'escrow_funded'
-                  ? 'bg-white/10 text-white border border-white/20'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              Awaiting Script ({orders.filter((o) => o.status === 'escrow_funded').length})
-            </button>
-            <button
-              onClick={() => dispatch(setOrderStatusFilter('completed'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
-                statusFilter === 'completed'
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              Disbursed ({orders.filter((o) => o.status === 'completed').length})
-            </button>
+          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
+            {[
+              { id: 'all', label: `All (${orders.length})` },
+              { id: 'in_progress', label: `In Production (${orders.filter((o) => o.status === 'in_progress').length})` },
+              { id: 'deliverable_submitted', label: `In Review (${orders.filter((o) => o.status === 'deliverable_submitted').length})` },
+              { id: 'revision_requested', label: `Revision (${orders.filter((o) => o.status === 'revision_requested').length})` },
+              { id: 'escrow_funded', label: `Awaiting Script (${orders.filter((o) => o.status === 'escrow_funded').length})` },
+              { id: 'completed', label: `Completed (${orders.filter((o) => o.status === 'completed').length})` },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => dispatch(setOrderStatusFilter(tab.id as any))}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                  statusFilter === tab.id
+                    ? 'bg-white text-neutral-900 shadow-sm'
+                    : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
 
           {/* Search & SLA Filter */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
-              <Input
+              <input
+                type="text"
                 value={searchQuery}
                 onChange={(e) => dispatch(setOrderSearchQuery(e.target.value))}
-                placeholder="Search orders, brands, creators..."
-                className="pl-9 py-1.5 text-xs bg-black/40 border-white/10"
+                placeholder="Search orders..."
+                className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 font-medium text-neutral-900"
               />
             </div>
 
@@ -378,11 +315,11 @@ export const OrdersPage: React.FC = () => {
                 }
                 className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                   slaFilter === 'overdue'
-                    ? 'bg-rose-500 text-white shadow-sm'
-                    : 'bg-white/5 text-neutral-300 hover:bg-white/10 border border-white/5'
+                    ? 'bg-rose-50 text-rose-700 border border-rose-200 shadow-sm'
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 border border-neutral-200'
                 }`}
               >
-                <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                <AlertTriangle className="w-3.5 h-3.5 text-rose-500" />
                 Overdue Only
               </button>
             </div>
@@ -404,7 +341,7 @@ export const OrdersPage: React.FC = () => {
                 <th className="py-3 px-5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E7E7E2] dark:divide-white/5">
+            <tbody className="divide-y divide-neutral-100 bg-white">
               {filteredOrders.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-neutral-400">
@@ -416,133 +353,93 @@ export const OrdersPage: React.FC = () => {
                 filteredOrders.map((order) => (
                   <tr
                     key={order.id}
-                    className="hover:bg-white/[0.02] transition-colors group cursor-pointer"
+                    className="hover:bg-neutral-50/70 transition-colors cursor-pointer"
                     onClick={() => handleOpenDossier(order)}
                   >
                     {/* Order ID & Package */}
-                    <td className="py-4 px-5">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-black text-white text-sm tracking-tight">{order.id}</span>
-                          <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-white/10 text-neutral-300">
-                            {order.packageTier}
-                          </span>
-                        </div>
-                        <p className="font-extrabold text-neutral-200 text-xs line-clamp-1 max-w-[240px]">
-                          {order.packageTitle}
-                        </p>
-                        <span className="text-[11px] text-neutral-500 font-semibold">{order.category}</span>
+                    <td className="py-3.5 px-5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-neutral-900">{order.id}</span>
+                        <Badge variant="neutral" size="sm" className="capitalize text-[10px]">
+                          {order.packageTier}
+                        </Badge>
                       </div>
+                      <p className="text-xs font-semibold text-neutral-900 line-clamp-1 max-w-[220px] mt-1" title={order.packageTitle}>
+                        {order.packageTitle}
+                      </p>
+                      <span className="text-[11px] text-neutral-500 font-medium">{order.category}</span>
                     </td>
 
                     {/* Counterparties */}
-                    <td className="py-4 px-5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-2.5">
-                        {/* Brand */}
-                        <div className="flex items-center gap-1.5" title={`Brand: ${order.brandName}`}>
-                          <Avatar src={order.brandAvatar} alt={order.brandName} size="sm" />
-                          <div className="max-w-[100px]">
-                            <p className="text-xs font-bold text-white truncate">{order.brandName}</p>
-                            <span className="text-[10px] text-neutral-400">Brand</span>
-                          </div>
+                    <td className="py-3.5 px-5" onClick={(e) => e.stopPropagation()}>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Avatar src={order.brandAvatar} name={order.brandName} size="xs" />
+                          <span className="text-xs font-bold text-neutral-900 truncate max-w-[120px]">{order.brandName}</span>
                         </div>
-
-                        <ArrowRight className="w-3.5 h-3.5 text-neutral-500 flex-shrink-0" />
-
-                        {/* Creator */}
-                        <div className="flex items-center gap-1.5" title={`Creator: ${order.creatorName}`}>
-                          <Avatar src={order.creatorAvatar} alt={order.creatorName} size="sm" />
-                          <div className="max-w-[110px]">
-                            <p className="text-xs font-bold text-white truncate">{order.creatorName}</p>
-                            <span className="text-[10px] text-[#FF2D78] font-bold truncate block">
-                              {order.creatorHandle}
-                            </span>
-                          </div>
+                        <div className="flex items-center gap-2 pl-3 text-neutral-400 text-xs">
+                          <span>↳</span>
+                          <Avatar src={order.creatorAvatar} name={order.creatorName} size="xs" />
+                          <span className="text-xs font-semibold text-neutral-700 truncate max-w-[120px]">{order.creatorName}</span>
                         </div>
                       </div>
                     </td>
 
                     {/* Escrow & Payout */}
-                    <td className="py-4 px-5">
-                      <div className="space-y-0.5">
-                        <p className="font-black text-white text-sm">
-                          {formatCurrency(order.grossAmountEur)}
-                        </p>
-                        <div className="flex items-center gap-1.5 text-[11px]">
-                          <span className="text-[#FF2D78] font-black">
-                            -15% ({formatCurrency(order.platformFeeEur)})
-                          </span>
-                          <span className="text-neutral-500">•</span>
-                          <span className="text-neutral-300 font-bold">
-                            Net: {formatCurrency(order.creatorNetEur)}
-                          </span>
-                        </div>
-                      </div>
+                    <td className="py-3.5 px-5">
+                      <p className="font-bold text-neutral-900 text-xs tabular-nums">
+                        {formatCurrency(order.grossAmountEur)}
+                      </p>
+                      <p className="text-[11px] text-neutral-500 tabular-nums mt-0.5">
+                        Net: {formatCurrency(order.creatorNetEur)}
+                      </p>
                     </td>
 
-                    {/* Status & Progress Bar */}
-                    <td className="py-4 px-5">
-                      <div className="space-y-1.5 max-w-[160px]">
-                        <div>{renderStatusBadge(order.status)}</div>
-                        <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-                          <div
-                            className={`h-full rounded-full transition-all duration-500 ${
-                              order.status === 'completed'
-                                ? 'bg-emerald-500'
-                                : order.status === 'disputed'
-                                ? 'bg-rose-500'
-                                : 'bg-[#FF2D78]'
-                            }`}
-                            style={{ width: `${order.progressPercent}%` }}
-                          />
-                        </div>
-                        <span className="text-[10px] text-neutral-400 block font-semibold">
-                          {order.progressPercent}% complete • {order.lastActivity}
-                        </span>
-                      </div>
+                    {/* Status & Progress */}
+                    <td className="py-3.5 px-5">
+                      <div>{renderStatusBadge(order.status)}</div>
+                      <span className="text-[11px] text-neutral-400 block mt-1 font-medium">
+                        {order.progressPercent}% • {order.lastActivity}
+                      </span>
                     </td>
 
                     {/* Delivery SLA */}
-                    <td className="py-4 px-5">
+                    <td className="py-3.5 px-5">
                       {order.status === 'completed' ? (
-                        <div className="flex items-center gap-1 text-emerald-400 text-xs font-bold">
+                        <div className="flex items-center gap-1 text-emerald-600 text-xs font-semibold">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>Delivered</span>
                         </div>
                       ) : order.daysRemaining < 0 ? (
-                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-black animate-pulse">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          <span>{Math.abs(order.daysRemaining)}d OVERDUE</span>
-                        </div>
+                        <Badge variant="danger" size="sm" dot>
+                          {Math.abs(order.daysRemaining)}d Overdue
+                        </Badge>
                       ) : order.daysRemaining <= 1 ? (
-                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-black">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>Due in {order.daysRemaining === 0 ? 'Hours' : '1 Day'}</span>
-                        </div>
+                        <Badge variant="warning" size="sm" dot>
+                          Due in {order.daysRemaining === 0 ? 'Hours' : '1 Day'}
+                        </Badge>
                       ) : (
-                        <div className="text-xs text-neutral-300 font-bold flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-neutral-500" />
-                          <span>{order.daysRemaining} days left</span>
+                        <div className="text-xs text-neutral-700 font-medium">
+                          {order.daysRemaining} days left
                         </div>
                       )}
-                      <span className="text-[10px] text-neutral-500 block mt-0.5">Due {order.dueDate}</span>
+                      <span className="text-[11px] text-neutral-400 block mt-0.5">Due {order.dueDate}</span>
                     </td>
 
                     {/* Actions */}
-                    <td className="py-4 px-5 text-right" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3.5 px-5 text-right" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-end gap-2">
                         <Button
-                          variant="secondary"
+                          variant="ghost"
                           size="sm"
                           onClick={() => handleOpenDossier(order)}
-                          className="text-xs font-bold"
                         >
-                          Monitor
+                          View
                         </Button>
 
                         <Dropdown
                           trigger={
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-neutral-400 hover:text-white">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-neutral-400 hover:text-neutral-900 hover:bg-neutral-100">
                               •••
                             </Button>
                           }

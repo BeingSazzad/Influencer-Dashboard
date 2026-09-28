@@ -243,57 +243,57 @@ export const TicketsPage: React.FC = () => {
       <Card className="p-4 border-[#E7E7E2] dark:border-white/10">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           {/* Status & Type Pills */}
-          <div className="flex flex-wrap items-center gap-1.5 border-b lg:border-b-0 pb-3 lg:pb-0 border-white/5">
+          <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             <button
               onClick={() => {
                 dispatch(setTicketStatusFilter('all'));
                 dispatch(setTicketTypeFilter('all'));
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'all' && typeFilter === 'all'
-                  ? 'bg-white text-black dark:bg-white dark:text-black shadow-sm'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-white text-neutral-900 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               All ({tickets.length})
             </button>
             <button
               onClick={() => dispatch(setTicketTypeFilter('user_report'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
                 typeFilter === 'user_report'
-                  ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-rose-50 text-rose-700 border border-rose-200 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
+              <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
               Reports ({reportCount})
             </button>
             <button
               onClick={() => dispatch(setTicketStatusFilter('open'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'open'
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-amber-50 text-amber-800 border border-amber-200 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               Open ({openCount})
             </button>
             <button
               onClick={() => dispatch(setTicketStatusFilter('in_progress'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'in_progress'
-                  ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-blue-50 text-blue-800 border border-blue-200 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               In Progress ({inProgressCount})
             </button>
             <button
               onClick={() => dispatch(setTicketStatusFilter('resolved'))}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                 statusFilter === 'resolved'
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-sm'
+                  : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
               Resolved ({tickets.filter((t) => t.status === 'resolved').length})
@@ -303,21 +303,22 @@ export const TicketsPage: React.FC = () => {
           {/* Search Box */}
           <div className="relative w-full sm:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
-            <Input
+            <input
+              type="text"
               value={searchQuery}
               onChange={(e) => dispatch(setTicketSearchQuery(e.target.value))}
-              placeholder="Search tickets, users, issues..."
-              className="pl-9 py-1.5 text-xs bg-black/40 border-white/10"
+              placeholder="Search tickets..."
+              className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 font-medium text-neutral-900"
             />
           </div>
         </div>
       </Card>
 
       {/* Tickets List Table */}
-      <Card className="border-[#E7E7E2] dark:border-white/10 overflow-hidden">
+      <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-neutral-50 dark:bg-white/[0.03] text-neutral-500 dark:text-neutral-400 text-xs border-b border-[#E7E7E2] dark:border-white/5 font-semibold">
+            <thead className="bg-neutral-50 text-neutral-500 text-xs border-b border-neutral-200 font-semibold">
               <tr>
                 <th className="py-3 px-5">Ticket</th>
                 <th className="py-3 px-5">User</th>
@@ -328,7 +329,7 @@ export const TicketsPage: React.FC = () => {
                 <th className="py-3 px-5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E7E7E2] dark:divide-white/5">
+            <tbody className="divide-y divide-neutral-100 bg-white">
               {filteredTickets.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-neutral-400">
@@ -341,38 +342,36 @@ export const TicketsPage: React.FC = () => {
                   <tr
                     key={ticket.id}
                     onClick={() => handleOpenTicket(ticket)}
-                    className="hover:bg-white/[0.02] transition-colors group cursor-pointer"
+                    className="hover:bg-neutral-50/70 transition-colors cursor-pointer"
                   >
                     {/* Ticket ID & Subject */}
-                    <td className="py-4 px-5">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-black text-white">{ticket.id}</span>
-                          {ticket.type === 'user_report' ? (
-                            <span className="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center gap-1">
-                              <Flag className="w-3 h-3 text-rose-400" />
-                              User Report
-                            </span>
-                          ) : (
-                            <span className="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 flex items-center gap-1">
-                              <LifeBuoy className="w-3 h-3 text-blue-400" />
-                              Support
-                            </span>
-                          )}
-                        </div>
-                        <p className="font-extrabold text-neutral-200 text-xs line-clamp-1 max-w-[280px]">
-                          {ticket.subject}
-                        </p>
+                    <td className="py-3.5 px-5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-neutral-900">{ticket.id}</span>
+                        {ticket.type === 'user_report' ? (
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1">
+                            <Flag className="w-3 h-3 text-rose-500" />
+                            Report
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1">
+                            <LifeBuoy className="w-3 h-3 text-blue-500" />
+                            Support
+                          </span>
+                        )}
                       </div>
+                      <p className="font-semibold text-neutral-900 text-xs line-clamp-1 max-w-[280px] mt-1" title={ticket.subject}>
+                        {ticket.subject}
+                      </p>
                     </td>
 
                     {/* Inquiring Party */}
-                    <td className="py-4 px-5">
+                    <td className="py-3.5 px-5">
                       <div className="flex items-center gap-2.5">
-                        <Avatar src={ticket.userAvatar} alt={ticket.userName} size="sm" />
+                        <Avatar src={ticket.userAvatar} name={ticket.userName} size="sm" />
                         <div className="max-w-[140px]">
-                          <p className="text-xs font-bold text-white truncate">{ticket.userName}</p>
-                          <span className="text-[10px] text-neutral-400 uppercase font-semibold block">
+                          <p className="text-xs font-bold text-neutral-900 truncate">{ticket.userName}</p>
+                          <span className="text-[10px] text-neutral-400 capitalize font-medium block">
                             {ticket.userRole}
                           </span>
                         </div>
@@ -380,38 +379,37 @@ export const TicketsPage: React.FC = () => {
                     </td>
 
                     {/* Category */}
-                    <td className="py-4 px-5">
-                      <span className="text-xs font-bold text-neutral-300 block">
+                    <td className="py-3.5 px-5">
+                      <span className="text-xs font-semibold text-neutral-800 block">
                         {getCategoryLabel(ticket.category)}
                       </span>
                       {ticket.reportedUser && (
-                        <span className="text-[11px] text-rose-400 font-semibold block">
+                        <span className="text-[11px] text-rose-600 font-medium block mt-0.5">
                           Reported: {ticket.reportedUser.name}
                         </span>
                       )}
                     </td>
 
                     {/* Priority */}
-                    <td className="py-4 px-5">{renderPriorityBadge(ticket.priority)}</td>
+                    <td className="py-3.5 px-5">{renderPriorityBadge(ticket.priority)}</td>
 
                     {/* Status */}
-                    <td className="py-4 px-5">{renderStatusBadge(ticket.status)}</td>
+                    <td className="py-3.5 px-5">{renderStatusBadge(ticket.status)}</td>
 
                     {/* Updated */}
-                    <td className="py-4 px-5 text-xs text-neutral-400 font-medium">
+                    <td className="py-3.5 px-5 text-xs text-neutral-500 font-medium">
                       {ticket.lastUpdated}
                     </td>
 
                     {/* Actions */}
-                    <td className="py-4 px-5 text-right" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3.5 px-5 text-right" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-end gap-2">
                         <Button
-                          variant="secondary"
+                          variant="ghost"
                           size="sm"
                           onClick={() => handleOpenTicket(ticket)}
-                          className="text-xs font-bold"
                         >
-                          Review & Reply
+                          View
                         </Button>
                       </div>
                     </td>
