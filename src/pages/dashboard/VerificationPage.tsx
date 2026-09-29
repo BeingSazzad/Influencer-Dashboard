@@ -120,7 +120,9 @@ export const VerificationPage: React.FC = () => {
                         <div className="font-extrabold text-neutral-950 flex items-center gap-1.5 text-sm">
                           <span>{request.creatorName}</span>
                           {request.status === 'approved' && (
-                            <BadgeCheck className="w-4 h-4 text-sky-500 fill-sky-500/15 shrink-0" title="Verified Creator" />
+                            <span title="Verified Creator" className="inline-flex">
+                              <BadgeCheck className="w-4 h-4 text-sky-500 fill-sky-500/15 shrink-0" />
+                            </span>
                           )}
                         </div>
                         <div className="text-xs text-neutral-500 font-semibold">
@@ -263,7 +265,9 @@ export const VerificationPage: React.FC = () => {
                 <div className="font-extrabold text-neutral-950 text-sm flex items-center gap-1.5">
                   <span>{selectedRequest.creatorName}</span>
                   {selectedRequest.status === 'approved' && (
-                    <BadgeCheck className="w-4 h-4 text-sky-500 fill-sky-500/15 shrink-0" title="Verified Creator" />
+                    <span title="Verified Creator" className="inline-flex">
+                      <BadgeCheck className="w-4 h-4 text-sky-500 fill-sky-500/15 shrink-0" />
+                    </span>
                   )}
                 </div>
                 <div className="text-neutral-500 font-medium">

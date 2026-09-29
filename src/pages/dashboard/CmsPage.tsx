@@ -165,7 +165,7 @@ export const CmsPage: React.FC = () => {
           }`}
         >
           <FileText className="w-4 h-4" />
-          <span>Pages ({legalDocs.length})</span>
+          <span>Pages</span>
         </button>
 
         <button
@@ -177,7 +177,7 @@ export const CmsPage: React.FC = () => {
           }`}
         >
           <HelpCircle className="w-4 h-4" />
-          <span>FAQs ({faqs.length})</span>
+          <span>FAQs</span>
         </button>
 
         <button

@@ -293,7 +293,7 @@ export const TransactionsPage: React.FC = () => {
               </div>
               <div className="border-x border-neutral-200 px-2 bg-pink-50/50 rounded-lg">
                 <span className="text-[10px] font-black uppercase tracking-wider text-brand-pink">
-                  Platform Revenue (15%)
+                  Platform fee
                 </span>
                 <p className="text-lg font-black text-brand-pink mt-0.5 tabular-nums">
                   +{formatCurrency(inspectedTxn.platformFeeEur)}
@@ -301,7 +301,7 @@ export const TransactionsPage: React.FC = () => {
               </div>
               <div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-neutral-600">
-                  Net Creator Payout (85%)
+                  Creator payout
                 </span>
                 <p className="text-lg font-black text-neutral-950 mt-0.5 tabular-nums">
                   {formatCurrency(inspectedTxn.grossAmountEur - inspectedTxn.platformFeeEur)}

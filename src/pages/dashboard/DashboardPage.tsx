@@ -88,14 +88,9 @@ export const DashboardPage: React.FC = () => {
         <Card className="p-5 space-y-3">
           <div className="flex items-center justify-between gap-3 pb-2 border-b border-neutral-100">
             <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-extrabold text-neutral-900">
-                  User Growth
-                </h3>
-                <span className="text-[11px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  +14.1%
-                </span>
-              </div>
+              <h3 className="text-sm font-extrabold text-neutral-900">
+                User Growth
+              </h3>
               <p className="text-[11px] text-neutral-400 font-medium">
                 Monthly creator and brand signups
               </p>
@@ -137,7 +132,7 @@ export const DashboardPage: React.FC = () => {
             )}
 
             {/* SVG Visual */}
-            <div className="h-56 flex items-end justify-between gap-3 pt-6 pb-2 px-2 border-b border-neutral-100">
+            <div className="h-48 flex items-end justify-between gap-3 pt-6 px-2">
               {userGrowthData.map((item, index) => {
                 const creatorHeight = (item.creators / maxTotalUsers) * 100;
                 const brandHeight = (item.brands / maxTotalUsers) * 100;
@@ -166,19 +161,25 @@ export const DashboardPage: React.FC = () => {
                         }`}
                       />
                     </div>
-                    <span
-                      className={`text-xs mt-2 transition-colors ${
-                        isHovered ? 'font-black text-brand-pink' : 'font-extrabold text-neutral-500'
-                      }`}
-                    >
-                      {item.month}
-                    </span>
                   </div>
                 );
               })}
             </div>
-
-
+            <div className="flex justify-between gap-3 px-2 pt-2 border-t border-neutral-100">
+              {userGrowthData.map((item, index) => {
+                const isHovered = hoveredUserMonth === index;
+                return (
+                  <span
+                    key={item.month}
+                    className={`flex-1 text-center text-xs transition-colors ${
+                      isHovered ? 'font-black text-brand-pink' : 'font-extrabold text-neutral-500'
+                    }`}
+                  >
+                    {item.month}
+                  </span>
+                );
+              })}
+            </div>
           </div>
         </Card>
 
@@ -186,16 +187,11 @@ export const DashboardPage: React.FC = () => {
         <Card className="p-5 space-y-3">
           <div className="flex items-center justify-between gap-3 pb-2 border-b border-neutral-100">
             <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-extrabold text-neutral-900">
-                  Revenue
-                </h3>
-                <span className="text-[11px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  +21.8%
-                </span>
-              </div>
+              <h3 className="text-sm font-extrabold text-neutral-900">
+                Revenue
+              </h3>
               <p className="text-[11px] text-neutral-400 font-medium">
-                Gross GMV and 15% platform fees trajectory
+                GMV and platform fees
               </p>
             </div>
 
@@ -207,7 +203,7 @@ export const DashboardPage: React.FC = () => {
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-3.5 h-1 rounded-full bg-emerald-500" />
-                <span className="text-neutral-900 font-bold">15% Fee</span>
+                <span className="text-neutral-900 font-bold">Platform fee</span>
               </div>
             </div>
           </div>
@@ -225,16 +221,16 @@ export const DashboardPage: React.FC = () => {
                 </span>
                 <span>•</span>
                 <span className="text-emerald-400 font-black">
-                  15% Fee: {formatCurrency(incomeGrowthData[hoveredIncomeMonth].netFee)}
+                  Fee: {formatCurrency(incomeGrowthData[hoveredIncomeMonth].netFee)}
                 </span>
               </div>
             )}
 
             {/* SVG Curved Area & Trend Line Visual */}
-            <div className="h-56 flex flex-col justify-between pt-2">
+            <div>
               <svg
-                viewBox="0 0 500 180"
-                className="w-full h-44 overflow-visible"
+                viewBox="0 0 500 160"
+                className="w-full h-48 overflow-visible"
                 preserveAspectRatio="none"
               >
                 <defs>
@@ -328,7 +324,7 @@ export const DashboardPage: React.FC = () => {
               </svg>
 
               {/* X-Axis Month Labels */}
-              <div className="flex justify-between px-5 pt-1 border-b border-neutral-100 pb-2">
+              <div className="relative h-6 border-t border-neutral-100">
                 {incomeGrowthData.map((item, index) => {
                   const isHovered = hoveredIncomeMonth === index;
                   return (
@@ -337,7 +333,8 @@ export const DashboardPage: React.FC = () => {
                       type="button"
                       onMouseEnter={() => setHoveredIncomeMonth(index)}
                       onMouseLeave={() => setHoveredIncomeMonth(null)}
-                      className={`text-xs transition-colors cursor-pointer ${
+                      style={{ left: `${([35, 121, 207, 293, 379, 465][index] / 500) * 100}%` }}
+                      className={`absolute top-2 -translate-x-1/2 text-xs leading-none transition-colors cursor-pointer ${
                         isHovered
                           ? 'font-black text-emerald-600'
                           : 'font-extrabold text-neutral-500 hover:text-neutral-900'
@@ -349,8 +346,6 @@ export const DashboardPage: React.FC = () => {
                 })}
               </div>
             </div>
-
-
           </div>
         </Card>
       </div>

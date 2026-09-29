@@ -514,8 +514,7 @@ export const OrdersPage: React.FC = () => {
         <Modal
           isOpen={isDossierOpen}
           onClose={() => setIsDossierOpen(false)}
-          title={`Order Details: #${activeDossierOrder.id}`}
-          description="Complete contract breakdown, escrow verification, and production audit trail."
+          title={`Order #${activeDossierOrder.id}`}
           maxWidth="xl"
           footer={
             <div className="flex items-center justify-between w-full">
@@ -580,7 +579,7 @@ export const OrdersPage: React.FC = () => {
               <div className="flex items-center gap-4 bg-white p-2.5 rounded-lg border border-neutral-200">
                 <div>
                   <span className="text-[10px] text-neutral-400 block font-bold uppercase tracking-wider">
-                    Total Escrow Vault
+                    Escrow
                   </span>
                   <span className="text-lg font-black text-neutral-950 tabular-nums">
                     {formatCurrency(activeDossierOrder.grossAmountEur)}
@@ -588,7 +587,7 @@ export const OrdersPage: React.FC = () => {
                 </div>
                 <div className="pl-3 border-l border-neutral-200">
                   <span className="text-[10px] text-emerald-600 block font-bold uppercase tracking-wider">
-                    15% Take-Rate
+                    Platform fee
                   </span>
                   <span className="text-base font-black text-emerald-600 tabular-nums">
                     {formatCurrency(activeDossierOrder.platformFeeEur)}
@@ -601,13 +600,10 @@ export const OrdersPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {/* Brand Profile */}
               <div className="p-4 rounded-xl bg-white border border-neutral-200 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase text-neutral-500 tracking-wider flex items-center gap-1.5">
-                    <Building className="w-3.5 h-3.5 text-neutral-700" />
-                    Brand (Client)
-                  </span>
-                  <Badge variant="neutral" size="sm">Escrow Funder</Badge>
-                </div>
+                <span className="text-xs font-bold uppercase text-neutral-500 tracking-wider flex items-center gap-1.5">
+                  <Building className="w-3.5 h-3.5 text-neutral-700" />
+                  Brand
+                </span>
                 <div className="flex items-center gap-3">
                   <Avatar src={activeDossierOrder.brandAvatar} name={activeDossierOrder.brandName} size="md" />
                   <div>
@@ -625,13 +621,10 @@ export const OrdersPage: React.FC = () => {
 
               {/* Creator Profile */}
               <div className="p-4 rounded-xl bg-white border border-neutral-200 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase text-neutral-500 tracking-wider flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-brand-pink" />
-                    Creator (Contractor)
-                  </span>
-                  <Badge variant="pink" size="sm">Verified Talent</Badge>
-                </div>
+                <span className="text-xs font-bold uppercase text-neutral-500 tracking-wider flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-brand-pink" />
+                  Creator
+                </span>
                 <div className="flex items-center gap-3">
                   <Avatar src={activeDossierOrder.creatorAvatar} name={activeDossierOrder.creatorName} size="md" />
                   <div>
@@ -641,7 +634,7 @@ export const OrdersPage: React.FC = () => {
                 </div>
                 <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-100 text-xs flex items-center justify-between">
                   <div>
-                    <span className="font-bold text-neutral-500 block text-[11px]">Net Creator Payout</span>
+                    <span className="font-bold text-neutral-500 block text-[11px]">Creator payout</span>
                     <span className="text-sm font-black text-emerald-700 tabular-nums">
                       {formatCurrency(activeDossierOrder.creatorNetEur)}
                     </span>
@@ -659,7 +652,7 @@ export const OrdersPage: React.FC = () => {
             {/* Agreed Deliverables Scope */}
             <div className="p-4 rounded-xl bg-white border border-neutral-200 space-y-2.5">
               <span className="text-xs font-bold uppercase text-neutral-500 tracking-wider block">
-                Agreed Deliverables Checklist
+                Deliverables
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {activeDossierOrder.deliverablesSummary.map((item, idx) => (
@@ -675,7 +668,7 @@ export const OrdersPage: React.FC = () => {
 
               {activeDossierOrder.deliverableLink && (
                 <div className="pt-2 flex items-center justify-between border-t border-neutral-100">
-                  <span className="text-xs text-neutral-500 font-medium">Uploaded Draft:</span>
+                  <span className="text-xs text-neutral-500 font-medium">Draft</span>
                   <a
                     href={activeDossierOrder.deliverableLink}
                     target="_blank"
@@ -683,7 +676,7 @@ export const OrdersPage: React.FC = () => {
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-pink hover:underline"
                   >
                     <Play className="w-3.5 h-3.5" />
-                    Inspect Uploaded 4K Video
+                    View video
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
@@ -693,7 +686,7 @@ export const OrdersPage: React.FC = () => {
             {/* Production Milestone Journey */}
             <div className="p-4 rounded-xl bg-white border border-neutral-200 space-y-3">
               <span className="text-xs font-bold uppercase text-neutral-500 tracking-wider block">
-                Production Timeline & Milestones
+                Timeline
               </span>
               <div className="space-y-3">
                 {activeDossierOrder.milestones.map((m, idx) => (
@@ -879,8 +872,7 @@ export const OrdersPage: React.FC = () => {
       >
         <form onSubmit={handleForceReleaseSubmit} className="space-y-4">
           <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-800">
-            <span className="font-bold block mb-1">Escrow Release:</span>
-            This action immediately releases <strong className="text-neutral-950 font-black">€{activeDossierOrder?.creatorNetEur.toLocaleString()}</strong> from escrow to the creator's payout balance and credits Influverse with its 15% platform take-rate.
+            Releases <strong className="text-neutral-950 font-black">€{activeDossierOrder?.creatorNetEur.toLocaleString()}</strong> from escrow to the creator's payout balance.
           </div>
           <div>
             <label className="text-xs font-bold text-neutral-700 block mb-1">
