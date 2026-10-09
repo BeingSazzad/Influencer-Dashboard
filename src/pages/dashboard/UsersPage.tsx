@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { Textarea } from '@/components/ui/Textarea';
 import { Pagination } from '@/components/ui/Pagination';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -67,6 +68,7 @@ export const UsersPage: React.FC = () => {
 
   // User Profile Inspector Drawer/Modal
   const [inspectedUser, setInspectedUser] = useState<MarketplaceUser | null>(null);
+  const [userToReactivate, setUserToReactivate] = useState<MarketplaceUser | null>(null);
 
   // Enhanced Filter matching name, handle, email, company, category, and location
   const q = searchQuery.toLowerCase().trim();
@@ -445,7 +447,7 @@ export const UsersPage: React.FC = () => {
                           variant="secondary"
                           size="sm"
                           className="text-emerald-700 bg-emerald-50 hover:bg-emerald-100 font-bold text-xs"
-                          onClick={() => handleReactivate(user.id)}
+                          onClick={() => setUserToReactivate(user)}
                         >
                           <RotateCcw className="w-3.5 h-3.5 mr-1" />
                           Reactivate
@@ -688,6 +690,22 @@ export const UsersPage: React.FC = () => {
           </div>
         </Modal>
       )}
+
+      {/* Confirm Reactivate User Dialog */}
+      <ConfirmDialog
+        isOpen={Boolean(userToReactivate)}
+        onClose={() => setUserToReactivate(null)}
+        onConfirm={() => {
+          if (userToReactivate) {
+            handleReactivate(userToReactivate.id);
+            setUserToReactivate(null);
+          }
+        }}
+        title="Reactivate User Account"
+        description={`Are you sure you want to restore active marketplace access for ${userToReactivate?.name} (@${userToReactivate?.handle})? They will immediately regain ability to launch campaigns or accept brand deals.`}
+        variant="info"
+        confirmLabel="Reactivate Account"
+      />
     </div>
   );
 };

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 
@@ -23,6 +24,13 @@ export const Modal: React.FC<ModalProps> = ({
   maxWidth = 'md',
   className,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -41,7 +49,7 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const maxWidths = {
     sm: 'max-w-md',
@@ -51,21 +59,24 @@ export const Modal: React.FC<ModalProps> = ({
     '2xl': 'max-w-4xl',
   };
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-brand-black/60 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-neutral-950/60"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full bg-white rounded-2xl shadow-2xl border border-neutral-200 z-10 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200',
+          'relative w-full bg-white rounded-2xl shadow-2xl border border-neutral-200 z-10 overflow-hidden flex flex-col max-h-[90vh]',
           maxWidths[maxWidth],
           className
         )}
+        role="dialog"
+        aria-modal="true"
       >
         {/* Header */}
         <div className="flex items-start justify-between p-6 pb-4 border-b border-neutral-100">
@@ -81,7 +92,7 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors -mr-2 -mt-2"
+            className="p-1.5 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors -mr-2 -mt-2 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -99,4 +110,6 @@ export const Modal: React.FC<ModalProps> = ({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };

@@ -166,22 +166,33 @@ export const TransactionsPage: React.FC = () => {
               </TableRow>
             ) : (
               paginatedTransactions.map((txn) => (
-                <TableRow key={txn.id}>
+                <TableRow
+                  key={txn.id}
+                  onClick={() => setInspectedTxn(txn)}
+                  className="cursor-pointer hover:bg-neutral-50/80 transition-colors group"
+                >
                   {/* Order ID */}
                   <TableCell>
-                    <span className="font-mono text-sm font-bold text-neutral-900">
+                    <span className="font-mono text-sm font-bold text-neutral-900 group-hover:text-brand-pink transition-colors">
                       {txn.orderId}
                     </span>
                   </TableCell>
 
-                  {/* Campaign */}
+                  {/* Campaign & Counterparty Context */}
                   <TableCell>
-                    <span
-                      className="font-bold text-neutral-950 text-sm block truncate max-w-[320px]"
-                      title={txn.campaignTitle}
-                    >
-                      {txn.campaignTitle}
-                    </span>
+                    <div>
+                      <span
+                        className="font-bold text-neutral-950 text-sm block truncate max-w-[320px]"
+                        title={txn.campaignTitle}
+                      >
+                        {txn.campaignTitle}
+                      </span>
+                      <span className="text-[11px] text-neutral-500 font-medium flex items-center gap-1.5 mt-0.5">
+                        <span className="text-neutral-700 font-semibold">{txn.brandName}</span>
+                        <span className="text-neutral-300">→</span>
+                        <span>@{txn.creatorName}</span>
+                      </span>
+                    </div>
                   </TableCell>
 
                   {/* Revenue */}
@@ -210,12 +221,15 @@ export const TransactionsPage: React.FC = () => {
                   {/* Action: View Receipt */}
                   <TableCell className="text-right">
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      className="text-sm h-8 px-2.5 font-bold text-neutral-800 hover:text-neutral-950"
-                      onClick={() => setInspectedTxn(txn)}
+                      className="text-xs h-7.5 px-2.5 font-bold text-neutral-800 hover:text-neutral-950 bg-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setInspectedTxn(txn);
+                      }}
                     >
-                      <FileText className="w-4 h-4 mr-1 text-neutral-500" />
+                      <FileText className="w-3.5 h-3.5 mr-1 text-neutral-500" />
                       Receipt
                     </Button>
                   </TableCell>
@@ -269,14 +283,25 @@ export const TransactionsPage: React.FC = () => {
               <span className="text-[11px] font-mono text-neutral-500 truncate max-w-xs">
                 Stripe Transfer ID: {inspectedTxn.stripePaymentIntentId}
               </span>
-              <Button
-                variant="primary"
-                size="sm"
-                className="font-bold"
-                onClick={() => setInspectedTxn(null)}
-              >
-                Close Receipt
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="font-bold text-xs"
+                  onClick={handleExportCSV}
+                  leftIcon={<Download className="w-3.5 h-3.5" />}
+                >
+                  Download Proof
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="font-bold text-xs"
+                  onClick={() => setInspectedTxn(null)}
+                >
+                  Close Receipt
+                </Button>
+              </div>
             </div>
           }
         >

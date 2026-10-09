@@ -539,19 +539,21 @@ export const OrdersPage: React.FC = () => {
                 </Button>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 {activeDossierOrder.status !== 'completed' && (
                   <Button
-                    variant="accent"
+                    variant="outline"
                     size="sm"
                     onClick={() => setIsForceReleaseModalOpen(true)}
-                    className="text-xs font-bold"
+                    className="text-xs font-bold text-rose-700 border-rose-200 bg-rose-50/50 hover:bg-rose-100 hover:border-rose-300 transition-colors"
+                    title="Administrative Escrow Override"
                   >
-                    <ShieldCheck className="w-3.5 h-3.5 mr-1.5" />
-                    Force Release
+                    <AlertTriangle className="w-3.5 h-3.5 mr-1.5 text-rose-600" />
+                    Force Escrow Release
                   </Button>
                 )}
-                <Button variant="secondary" size="sm" onClick={() => setIsDossierOpen(false)}>
+                <div className="h-4 w-px bg-neutral-200" />
+                <Button variant="primary" size="sm" className="font-bold text-xs" onClick={() => setIsDossierOpen(false)}>
                   Close
                 </Button>
               </div>
@@ -852,36 +854,135 @@ export const OrdersPage: React.FC = () => {
         </form>
       </Modal>
 
-      {/* FORCE RELEASE MODAL (Light Mode) */}
+      {/* FORCE RELEASE MODAL (Dedicated High-Consequence Confirmation) */}
       <Modal
         isOpen={isForceReleaseModalOpen}
         onClose={() => setIsForceReleaseModalOpen(false)}
-        title="Force Escrow Release"
-        description="Immediately releases funds to creator when brand fails to review in time."
-        maxWidth="md"
+        title={
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-rose-100 text-rose-700 shrink-0">
+              <AlertTriangle className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-extrabold text-neutral-950">
+                Force Escrow Release
+              </h3>
+              <p className="text-xs text-neutral-500 font-medium">
+                Order #{activeDossierOrder?.id} • Administrative Override Step
+              </p>
+            </div>
+          </div>
+        }
+        maxWidth="lg"
         footer={
-          <div className="flex items-center justify-end gap-2">
-            <Button variant="secondary" size="sm" onClick={() => setIsForceReleaseModalOpen(false)}>
+          <div className="flex items-center justify-between w-full">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsForceReleaseModalOpen(false)}
+              className="text-xs font-bold"
+            >
               Cancel
             </Button>
-            <Button variant="accent" size="sm" onClick={handleForceReleaseSubmit}>
-              Confirm Release
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={handleForceReleaseSubmit}
+              className="font-bold text-xs shadow-sm"
+            >
+              <ShieldCheck className="w-4 h-4 mr-1.5" />
+              Confirm & Disburse Funds
             </Button>
           </div>
         }
       >
         <form onSubmit={handleForceReleaseSubmit} className="space-y-4">
-          <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-800">
-            Releases <strong className="text-neutral-950 font-black">€{activeDossierOrder?.creatorNetEur.toLocaleString()}</strong> from escrow to the creator's payout balance.
+          {/* Prominent Warning Hierarchy Banner */}
+          <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 space-y-1.5">
+            <div className="flex items-center gap-2 text-rose-900 font-bold text-xs uppercase tracking-wider">
+              <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+              Irreversible Financial Action
+            </div>
+            <p className="text-xs text-rose-800 leading-relaxed font-medium">
+              This action bypasses brand sign-off and immediately disburses escrow funds into the creator's payout balance.
+              Once confirmed, this transaction cannot be reversed or retrieved automatically.
+            </p>
           </div>
-          <div>
-            <label className="text-xs font-bold text-neutral-700 block mb-1">
-              Reason
+
+          {/* Key Order & Escrow Financial Context Breakdown */}
+          <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
+                Escrow Settlement Breakdown
+              </span>
+              <span className="text-xs font-mono font-bold text-neutral-700">
+                Ref: {activeDossierOrder?.id}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2.5 text-center">
+              <div className="p-2.5 bg-white rounded-lg border border-neutral-200/80">
+                <span className="text-[10px] font-bold text-neutral-400 block">Gross Escrow</span>
+                <span className="text-sm font-black text-neutral-900 tabular-nums">
+                  {formatCurrency(activeDossierOrder?.grossAmountEur || 0)}
+                </span>
+              </div>
+              <div className="p-2.5 bg-white rounded-lg border border-neutral-200/80">
+                <span className="text-[10px] font-bold text-emerald-600 block">Platform Cut (15%)</span>
+                <span className="text-sm font-black text-emerald-700 tabular-nums">
+                  +{formatCurrency(activeDossierOrder?.platformFeeEur || 0)}
+                </span>
+              </div>
+              <div className="p-2.5 bg-pink-50 rounded-lg border border-pink-200/80">
+                <span className="text-[10px] font-black text-brand-pink block">Creator Payout</span>
+                <span className="text-sm font-black text-neutral-950 tabular-nums">
+                  {formatCurrency(activeDossierOrder?.creatorNetEur || 0)}
+                </span>
+              </div>
+            </div>
+
+            {/* Counterparty summary */}
+            <div className="pt-2 border-t border-neutral-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-neutral-600 font-medium">
+              <div>
+                Brand: <strong className="text-neutral-900">{activeDossierOrder?.brandName}</strong>
+              </div>
+              <div>
+                Creator: <strong className="text-neutral-900">{activeDossierOrder?.creatorName}</strong> (@{activeDossierOrder?.creatorHandle})
+              </div>
+            </div>
+          </div>
+
+          {/* Audit Reason & Justification */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-neutral-700 block">
+              Audit Compliance Justification
             </label>
+            <div className="relative mb-2">
+              <select
+                value={forceReason}
+                onChange={(e) => setForceReason(e.target.value)}
+                className="w-full h-10 pl-3 pr-8 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink appearance-none cursor-pointer text-neutral-800 font-semibold"
+              >
+                <option value="Brand exceeded review SLA window without response (Default SLA Breach).">
+                  Brand exceeded review SLA window without response (Default SLA Breach)
+                </option>
+                <option value="Deliverable confirmed live on channel and verified by admin.">
+                  Deliverable confirmed live on channel and verified by admin
+                </option>
+                <option value="Mutual agreement reached via ticket arbitration in favor of creator.">
+                  Mutual agreement reached via ticket arbitration in favor of creator
+                </option>
+                <option value="Customer support manual intervention override.">
+                  Customer support manual intervention override
+                </option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
             <Input
               value={forceReason}
               onChange={(e) => setForceReason(e.target.value)}
-              className="text-xs"
+              placeholder="Or enter custom audit log reason..."
+              className="text-xs font-medium"
             />
           </div>
         </form>

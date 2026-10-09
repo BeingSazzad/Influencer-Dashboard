@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   addAdminMember,
@@ -15,18 +16,55 @@ import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { UserPlus, Trash2, Search, ChevronDown } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 
 export const TeamPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
   const { members, searchQuery } = useAppSelector((state) => state.team);
   const currentUser = useAppSelector((state) => state.auth.currentUser);
+
+  const [memberToToggle, setMemberToToggle] = useState<{
+    id: string;
+    name: string;
+    currentStatus: 'active' | 'suspended';
+  } | null>(null);
+  const [memberToDelete, setMemberToDelete] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<AdminRole>('admin');
+
+  // Auto-open modal if URL query param exists (for Figma HTML-to-design capture tools)
+  useEffect(() => {
+    const modalParam = searchParams.get('modal');
+    if (modalParam === 'suspend' && members.length > 0) {
+      const target = members.find((m) => m.id !== currentUser?.id) || members[0];
+      if (target) {
+        setMemberToToggle({
+          id: target.id,
+          name: target.name,
+          currentStatus: 'active',
+        });
+      }
+    } else if (modalParam === 'delete' && members.length > 0) {
+      const target = members.find((m) => m.id !== currentUser?.id) || members[0];
+      if (target) {
+        setMemberToDelete({
+          id: target.id,
+          name: target.name,
+        });
+      }
+    } else if (modalParam === 'add') {
+      setIsInviteModalOpen(true);
+    }
+  }, [searchParams, members, currentUser]);
 
   const filteredMembers = members.filter((m) => {
     const query = searchQuery.toLowerCase().trim();
@@ -161,8 +199,18 @@ export const TeamPage: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-xs font-bold text-neutral-800 hover:text-neutral-950"
-                        onClick={() => dispatch(toggleAdminStatus(member.id))}
+                        className={`text-xs font-bold ${
+                          member.status === 'active'
+                            ? 'text-amber-700 hover:text-amber-800 hover:bg-amber-50'
+                            : 'text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50'
+                        }`}
+                        onClick={() =>
+                          setMemberToToggle({
+                            id: member.id,
+                            name: member.name,
+                            currentStatus: member.status,
+                          })
+                        }
                       >
                         {member.status === 'active' ? 'Suspend' : 'Activate'}
                       </Button>
@@ -170,7 +218,8 @@ export const TeamPage: React.FC = () => {
                         variant="ghost"
                         size="sm"
                         className="text-rose-600 hover:bg-rose-50 p-1.5"
-                        onClick={() => dispatch(removeAdminMember(member.id))}
+                        onClick={() => setMemberToDelete({ id: member.id, name: member.name })}
+                        title="Remove admin seat"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>
@@ -243,6 +292,50 @@ export const TeamPage: React.FC = () => {
           </form>
         </Modal>
       )}
+
+      {/* Confirm Suspend / Activate Dialog */}
+      <ConfirmDialog
+        isOpen={Boolean(memberToToggle)}
+        onClose={() => setMemberToToggle(null)}
+        onConfirm={() => {
+          if (memberToToggle) {
+            dispatch(toggleAdminStatus(memberToToggle.id));
+            setMemberToToggle(null);
+          }
+        }}
+        title={
+          memberToToggle?.currentStatus === 'active'
+            ? 'Suspend Administrator Access'
+            : 'Reactivate Administrator Access'
+        }
+        description={
+          memberToToggle?.currentStatus === 'active'
+            ? `Are you sure you want to suspend access for ${memberToToggle.name}? They will immediately lose access to the admin dashboard.`
+            : `Reactivate dashboard privileges for ${memberToToggle?.name}? They will regain full administrative access.`
+        }
+        variant={memberToToggle?.currentStatus === 'active' ? 'warning' : 'info'}
+        confirmLabel={
+          memberToToggle?.currentStatus === 'active'
+            ? 'Suspend Access'
+            : 'Reactivate Access'
+        }
+      />
+
+      {/* Confirm Delete Admin Dialog */}
+      <ConfirmDialog
+        isOpen={Boolean(memberToDelete)}
+        onClose={() => setMemberToDelete(null)}
+        onConfirm={() => {
+          if (memberToDelete) {
+            dispatch(removeAdminMember(memberToDelete.id));
+            setMemberToDelete(null);
+          }
+        }}
+        title="Revoke Administrator Seat"
+        description={`Are you sure you want to permanently remove ${memberToDelete?.name} from the administrator roster? This seat and all associated access will be revoked.`}
+        variant="danger"
+        confirmLabel="Revoke & Delete"
+      />
     </div>
   );
 };

@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { Textarea } from '@/components/ui/Textarea';
 import { Pagination } from '@/components/ui/Pagination';
 import { formatDate } from '@/lib/utils';
@@ -28,6 +29,7 @@ export const VerificationPage: React.FC = () => {
 
   // Modals
   const [selectedRequest, setSelectedRequest] = useState<VerificationRequest | null>(null);
+  const [approvingItem, setApprovingItem] = useState<VerificationRequest | null>(null);
   const [rejectingItem, setRejectingItem] = useState<VerificationRequest | null>(null);
   const [rejectionReason, setRejectionReason] = useState(
     'Profile information or identity could not be verified against platform standards.'
@@ -180,7 +182,7 @@ export const VerificationPage: React.FC = () => {
                           variant="accent"
                           size="sm"
                           className="text-sm font-bold"
-                          onClick={() => handleApprove(request.id)}
+                          onClick={() => setApprovingItem(request)}
                         >
                           Approve
                         </Button>
@@ -244,7 +246,7 @@ export const VerificationPage: React.FC = () => {
                     variant="accent"
                     size="sm"
                     className="font-bold"
-                    onClick={() => handleApprove(selectedRequest.id)}
+                    onClick={() => setApprovingItem(selectedRequest)}
                   >
                     Approve Creator
                   </Button>
@@ -367,6 +369,22 @@ export const VerificationPage: React.FC = () => {
           </div>
         </Modal>
       )}
+
+      {/* Confirm Creator Approval Dialog */}
+      <ConfirmDialog
+        isOpen={Boolean(approvingItem)}
+        onClose={() => setApprovingItem(null)}
+        onConfirm={() => {
+          if (approvingItem) {
+            handleApprove(approvingItem.id);
+            setApprovingItem(null);
+          }
+        }}
+        title="Approve Creator Identity"
+        description={`Are you sure you want to approve identity verification for ${approvingItem?.creatorName} (@${approvingItem?.handle})? This will award the verified creator badge and grant access to marketplace campaign contracts.`}
+        variant="info"
+        confirmLabel="Confirm Approval"
+      />
     </div>
   );
 };
