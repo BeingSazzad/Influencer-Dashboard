@@ -54,11 +54,13 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://facebook.com/influverse',
     handleHint: 'facebook.com/...',
     badge: (
-      <div className="w-8 h-8 rounded-xl bg-[#1877F2] flex items-center justify-center shrink-0 shadow-xs">
-        <svg className="w-4.5 h-4.5 fill-white" viewBox="0 0 24 24">
-          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-        </svg>
-      </div>
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="16" fill="#0866FF" />
+        <path
+          d="M21.5 16h-3.3v11.5h-4.8V16h-2.3v-4.1h2.3v-2.7c0-3.2 1.9-5 4.9-5 1.4 0 2.9.3 2.9.3v3.2h-1.6c-1.6 0-2.1 1-2.1 2v2.2h3.6l-.6 4.1z"
+          fill="#FFFFFF"
+        />
+      </svg>
     ),
   },
   {
@@ -67,13 +69,21 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://instagram.com/influverse',
     handleHint: 'instagram.com/...',
     badge: (
-      <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#FFDC80] via-[#FD1D1D] to-[#833AB4] flex items-center justify-center shrink-0 shadow-xs">
-        <svg className="w-4.5 h-4.5 text-white stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </div>
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+        <defs>
+          <linearGradient id="igOfficialGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#833AB4" />
+            <stop offset="25%" stopColor="#C13584" />
+            <stop offset="50%" stopColor="#E1306C" />
+            <stop offset="75%" stopColor="#FD1D1D" />
+            <stop offset="100%" stopColor="#F77737" />
+          </linearGradient>
+        </defs>
+        <rect width="32" height="32" rx="8" fill="url(#igOfficialGrad)" />
+        <rect x="7" y="7" width="18" height="18" rx="5" stroke="#FFFFFF" strokeWidth="2" fill="none" />
+        <circle cx="16" cy="16" r="4.3" stroke="#FFFFFF" strokeWidth="2" fill="none" />
+        <circle cx="21.5" cy="10.5" r="1.3" fill="#FFFFFF" />
+      </svg>
     ),
   },
   {
@@ -82,11 +92,13 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://x.com/influverse',
     handleHint: 'x.com/...',
     badge: (
-      <div className="w-8 h-8 rounded-xl bg-black flex items-center justify-center shrink-0 shadow-xs">
-        <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </div>
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#000000" />
+        <path
+          d="M19.5 7h2.7l-5.9 6.8 7 9.2h-5.4l-4.2-5.5-4.9 5.5H6.1l6.3-7.2L5.8 7h5.6l3.8 5.1L19.5 7zm-1 14.3h1.5L10.7 8.5H9.1l9.4 12.8z"
+          fill="#FFFFFF"
+        />
+      </svg>
     ),
   },
   {
@@ -95,11 +107,13 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://linkedin.com/company/influverse',
     handleHint: 'linkedin.com/company/...',
     badge: (
-      <div className="w-8 h-8 rounded-xl bg-[#0A66C2] flex items-center justify-center shrink-0 shadow-xs">
-        <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
-          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
-        </svg>
-      </div>
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#0A66C2" />
+        <path
+          d="M10.8 13.5H7.8V24h3V13.5zm-1.5-4.2c-1 0-1.8.8-1.8 1.7 0 1 .8 1.7 1.8 1.7 1 0 1.8-.8 1.8-1.7 0-.9-.8-1.7-1.8-1.7zm15.2 7.7c0-3.3-1.8-4.9-4.1-4.9-1.9 0-2.8 1.1-3.3 1.8V13.5H14V24h3v-5.8c0-1.5.3-3 2.1-3 1.8 0 1.8 1.7 1.8 3.1V24h3v-7z"
+          fill="#FFFFFF"
+        />
+      </svg>
     ),
   },
   {
@@ -108,11 +122,13 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://youtube.com/@influverse',
     handleHint: 'youtube.com/@...',
     badge: (
-      <div className="w-8 h-8 rounded-xl bg-[#FF0000] flex items-center justify-center shrink-0 shadow-xs">
-        <svg className="w-4.5 h-4.5 fill-white" viewBox="0 0 24 24">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </div>
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#FF0000" />
+        <path
+          d="M24.8 11.2c-.3-1-.9-1.7-1.9-2-1.7-.4-8.9-.4-8.9-.4s-7.2 0-8.9.4c-1 .3-1.6 1-1.9 2C2.8 12.9 2.8 16 2.8 16s0 3.1.4 4.8c.3 1 .9 1.7 1.9 2 1.7.4 8.9.4 8.9.4s7.2 0 8.9-.4c1-.3 1.6-1 1.9-2 .4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM13.4 19.3v-6.6l5.7 3.3-5.7 3.3z"
+          fill="#FFFFFF"
+        />
+      </svg>
     ),
   },
 ];
@@ -254,6 +270,47 @@ export const CmsPage: React.FC = () => {
     linkedin: brandAssets.socialLinks?.linkedin || 'https://linkedin.com/company/influverse',
     youtube: brandAssets.socialLinks?.youtube || 'https://youtube.com/@influverse',
   });
+
+  // Social Link Edit Modal State
+  const [editingSocialKey, setEditingSocialKey] = useState<
+    'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube' | null
+  >(null);
+  const [tempSocialUrl, setTempSocialUrl] = useState('');
+
+  const handleOpenEditSocial = (
+    key: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube'
+  ) => {
+    setEditingSocialKey(key);
+    setTempSocialUrl(socialLinks[key] || '');
+  };
+
+  const handleSaveSocialModal = () => {
+    if (!editingSocialKey) return;
+    const updated = {
+      ...socialLinks,
+      [editingSocialKey]: tempSocialUrl.trim(),
+    };
+    setSocialLinks(updated);
+
+    const updatedSocialList: SocialMediaItem[] = [
+      { id: 'SOC-FB', platform: 'Facebook', url: updated.facebook },
+      { id: 'SOC-IG', platform: 'Instagram', url: updated.instagram },
+      { id: 'SOC-X', platform: 'X / Twitter', url: updated.twitter },
+      { id: 'SOC-LI', platform: 'LinkedIn', url: updated.linkedin },
+      { id: 'SOC-YT', platform: 'YouTube', url: updated.youtube },
+    ];
+
+    dispatch(
+      updateBrandAssets({
+        ...brandAssets,
+        socialLinks: updated,
+        socialList: updatedSocialList,
+      })
+    );
+    setEditingSocialKey(null);
+    setBrandSavedNotice(true);
+    setTimeout(() => setBrandSavedNotice(false), 2500);
+  };
 
   const handleSaveBrand = () => {
     const updatedSocialList: SocialMediaItem[] = [
@@ -794,38 +851,50 @@ export const CmsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <div className="flex-1">
-                          <Input
-                            type="url"
-                            placeholder={platform.placeholder}
-                            value={currentUrl}
-                            onChange={(e) =>
-                              setSocialLinks((prev) => ({
-                                ...prev,
-                                [platform.key]: e.target.value,
-                              }))
-                            }
-                            className="text-xs font-mono bg-white"
-                          />
+                        <div className="flex-1 min-w-0">
+                          {hasUrl ? (
+                            <div className="flex items-center gap-2 bg-white border border-neutral-200 px-3.5 py-2 rounded-xl shadow-2xs">
+                              <span className="text-xs font-mono text-neutral-800 font-semibold truncate flex-1" title={currentUrl}>
+                                {currentUrl}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="bg-white/60 border border-dashed border-neutral-200 px-3.5 py-2 rounded-xl text-xs text-neutral-400 italic">
+                              No URL configured yet
+                            </div>
+                          )}
                         </div>
-                        {hasUrl ? (
-                          <a
-                            href={currentUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title={`Open ${platform.name} profile in new tab`}
-                            className="p-2 rounded-lg border border-neutral-200 hover:border-brand-black text-neutral-500 hover:text-brand-black bg-white hover:bg-neutral-100 transition-all shrink-0 cursor-pointer"
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="font-bold text-xs gap-1.5 text-neutral-800 hover:text-neutral-950 border-neutral-200 bg-white hover:bg-neutral-100 shadow-2xs cursor-pointer"
+                            onClick={() => handleOpenEditSocial(platform.key)}
                           >
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        ) : (
-                          <div
-                            title="Enter URL to preview"
-                            className="p-2 rounded-lg border border-transparent text-neutral-300 bg-transparent shrink-0 cursor-not-allowed"
-                          >
-                            <ExternalLink className="w-4 h-4 opacity-40" />
-                          </div>
-                        )}
+                            <Edit2 className="w-3.5 h-3.5 text-neutral-600" />
+                            <span>Edit Link</span>
+                          </Button>
+
+                          {hasUrl ? (
+                            <a
+                              href={currentUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title={`Visit official ${platform.name} channel`}
+                              className="p-2 rounded-lg border border-neutral-200 hover:border-brand-black text-neutral-500 hover:text-brand-black bg-white hover:bg-neutral-100 transition-all shrink-0 cursor-pointer"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </a>
+                          ) : (
+                            <div
+                              title="No link configured"
+                              className="p-2 rounded-lg border border-transparent text-neutral-300 bg-transparent shrink-0 cursor-not-allowed"
+                            >
+                              <ExternalLink className="w-4 h-4 opacity-30" />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
@@ -845,6 +914,80 @@ export const CmsPage: React.FC = () => {
               </Button>
             </div>
           </Card>
+
+          {/* Edit Official Social Link Modal */}
+          {editingSocialKey && (
+            <Modal
+              isOpen={true}
+              onClose={() => setEditingSocialKey(null)}
+              title={
+                <div className="flex items-center gap-2.5">
+                  {OFFICIAL_SOCIAL_PLATFORMS.find((p) => p.key === editingSocialKey)?.badge}
+                  <span>
+                    Edit {OFFICIAL_SOCIAL_PLATFORMS.find((p) => p.key === editingSocialKey)?.name} Link
+                  </span>
+                </div>
+              }
+              description="Enter your official brand channel URL to display across website header, footer, and emails."
+              maxWidth="md"
+              footer={
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditingSocialKey(null)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="accent"
+                    size="sm"
+                    className="font-bold"
+                    onClick={handleSaveSocialModal}
+                  >
+                    Save Link
+                  </Button>
+                </>
+              }
+            >
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSaveSocialModal();
+                }}
+                className="space-y-4"
+              >
+                <Input
+                  label="Official Profile URL"
+                  type="url"
+                  value={tempSocialUrl}
+                  onChange={(e) => setTempSocialUrl(e.target.value)}
+                  placeholder={
+                    OFFICIAL_SOCIAL_PLATFORMS.find((p) => p.key === editingSocialKey)?.placeholder ||
+                    'https://...'
+                  }
+                  helperText={`Example: ${OFFICIAL_SOCIAL_PLATFORMS.find((p) => p.key === editingSocialKey)?.placeholder}`}
+                  autoFocus
+                  required
+                />
+
+                {tempSocialUrl.trim().length > 0 && (
+                  <div className="p-3 bg-neutral-50 border border-neutral-200 rounded-xl flex items-center justify-between text-xs">
+                    <span className="text-neutral-500 font-medium">Link Preview Test:</span>
+                    <a
+                      href={tempSocialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-bold text-neutral-900 hover:text-brand-pink flex items-center gap-1"
+                    >
+                      <span>Test Link</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                )}
+              </form>
+            </Modal>
+          )}
         </div>
       )}
     </div>
