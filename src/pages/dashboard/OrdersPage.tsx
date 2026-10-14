@@ -498,7 +498,7 @@ export const OrdersPage: React.FC = () => {
           isOpen={isDossierOpen}
           onClose={() => setIsDossierOpen(false)}
           title={`Order #${activeDossierOrder.id}`}
-          maxWidth="xl"
+          maxWidth="2xl"
           footer={
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-2">
@@ -546,22 +546,24 @@ export const OrdersPage: React.FC = () => {
           <div className="space-y-5">
             {/* Top Overview Banner */}
             <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div>
-                <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                  <span className="text-base font-black text-neutral-950">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1.5 flex-nowrap min-w-0">
+                  <span className="text-base font-black text-neutral-950 truncate" title={activeDossierOrder.packageTitle}>
                     {activeDossierOrder.packageTitle}
                   </span>
-                  {renderStatusBadge(activeDossierOrder.status)}
-                  <Badge variant="neutral" size="sm" className="capitalize">
-                    {activeDossierOrder.packageTier}
-                  </Badge>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {renderStatusBadge(activeDossierOrder.status)}
+                    <Badge variant="neutral" size="sm" className="capitalize">
+                      {activeDossierOrder.packageTier}
+                    </Badge>
+                  </div>
                 </div>
-                <p className="text-xs text-neutral-500 font-medium">
+                <p className="text-xs text-neutral-500 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                   Niche: <span className="text-neutral-900 font-bold">{activeDossierOrder.category}</span> • Created {activeDossierOrder.createdAt} • Due {activeDossierOrder.dueDate}
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 bg-white p-2.5 rounded-lg border border-neutral-200">
+              <div className="flex items-center gap-4 bg-white p-2.5 rounded-lg border border-neutral-200 shrink-0">
                 <div>
                   <span className="text-[10px] text-neutral-400 block font-bold uppercase tracking-wider">
                     Escrow
