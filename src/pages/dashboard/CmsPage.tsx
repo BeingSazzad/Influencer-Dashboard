@@ -447,9 +447,11 @@ export const CmsPage: React.FC = () => {
                   <div>
                     <h3 className="text-base font-extrabold text-neutral-950 flex items-center gap-2">
                       <span>{currentLegalDoc?.title}</span>
-                      <Badge variant={isEditingPolicy ? 'pink' : 'neutral'} size="sm">
-                        {isEditingPolicy ? 'Editing' : 'Active'}
-                      </Badge>
+                      {isEditingPolicy && (
+                        <Badge variant="pink" size="sm">
+                          Editing
+                        </Badge>
+                      )}
                     </h3>
                     <p className="text-xs text-neutral-500 font-medium mt-0.5">
                       Last updated: {currentLegalDoc?.lastModified}
