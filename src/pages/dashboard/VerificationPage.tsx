@@ -18,7 +18,7 @@ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { Textarea } from '@/components/ui/Textarea';
 import { Pagination } from '@/components/ui/Pagination';
 import { formatDate } from '@/lib/utils';
-import { Eye, BadgeCheck, Check, ExternalLink, Globe, Video, Users, TrendingUp, Sparkles } from 'lucide-react';
+import { Eye, BadgeCheck, Check, ExternalLink, Globe, Video, Users, TrendingUp, Layers } from 'lucide-react';
 
 export const VerificationPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -458,7 +458,7 @@ export const VerificationPage: React.FC = () => {
                 {/* Collaboration Preferences */}
                 <div className="p-3.5 bg-white rounded-xl border border-neutral-200 space-y-2">
                   <div className="flex items-center gap-1.5 font-bold text-neutral-900 text-xs">
-                    <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
+                    <Layers className="w-3.5 h-3.5 text-neutral-600" />
                     <span>Collaboration Scope</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5 pt-1">

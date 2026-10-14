@@ -32,7 +32,7 @@ import {
   Search,
   ExternalLink,
   Building2,
-  Sparkles,
+  User,
   ChevronUp,
   ChevronDown,
   Share2,
@@ -543,7 +543,7 @@ export const CmsPage: React.FC = () => {
                     : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >
-                <Sparkles className="w-3.5 h-3.5" />
+                <User className="w-3.5 h-3.5" />
                 <span>For Creators</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${
@@ -719,7 +719,7 @@ export const CmsPage: React.FC = () => {
                           : 'border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50'
                       }`}
                     >
-                      <Sparkles className="w-3.5 h-3.5" />
+                      <User className="w-3.5 h-3.5" />
                       <span>For Creators</span>
                     </button>
                   </div>

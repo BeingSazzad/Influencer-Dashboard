@@ -19,7 +19,6 @@ import {
   Edit2,
   ArrowUp,
   ArrowDown,
-  Sparkles,
   UploadCloud,
 } from 'lucide-react';
 
