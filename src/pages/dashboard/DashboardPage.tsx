@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@/store/hooks';
+import { ROUTES } from '@/constants/routes';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { StatCard } from '@/components/shared/StatCard';
 import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import {
   TrendingUp,
   ShieldCheck,
   Users,
   Euro,
+  ArrowUpRight,
+  Scale,
+  ShoppingBag,
+  CheckCircle2,
+  Settings,
+  Lock,
+  Layers,
+  ChevronRight,
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 
 export const DashboardPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { disputes } = useAppSelector((state) => state.escrow);
+  const { requests } = useAppSelector((state) => state.verification);
+  const { orders } = useAppSelector((state) => state.orders);
+
+  const openDisputesCount = disputes.filter((d) => d.status === 'open').length;
+  const pendingVerificationsCount = requests.filter((r) => r.status === 'pending').length;
+  const activeOrdersCount = orders.filter((o) => o.status !== 'completed' && o.status !== 'cancelled').length;
+
   // Year Filter State (2026, 2025, 2024)
   const [selectedYear, setSelectedYear] = useState<'2026' | '2025' | '2024'>('2026');
 
@@ -487,6 +509,250 @@ export const DashboardPage: React.FC = () => {
         </Card>
       </div>
 
+      {/* LEVEL 3: OPERATIONAL ACTIONABILITY & PRIORITY OPERATIONS */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column (2 Cols): Priority Operations Queue */}
+        <Card className="lg:col-span-2 p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-neutral-100 flex-wrap gap-2">
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-extrabold text-neutral-900">
+                  Priority Operations
+                </h3>
+                {(openDisputesCount > 0 || pendingVerificationsCount > 0) && (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-50 text-rose-700 border border-rose-200">
+                    {openDisputesCount + pendingVerificationsCount} Attention Needed
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-neutral-400 font-medium mt-0.5">
+                Active dispute mediations, identity verifications, and contract milestones.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate(ROUTES.DASHBOARD.ORDERS)}
+              className="text-xs font-bold text-brand-pink hover:text-brand-pink/80 flex items-center gap-1 transition-colors cursor-pointer"
+            >
+              <span>View all orders</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="space-y-2.5">
+            {/* Priority 1: Open Dispute */}
+            {disputes.length > 0 && (
+              <div className="p-3.5 rounded-xl border border-rose-100 bg-rose-50/30 hover:bg-rose-50/60 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 mt-0.5">
+                    <Scale className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-extrabold text-neutral-950">
+                        {disputes[0].campaignTitle}
+                      </span>
+                      <Badge variant="danger" size="sm" dot>
+                        Dispute Active
+                      </Badge>
+                    </div>
+                    <p className="text-[11px] text-neutral-500 font-medium mt-0.5">
+                      {disputes[0].brandName} ↔ {disputes[0].creatorName} • Escrow: <strong className="text-neutral-900 font-bold">{formatCurrency(disputes[0].amountEur)}</strong>
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate(ROUTES.DASHBOARD.ESCROW)}
+                  className="text-xs font-bold text-rose-700 border-rose-200 hover:bg-rose-100 shrink-0 self-start sm:self-auto"
+                >
+                  Arbitrate Case
+                </Button>
+              </div>
+            )}
+
+            {/* Priority 2: Pending Creator Verification */}
+            {requests.length > 0 && (
+              <div className="p-3.5 rounded-xl border border-sky-100 bg-sky-50/30 hover:bg-sky-50/60 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0 mt-0.5">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-extrabold text-neutral-950">
+                        {requests[0].creatorName}
+                      </span>
+                      <span className="text-xs text-brand-pink font-bold">
+                        @{requests[0].handle}
+                      </span>
+                      <Badge variant="warning" size="sm" dot>
+                        Verification Pending
+                      </Badge>
+                    </div>
+                    <p className="text-[11px] text-neutral-500 font-medium mt-0.5">
+                      Category: <strong className="text-neutral-800 font-semibold">{requests[0].category}</strong> • Reach: <strong className="text-neutral-800 font-semibold">{requests[0].followersTotal || '125K'}</strong> • {requests[0].location || 'European Union'}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate(ROUTES.DASHBOARD.VERIFICATION)}
+                  className="text-xs font-bold text-sky-800 border-sky-200 hover:bg-sky-100 shrink-0 self-start sm:self-auto"
+                >
+                  View Application
+                </Button>
+              </div>
+            )}
+
+            {/* Priority 3: Active Order Milestone */}
+            {orders.length > 0 && (
+              <div className="p-3.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-100">
+                    <ShoppingBag className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-extrabold text-neutral-950">
+                        {orders[0].packageTitle}
+                      </span>
+                      <Badge variant="neutral" size="sm">
+                        {orders[0].status.replace('_', ' ')}
+                      </Badge>
+                    </div>
+                    <p className="text-[11px] text-neutral-500 font-medium mt-0.5">
+                      {orders[0].brandName} ↔ {orders[0].creatorName} • Contract: <strong className="text-neutral-900 font-bold">{formatCurrency(orders[0].grossAmountEur)}</strong> • Due {orders[0].dueDate}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate(ROUTES.DASHBOARD.ORDERS)}
+                  className="text-xs font-bold shrink-0 self-start sm:self-auto"
+                >
+                  View Order
+                </Button>
+              </div>
+            )}
+          </div>
+        </Card>
+
+        {/* Right Column (1 Col): Quick Actions & System Health */}
+        <div className="space-y-6">
+          {/* Quick Actions Grid */}
+          <Card className="p-5 space-y-3.5">
+            <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
+              <h3 className="text-sm font-extrabold text-neutral-900">
+                Quick Actions
+              </h3>
+              <span className="text-[11px] font-bold text-neutral-400">Operations</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.DASHBOARD.VERIFICATION)}
+                className="p-3 rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-white hover:border-brand-pink/50 hover:shadow-xs transition-all text-left group cursor-pointer"
+              >
+                <div className="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <p className="text-xs font-extrabold text-neutral-900 group-hover:text-brand-pink transition-colors">
+                  Verifications
+                </p>
+                <span className="text-[10px] text-neutral-500 font-bold block mt-0.5">
+                  {pendingVerificationsCount} Pending
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.DASHBOARD.ESCROW)}
+                className="p-3 rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-white hover:border-brand-pink/50 hover:shadow-xs transition-all text-left group cursor-pointer"
+              >
+                <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+                  <Scale className="w-4 h-4" />
+                </div>
+                <p className="text-xs font-extrabold text-neutral-900 group-hover:text-brand-pink transition-colors">
+                  Disputes
+                </p>
+                <span className="text-[10px] text-neutral-500 font-bold block mt-0.5">
+                  {openDisputesCount} Active Case
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.DASHBOARD.ORDERS)}
+                className="p-3 rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-white hover:border-brand-pink/50 hover:shadow-xs transition-all text-left group cursor-pointer"
+              >
+                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+                  <ShoppingBag className="w-4 h-4" />
+                </div>
+                <p className="text-xs font-extrabold text-neutral-900 group-hover:text-brand-pink transition-colors">
+                  Orders
+                </p>
+                <span className="text-[10px] text-neutral-500 font-bold block mt-0.5">
+                  {activeOrdersCount} Running
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.DASHBOARD.SETTINGS)}
+                className="p-3 rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-white hover:border-brand-pink/50 hover:shadow-xs transition-all text-left group cursor-pointer"
+              >
+                <div className="w-7 h-7 rounded-lg bg-neutral-100 text-neutral-700 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+                  <Settings className="w-4 h-4" />
+                </div>
+                <p className="text-xs font-extrabold text-neutral-900 group-hover:text-brand-pink transition-colors">
+                  Settings
+                </p>
+                <span className="text-[10px] text-neutral-500 font-bold block mt-0.5">
+                  VAT & Rules
+                </span>
+              </button>
+            </div>
+          </Card>
+
+          {/* System & Escrow Security Card */}
+          <Card className="p-4 bg-gradient-to-br from-white to-neutral-50 border-neutral-200 space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span className="text-xs font-bold text-neutral-900">Escrow Custody Vault</span>
+              </div>
+              <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                100% Solvency
+              </span>
+            </div>
+
+            <div className="space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-neutral-500 font-medium">Locked in Escrow:</span>
+                <span className="font-black text-neutral-950 tabular-nums">€148,500</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-neutral-500 font-medium">Milestone SLA Rate:</span>
+                <span className="font-bold text-emerald-600">98.4% On-Time</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-neutral-500 font-medium">Payment Infrastructure:</span>
+                <span className="font-bold text-neutral-900">Stripe Connect Active</span>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-neutral-100 flex items-center gap-1.5 text-[11px] text-neutral-400 font-medium">
+              <Lock className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+              <span>Non-custodial cryptographic escrow protection</span>
+            </div>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
