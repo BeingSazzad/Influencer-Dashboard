@@ -233,10 +233,10 @@ export const TeamPage: React.FC = () => {
                           size="sm"
                           className="text-sm font-bold text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100 p-2 gap-1.5"
                           onClick={() => handleOpenEdit(member)}
-                          title="Edit administrator details and replace email"
+                          title="Edit administrator"
                         >
                           <Edit2 className="w-4 h-4 text-neutral-500" />
-                          <span className="hidden sm:inline">Replace Email</span>
+                          <span className="hidden sm:inline">Edit</span>
                         </Button>
                       )}
                       <Button
@@ -341,8 +341,8 @@ export const TeamPage: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setMemberToEdit(null)}
-          title="Edit Administrator & Replace Email"
-          description="Update administrative credentials and replace official dashboard login email."
+          title="Edit Administrator"
+          description="Update administrative credentials, assigned role, and login email."
           maxWidth="md"
           footer={
             <>
@@ -354,7 +354,7 @@ export const TeamPage: React.FC = () => {
                 Cancel
               </Button>
               <Button variant="accent" size="sm" onClick={handleSaveEdit}>
-                Save & Replace Email
+                Save Changes
               </Button>
             </>
           }
@@ -363,7 +363,7 @@ export const TeamPage: React.FC = () => {
             <div className="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl flex items-start gap-2.5">
               <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <div className="text-[11px] text-amber-900 leading-relaxed font-medium">
-                <strong className="font-bold">Super Admin Authority:</strong> Regular administrators cannot edit their own email address in profile settings. Only a Super Admin can replace their login email here.
+                <strong className="font-bold">Super Admin Authority:</strong> Only a Super Admin can modify administrative team details and login emails.
               </div>
             </div>
 
@@ -375,11 +375,11 @@ export const TeamPage: React.FC = () => {
             />
 
             <Input
-              label="Replace Email Address"
+              label="Email Address"
               type="email"
               value={editEmail}
               onChange={(e) => setEditEmail(e.target.value)}
-              helperText="The administrator will be required to use this new email address to sign in."
+              helperText="The administrator will use this email address to sign in to the dashboard."
               required
             />
 
