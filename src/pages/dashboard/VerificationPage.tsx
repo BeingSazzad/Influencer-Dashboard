@@ -82,7 +82,7 @@ export const VerificationPage: React.FC = () => {
     <div className="space-y-6 pb-12">
       <PageHeader
         title="Verifications"
-        subtitle="Review and audit creator identity applications."
+        subtitle="Review and manage creator identity applications."
       />
 
       {/* Filter Tabs with Live Count Badges */}
@@ -199,7 +199,7 @@ export const VerificationPage: React.FC = () => {
                         onClick={() => setSelectedRequest(request)}
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        Audit
+                        View
                       </Button>
                       {request.status === 'pending' && (
                         <button
@@ -242,7 +242,7 @@ export const VerificationPage: React.FC = () => {
         <Modal
           isOpen={true}
           onClose={() => setSelectedRequest(null)}
-          title={`Audit Verification: ${selectedRequest.creatorName}`}
+          title={`Verification Details: ${selectedRequest.creatorName}`}
           description="Review identity details, verified audience reach, and portfolio deliverables."
           maxWidth="lg"
           footer={
