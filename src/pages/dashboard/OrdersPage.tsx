@@ -332,9 +332,8 @@ export const OrdersPage: React.FC = () => {
           <table className="w-full text-left text-sm">
             <thead className="bg-neutral-50 text-neutral-500 text-xs border-b border-neutral-100 font-bold uppercase tracking-wider">
               <tr>
-                <th className="py-3 px-5">Order</th>
-                <th className="py-3 px-5">Brand</th>
-                <th className="py-3 px-5">Creator</th>
+                <th className="py-3 px-5">Order ID</th>
+                <th className="py-3 px-5">Order Name</th>
                 <th className="py-3 px-5">Amount</th>
                 <th className="py-3 px-5">Status</th>
                 <th className="py-3 px-5 text-right">Action</th>
@@ -343,7 +342,7 @@ export const OrdersPage: React.FC = () => {
             <tbody className="divide-y divide-neutral-100 bg-white">
               {paginatedOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-neutral-500">
+                  <td colSpan={5} className="py-12 text-center text-neutral-500">
                     <div className="max-w-xs mx-auto space-y-2">
                       <ShoppingBag className="w-8 h-8 mx-auto text-neutral-300" />
                       <p className="font-bold text-neutral-900">No orders found</p>
@@ -373,37 +372,21 @@ export const OrdersPage: React.FC = () => {
                     className="hover:bg-neutral-50/80 transition-colors cursor-pointer"
                     onClick={() => handleOpenDossier(order)}
                   >
-                    {/* Order ID & Package Title */}
-                    <td className="py-4 px-5">
-                      <span className="font-mono text-xs font-bold text-neutral-500 block">
+                    {/* Order ID Column */}
+                    <td className="py-4 px-5 whitespace-nowrap">
+                      <span className="font-mono text-xs font-bold text-neutral-600 bg-neutral-100 px-2 py-1 rounded-md inline-block">
                         #{order.id}
                       </span>
+                    </td>
+
+                    {/* Order Name Column */}
+                    <td className="py-4 px-5">
                       <p
-                        className="text-sm font-bold text-neutral-950 truncate max-w-[260px] mt-0.5"
+                        className="text-sm font-bold text-neutral-950 truncate max-w-md"
                         title={order.packageTitle}
                       >
                         {order.packageTitle}
                       </p>
-                    </td>
-
-                    {/* Brand Column */}
-                    <td className="py-4 px-5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-2.5">
-                        <Avatar src={order.brandAvatar} name={order.brandName} size="xs" />
-                        <span className="text-sm font-bold text-neutral-900 truncate max-w-[150px]">
-                          {order.brandName}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Creator Column */}
-                    <td className="py-4 px-5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-2.5">
-                        <Avatar src={order.creatorAvatar} name={order.creatorName} size="xs" />
-                        <span className="text-sm font-semibold text-neutral-800 truncate max-w-[150px]">
-                          {order.creatorName}
-                        </span>
-                      </div>
                     </td>
 
                     {/* Clean Amount */}
