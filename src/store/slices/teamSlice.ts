@@ -45,6 +45,17 @@ export const teamSlice = createSlice({
         member.role = action.payload.role;
       }
     },
+    updateAdminMember: (
+      state,
+      action: PayloadAction<{ id: string; name: string; email: string; role: AdminRole }>
+    ) => {
+      const member = state.members.find((m) => m.id === action.payload.id);
+      if (member) {
+        member.name = action.payload.name;
+        member.email = action.payload.email;
+        member.role = action.payload.role;
+      }
+    },
     toggleAdminStatus: (state, action: PayloadAction<string>) => {
       const member = state.members.find((m) => m.id === action.payload);
       if (member) {
@@ -60,6 +71,7 @@ export const {
   addAdminMember,
   removeAdminMember,
   updateAdminRole,
+  updateAdminMember,
   toggleAdminStatus,
 } = teamSlice.actions;
 

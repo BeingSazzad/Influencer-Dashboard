@@ -26,7 +26,6 @@ export const SettingsPage: React.FC = () => {
 
   // Profile Form State
   const [name, setName] = useState(currentUser?.name || '');
-  const [email, setEmail] = useState(currentUser?.email || '');
   const [avatar, setAvatar] = useState(currentUser?.avatar || '');
   const [profileSuccessNotice, setProfileSuccessNotice] = useState(false);
 
@@ -47,7 +46,13 @@ export const SettingsPage: React.FC = () => {
 
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(updateAdminProfile({ name, email, avatar }));
+    dispatch(
+      updateAdminProfile({
+        name,
+        email: currentUser?.email || '',
+        avatar,
+      })
+    );
     setProfileSuccessNotice(true);
     setTimeout(() => setProfileSuccessNotice(false), 2500);
   };
@@ -241,9 +246,16 @@ export const SettingsPage: React.FC = () => {
               <Input
                 label="Email Address"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                value={currentUser?.email || ''}
+                disabled
+                readOnly
+                rightIcon={<Lock className="w-4 h-4 text-neutral-400" />}
+                className="bg-neutral-100/80 text-neutral-500 font-medium cursor-not-allowed select-none border-neutral-200"
+                helperText={
+                  currentUser?.role === 'super_admin'
+                    ? 'Super Admin email is immutable and can only be modified by developers at database level.'
+                    : 'Email address is locked and can only be replaced by a Super Admin.'
+                }
               />
             </div>
 

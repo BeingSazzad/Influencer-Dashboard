@@ -4,10 +4,11 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   addAdminMember,
   removeAdminMember,
+  updateAdminMember,
   toggleAdminStatus,
   setTeamSearch,
 } from '@/store/slices/teamSlice';
-import { AdminRole } from '@/types/admin.types';
+import { AdminRole, AdminUser } from '@/types/admin.types';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/Table';
@@ -17,7 +18,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
-import { UserPlus, Trash2, Search, ChevronDown } from 'lucide-react';
+import { UserPlus, Trash2, Search, ChevronDown, Edit2, ShieldAlert } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 
 export const TeamPage: React.FC = () => {
@@ -25,6 +26,7 @@ export const TeamPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { members, searchQuery } = useAppSelector((state) => state.team);
   const currentUser = useAppSelector((state) => state.auth.currentUser);
+  const isSuperAdmin = currentUser?.role === 'super_admin';
 
   const [memberToToggle, setMemberToToggle] = useState<{
     id: string;
@@ -40,6 +42,12 @@ export const TeamPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<AdminRole>('admin');
+
+  // Edit Admin & Replace Email State (Super Admin Only)
+  const [memberToEdit, setMemberToEdit] = useState<AdminUser | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editRole, setEditRole] = useState<AdminRole>('admin');
 
   // Auto-open modal if URL query param exists (for Figma HTML-to-design capture tools)
   useEffect(() => {
@@ -93,6 +101,28 @@ export const TeamPage: React.FC = () => {
     setName('');
     setEmail('');
     setIsInviteModalOpen(false);
+  };
+
+  const handleOpenEdit = (member: AdminUser) => {
+    setMemberToEdit(member);
+    setEditName(member.name);
+    setEditEmail(member.email);
+    setEditRole(member.role);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!memberToEdit || !editName || !editEmail) return;
+
+    dispatch(
+      updateAdminMember({
+        id: memberToEdit.id,
+        name: editName,
+        email: editEmail,
+        role: editRole,
+      })
+    );
+    setMemberToEdit(null);
   };
 
   return (
@@ -195,7 +225,19 @@ export const TeamPage: React.FC = () => {
 
                 <TableCell className="text-right">
                   {member.id !== currentUser?.id && (
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex items-center justify-end gap-1.5">
+                      {isSuperAdmin && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs font-bold text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100 p-1.5 gap-1.5"
+                          onClick={() => handleOpenEdit(member)}
+                          title="Edit administrator details and replace email"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Replace Email</span>
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="sm"
@@ -285,6 +327,74 @@ export const TeamPage: React.FC = () => {
                 >
                   <option value="admin">Admin</option>
                   <option value="moderator">Moderator</option>
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {/* Edit Admin & Replace Email Modal (Super Admin Authority) */}
+      {memberToEdit && (
+        <Modal
+          isOpen={true}
+          onClose={() => setMemberToEdit(null)}
+          title="Edit Administrator & Replace Email"
+          description="Update administrative credentials and replace official dashboard login email."
+          maxWidth="md"
+          footer={
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setMemberToEdit(null)}
+              >
+                Cancel
+              </Button>
+              <Button variant="accent" size="sm" onClick={handleSaveEdit}>
+                Save & Replace Email
+              </Button>
+            </>
+          }
+        >
+          <form onSubmit={handleSaveEdit} className="space-y-4">
+            <div className="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl flex items-start gap-2.5">
+              <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <div className="text-[11px] text-amber-900 leading-relaxed font-medium">
+                <strong className="font-bold">Super Admin Authority:</strong> Regular administrators cannot edit their own email address in profile settings. Only a Super Admin can replace their login email here.
+              </div>
+            </div>
+
+            <Input
+              label="Full Name"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              required
+            />
+
+            <Input
+              label="Replace Email Address"
+              type="email"
+              value={editEmail}
+              onChange={(e) => setEditEmail(e.target.value)}
+              helperText="The administrator will be required to use this new email address to sign in."
+              required
+            />
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-neutral-600">
+                Administrative Role
+              </label>
+              <div className="relative">
+                <select
+                  value={editRole}
+                  onChange={(e) => setEditRole(e.target.value as AdminRole)}
+                  className="w-full h-10 pl-3 pr-8 text-xs bg-white border border-neutral-200 rounded-lg outline-none focus:border-brand-pink appearance-none cursor-pointer text-neutral-800 font-semibold"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="moderator">Moderator</option>
+                  <option value="super_admin">Super Admin</option>
                 </select>
                 <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
