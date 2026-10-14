@@ -333,7 +333,7 @@ export const OrdersPage: React.FC = () => {
             <thead className="bg-neutral-50 text-neutral-500 text-xs border-b border-neutral-100 font-bold uppercase tracking-wider">
               <tr>
                 <th className="py-3 px-5">Order ID</th>
-                <th className="py-3 px-5">Order Name</th>
+                <th className="py-3 px-5">Campaign</th>
                 <th className="py-3 px-5">Amount</th>
                 <th className="py-3 px-5">Status</th>
                 <th className="py-3 px-5 text-right">Action</th>
@@ -379,7 +379,7 @@ export const OrdersPage: React.FC = () => {
                       </span>
                     </td>
 
-                    {/* Order Name Column */}
+                    {/* Campaign Column */}
                     <td className="py-4 px-5">
                       <p
                         className="text-sm font-bold text-neutral-950 truncate max-w-md"
