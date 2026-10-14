@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   setSelectedLegalSlug,
@@ -6,7 +7,6 @@ import {
   addFaq,
   updateFaq,
   deleteFaq,
-  toggleFaqPublish,
   reorderFaq,
   updateBrandAssets,
 } from '@/store/slices/cmsSlice';
@@ -121,7 +121,16 @@ export const CmsPage: React.FC = () => {
   const { legalDocs, selectedLegalSlug, faqs, brandAssets, partnerBrands } =
     useAppSelector((state) => state.cms);
 
-  const [activeTab, setActiveTab] = useState<'legal' | 'brands' | 'faqs' | 'branding'>('brands');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const validTabs: Array<'legal' | 'brands' | 'faqs' | 'branding'> = ['legal', 'brands', 'faqs', 'branding'];
+  const queryTab = searchParams.get('tab') as 'legal' | 'brands' | 'faqs' | 'branding' | null;
+  const initialTab = queryTab && validTabs.includes(queryTab) ? queryTab : 'faqs';
+  const [activeTab, setActiveTabState] = useState<'legal' | 'brands' | 'faqs' | 'branding'>(initialTab);
+
+  const setActiveTab = (tab: 'legal' | 'brands' | 'faqs' | 'branding') => {
+    setActiveTabState(tab);
+    setSearchParams({ tab });
+  };
 
   // Legal Doc Editor State
   const currentLegalDoc =
@@ -459,21 +468,11 @@ export const CmsPage: React.FC = () => {
                               dispatch(reorderFaq({ id: faq.id, direction: 'down' }));
                             }}
                             title="Move question down"
-                            className="p-1 rounded text-neutral-600 hover:text-neutral-950 hover:bg-white disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+                            className="p-1 rounded text-neutral-600 hover:text-neutral-950 hover:bg-white disabled:opacity-25 disabled:cursor-not-allowed transition-all cursor-pointer"
                           >
                             <ChevronDown className="w-3.5 h-3.5" />
                           </button>
                         </div>
-
-                        {faq.isPublished ? (
-                          <Badge variant="success" size="sm" dot>
-                            Live
-                          </Badge>
-                        ) : (
-                          <Badge variant="neutral" size="sm">
-                            Draft
-                          </Badge>
-                        )}
                       </div>
                       <h4 className="text-sm font-extrabold text-neutral-950">
                         {faq.question}
@@ -483,28 +482,22 @@ export const CmsPage: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-1.5 shrink-0">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="font-bold text-xs"
-                        onClick={() => dispatch(toggleFaqPublish(faq.id))}
-                      >
-                        {faq.isPublished ? 'Unpublish' : 'Publish'}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="font-bold text-xs"
+                        className="font-bold text-xs p-2 text-neutral-600 hover:text-neutral-950"
                         onClick={() => handleOpenEditFaq(faq)}
+                        title="Edit question"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-rose-600 hover:bg-rose-50"
+                        className="text-rose-600 hover:bg-rose-50 p-2"
                         onClick={() => dispatch(deleteFaq(faq.id))}
+                        title="Delete question"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </Button>
