@@ -5,7 +5,6 @@ import {
   setOrderStatusFilter,
   setOrderSlaFilter,
   setSelectedOrderId,
-  extendOrderDeadline,
   forceDisburseOrderEscrow,
   escalateOrderToDispute,
   sendOrderNudge,
@@ -30,7 +29,6 @@ import {
   ExternalLink,
   ShieldCheck,
   Send,
-  CalendarPlus,
   Play,
   FileText,
   User,
@@ -57,10 +55,6 @@ export const OrdersPage: React.FC = () => {
   const [isDossierOpen, setIsDossierOpen] = useState(false);
   const [activeDossierOrder, setActiveDossierOrder] = useState<MarketplaceOrder | null>(null);
 
-  // Extend SLA Modal
-  const [isExtendModalOpen, setIsExtendModalOpen] = useState(false);
-  const [extendDays, setExtendDays] = useState('3');
-  const [extendReason, setExtendReason] = useState('Product shipping / customs transit delay');
 
   // Nudge Modal
   const [isNudgeModalOpen, setIsNudgeModalOpen] = useState(false);
@@ -124,20 +118,6 @@ export const OrdersPage: React.FC = () => {
     setIsDossierOpen(true);
   };
 
-  const handleExtendDeadlineSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!activeDossierOrder) return;
-    dispatch(
-      extendOrderDeadline({
-        orderId: activeDossierOrder.id,
-        daysToAdd: Number(extendDays),
-        adminNote: extendReason,
-      })
-    );
-    const updated = orders.find((o) => o.id === activeDossierOrder.id);
-    if (updated) setActiveDossierOrder(updated);
-    setIsExtendModalOpen(false);
-  };
 
   const handleForceReleaseSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -431,15 +411,6 @@ export const OrdersPage: React.FC = () => {
                               onClick: () => handleOpenDossier(order),
                             },
                             {
-                              id: 'extend',
-                              label: 'Extend Delivery SLA',
-                              icon: <CalendarPlus className="w-3.5 h-3.5 mr-2" />,
-                              onClick: () => {
-                                setActiveDossierOrder(order);
-                                setIsExtendModalOpen(true);
-                              },
-                            },
-                            {
                               id: 'nudge',
                               label: 'Nudge Counterparties',
                               icon: <Bell className="w-3.5 h-3.5 mr-2" />,
@@ -502,15 +473,6 @@ export const OrdersPage: React.FC = () => {
           footer={
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsExtendModalOpen(true)}
-                  className="text-xs font-bold"
-                >
-                  <CalendarPlus className="w-3.5 h-3.5 mr-1.5" />
-                  Extend SLA
-                </Button>
                 <Button
                   variant="outline"
                   size="sm"
@@ -716,56 +678,6 @@ export const OrdersPage: React.FC = () => {
         </Modal>
       )}
 
-      {/* EXTEND SLA MODAL (Light Mode) */}
-      <Modal
-        isOpen={isExtendModalOpen}
-        onClose={() => setIsExtendModalOpen(false)}
-        title="Extend Deadline"
-        description="Add production days to prevent premature default."
-        maxWidth="md"
-        footer={
-          <div className="flex items-center justify-end gap-2">
-            <Button variant="secondary" size="sm" onClick={() => setIsExtendModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="primary" size="sm" onClick={handleExtendDeadlineSubmit}>
-              Apply Extension
-            </Button>
-          </div>
-        }
-      >
-        <form onSubmit={handleExtendDeadlineSubmit} className="space-y-4">
-          <div>
-            <label className="text-xs font-bold text-neutral-700 block mb-1">
-              Additional Days
-            </label>
-            <div className="relative">
-              <select
-                value={extendDays}
-                onChange={(e) => setExtendDays(e.target.value)}
-                className="w-full h-9 pl-3 pr-8 text-xs font-bold bg-neutral-50 border border-neutral-200 rounded-lg text-neutral-900 outline-none focus:border-brand-pink appearance-none cursor-pointer"
-              >
-                <option value="2">+2 Days (Standard Shipping Delay)</option>
-                <option value="3">+3 Days (Sample Reshipment)</option>
-                <option value="5">+5 Days (Complex Shoot Extension)</option>
-                <option value="7">+7 Days (Medical / Force Majeure)</option>
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
-          </div>
-          <div>
-            <label className="text-xs font-bold text-neutral-700 block mb-1">
-              Admin Rationale
-            </label>
-            <Input
-              value={extendReason}
-              onChange={(e) => setExtendReason(e.target.value)}
-              placeholder="e.g. Courier delayed physical product transit"
-              className="text-xs"
-            />
-          </div>
-        </form>
-      </Modal>
 
       {/* NUDGE MODAL (Light Mode) */}
       <Modal
