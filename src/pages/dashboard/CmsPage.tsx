@@ -54,10 +54,10 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://facebook.com/influverse',
     handleHint: 'facebook.com/...',
     badge: (
-      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
-        <circle cx="16" cy="16" r="16" fill="#0866FF" />
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-2xs" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#1877F2" />
         <path
-          d="M21.5 16h-3.3v11.5h-4.8V16h-2.3v-4.1h2.3v-2.7c0-3.2 1.9-5 4.9-5 1.4 0 2.9.3 2.9.3v3.2h-1.6c-1.6 0-2.1 1-2.1 2v2.2h3.6l-.6 4.1z"
+          d="M21 16.5h-3.2V27h-4.3V16.5H11v-3.7h2.5V10.2c0-3.3 2-5.2 5.1-5.2 1.5 0 3 .3 3 .3v3.4h-1.7c-1.7 0-2.2 1-2.2 2.1v2h3.9l-.6 3.7z"
           fill="#FFFFFF"
         />
       </svg>
@@ -69,7 +69,7 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://instagram.com/influverse',
     handleHint: 'instagram.com/...',
     badge: (
-      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-2xs" viewBox="0 0 32 32" fill="none">
         <defs>
           <linearGradient id="igOfficialGrad" x1="100%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#833AB4" />
@@ -92,7 +92,7 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://x.com/influverse',
     handleHint: 'x.com/...',
     badge: (
-      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-2xs" viewBox="0 0 32 32" fill="none">
         <rect width="32" height="32" rx="8" fill="#000000" />
         <path
           d="M19.5 7h2.7l-5.9 6.8 7 9.2h-5.4l-4.2-5.5-4.9 5.5H6.1l6.3-7.2L5.8 7h5.6l3.8 5.1L19.5 7zm-1 14.3h1.5L10.7 8.5H9.1l9.4 12.8z"
@@ -107,7 +107,7 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://linkedin.com/company/influverse',
     handleHint: 'linkedin.com/company/...',
     badge: (
-      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-2xs" viewBox="0 0 32 32" fill="none">
         <rect width="32" height="32" rx="8" fill="#0A66C2" />
         <path
           d="M10.8 13.5H7.8V24h3V13.5zm-1.5-4.2c-1 0-1.8.8-1.8 1.7 0 1 .8 1.7 1.8 1.7 1 0 1.8-.8 1.8-1.7 0-.9-.8-1.7-1.8-1.7zm15.2 7.7c0-3.3-1.8-4.9-4.1-4.9-1.9 0-2.8 1.1-3.3 1.8V13.5H14V24h3v-5.8c0-1.5.3-3 2.1-3 1.8 0 1.8 1.7 1.8 3.1V24h3v-7z"
@@ -122,12 +122,9 @@ const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
     placeholder: 'https://youtube.com/@influverse',
     handleHint: 'youtube.com/@...',
     badge: (
-      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-xs" viewBox="0 0 32 32" fill="none">
+      <svg className="w-8 h-8 shrink-0 rounded-xl shadow-2xs" viewBox="0 0 32 32" fill="none">
         <rect width="32" height="32" rx="8" fill="#FF0000" />
-        <path
-          d="M24.8 11.2c-.3-1-.9-1.7-1.9-2-1.7-.4-8.9-.4-8.9-.4s-7.2 0-8.9.4c-1 .3-1.6 1-1.9 2C2.8 12.9 2.8 16 2.8 16s0 3.1.4 4.8c.3 1 .9 1.7 1.9 2 1.7.4 8.9.4 8.9.4s7.2 0 8.9-.4c1-.3 1.6-1 1.9-2 .4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM13.4 19.3v-6.6l5.7 3.3-5.7 3.3z"
-          fill="#FFFFFF"
-        />
+        <path d="M13 10.5l8.5 5.5-8.5 5.5v-11z" fill="#FFFFFF" />
       </svg>
     ),
   },
@@ -844,11 +841,11 @@ export const CmsPage: React.FC = () => {
                       key={platform.key}
                       className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-neutral-50/70 border border-neutral-200 rounded-xl hover:bg-neutral-50 hover:border-neutral-300 transition-all gap-3"
                     >
-                      <div className="flex items-center gap-3 sm:w-44 shrink-0">
+                      <div className="flex items-center gap-3 sm:w-52 shrink-0">
                         {platform.badge}
-                        <div>
-                          <span className="block text-xs font-bold text-neutral-900">{platform.name}</span>
-                          <span className="block text-[10px] text-neutral-400 font-mono truncate">{platform.handleHint}</span>
+                        <div className="flex flex-col justify-center min-w-0">
+                          <span className="text-xs font-bold text-neutral-950 leading-tight block">{platform.name}</span>
+                          <span className="text-[11px] text-neutral-400 font-medium font-mono leading-tight mt-0.5 truncate block">{platform.handleHint}</span>
                         </div>
                       </div>
 
