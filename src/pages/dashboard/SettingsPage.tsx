@@ -251,11 +251,6 @@ export const SettingsPage: React.FC = () => {
                 readOnly
                 rightIcon={<Lock className="w-4 h-4 text-neutral-400" />}
                 className="bg-neutral-100/80 text-neutral-500 font-medium cursor-not-allowed select-none border-neutral-200"
-                helperText={
-                  currentUser?.role === 'super_admin'
-                    ? 'Super Admin email is immutable and can only be modified by developers at database level.'
-                    : 'Email address is locked and can only be replaced by a Super Admin.'
-                }
               />
             </div>
 
