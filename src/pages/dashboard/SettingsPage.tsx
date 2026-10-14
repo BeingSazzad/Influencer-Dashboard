@@ -360,10 +360,10 @@ export const SettingsPage: React.FC = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Input
-                label="Platform Fee (%)"
+                label="Standard VAT (%)"
                 value={escrowFeeRate}
                 onChange={(e) => setEscrowFeeRate(e.target.value)}
-                helperText="Charged on deposit (15% escrow)"
+                helperText="Automatically deducted on deposit (15%)"
               />
               <Input
                 label="Auto-Release (Days)"

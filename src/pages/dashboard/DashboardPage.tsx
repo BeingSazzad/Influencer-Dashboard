@@ -320,7 +320,7 @@ export const DashboardPage: React.FC = () => {
                 Revenue
               </h3>
               <p className="text-[11px] text-neutral-400 font-medium">
-                12-month GMV and platform fees
+                12-month GMV and revenue overview
               </p>
             </div>
 
@@ -334,7 +334,7 @@ export const DashboardPage: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-1">
                   <span className="w-2.5 h-1 rounded-full bg-emerald-500" />
-                  <span className="text-neutral-900 text-[11px] font-bold">Platform fee</span>
+                  <span className="text-neutral-900 text-[11px] font-bold">Revenue</span>
                 </div>
               </div>
 

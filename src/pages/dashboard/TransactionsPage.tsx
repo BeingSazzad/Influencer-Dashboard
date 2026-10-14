@@ -262,7 +262,7 @@ export const TransactionsPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-base font-bold text-neutral-900">
-                  Platform Fee Receipt: {inspectedTxn.invoiceNumber}
+                  Settlement Receipt: {inspectedTxn.invoiceNumber}
                 </h3>
                 <p className="text-xs text-neutral-500 font-semibold">
                   Campaign Order {inspectedTxn.orderId} • {formatDate(inspectedTxn.createdAt)}
@@ -311,7 +311,7 @@ export const TransactionsPage: React.FC = () => {
               </div>
               <div className="border-x border-neutral-200 px-2 bg-pink-50/50 rounded-lg">
                 <span className="text-[10px] font-black uppercase tracking-wider text-brand-pink">
-                  Platform fee
+                  Platform Revenue (VAT)
                 </span>
                 <p className="text-lg font-black text-brand-pink mt-0.5 tabular-nums">
                   +{formatCurrency(inspectedTxn.platformFeeEur)}

@@ -122,9 +122,6 @@ export const EscrowPage: React.FC = () => {
                       <span className="text-xl font-black text-neutral-950 tabular-nums">
                         {formatCurrency(dispute.amountEur)}
                       </span>
-                      <span className="text-[11px] text-neutral-500 font-medium ml-1.5">
-                        (Fee: <strong className="font-bold text-neutral-800">{formatCurrency(dispute.feeEur)}</strong>)
-                      </span>
                     </div>
                   </div>
                 </div>

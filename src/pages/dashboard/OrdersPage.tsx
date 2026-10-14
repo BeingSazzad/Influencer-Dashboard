@@ -563,23 +563,13 @@ export const OrdersPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 bg-white p-2.5 rounded-lg border border-neutral-200 shrink-0">
-                <div>
-                  <span className="text-[10px] text-neutral-400 block font-bold uppercase tracking-wider">
-                    Escrow
-                  </span>
-                  <span className="text-lg font-black text-neutral-950 tabular-nums">
-                    {formatCurrency(activeDossierOrder.grossAmountEur)}
-                  </span>
-                </div>
-                <div className="pl-3 border-l border-neutral-200">
-                  <span className="text-[10px] text-emerald-600 block font-bold uppercase tracking-wider">
-                    Platform fee
-                  </span>
-                  <span className="text-base font-black text-emerald-600 tabular-nums">
-                    {formatCurrency(activeDossierOrder.platformFeeEur)}
-                  </span>
-                </div>
+              <div className="bg-white px-4 py-2.5 rounded-lg border border-neutral-200 shrink-0 text-right">
+                <span className="text-[10px] text-neutral-400 block font-bold uppercase tracking-wider">
+                  Escrow
+                </span>
+                <span className="text-lg font-black text-neutral-950 tabular-nums">
+                  {formatCurrency(activeDossierOrder.grossAmountEur)}
+                </span>
               </div>
             </div>
 
