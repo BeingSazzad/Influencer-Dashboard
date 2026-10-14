@@ -199,7 +199,7 @@ export const TicketsPage: React.FC = () => {
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
-              All ({tickets.length})
+              All
             </button>
             <button
               type="button"
@@ -215,7 +215,7 @@ export const TicketsPage: React.FC = () => {
               }`}
             >
               <ShieldAlert className="w-4 h-4 text-rose-500" />
-              Reports ({reportCount})
+              <span>Reports</span>
             </button>
             <button
               type="button"
@@ -230,7 +230,7 @@ export const TicketsPage: React.FC = () => {
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
-              Open ({openCount})
+              Open
             </button>
             <button
               type="button"
@@ -245,7 +245,7 @@ export const TicketsPage: React.FC = () => {
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
-              In Progress ({inProgressCount})
+              In Progress
             </button>
             <button
               type="button"
@@ -260,7 +260,7 @@ export const TicketsPage: React.FC = () => {
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
             >
-              Resolved ({tickets.filter((t) => t.status === 'resolved').length})
+              Resolved
             </button>
           </div>
 
