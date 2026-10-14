@@ -85,40 +85,25 @@ export const VerificationPage: React.FC = () => {
         subtitle="Review and manage creator identity applications."
       />
 
-      {/* Filter Tabs with Clean Neutral Count Badges */}
+      {/* Filter Tabs */}
       <div className="flex items-center gap-1.5 bg-neutral-100 p-1 rounded-xl self-start max-w-md">
-        {(['all', 'pending', 'approved'] as const).map((s) => {
-          const isActive = filterStatus === s;
-          const count = s === 'pending' ? pendingCount : s === 'approved' ? approvedCount : null;
-          return (
-            <button
-              key={s}
-              type="button"
-              onClick={() => {
-                dispatch(setVerificationFilter(s));
-                setCurrentPage(1);
-              }}
-              className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-bold rounded-lg transition-all capitalize cursor-pointer ${
-                isActive
-                  ? 'bg-white text-neutral-950 shadow-sm'
-                  : 'text-neutral-600 hover:text-neutral-950'
-              }`}
-            >
-              <span>{s}</span>
-              {count !== null && count > 0 && (
-                <span
-                  className={`px-1.5 py-0.5 text-[11px] font-bold rounded-full leading-none transition-colors ${
-                    isActive
-                      ? 'bg-neutral-100 text-neutral-900'
-                      : 'bg-neutral-200/80 text-neutral-600'
-                  }`}
-                >
-                  {count}
-                </span>
-              )}
-            </button>
-          );
-        })}
+        {(['all', 'pending', 'approved'] as const).map((s) => (
+          <button
+            key={s}
+            type="button"
+            onClick={() => {
+              dispatch(setVerificationFilter(s));
+              setCurrentPage(1);
+            }}
+            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all capitalize cursor-pointer ${
+              filterStatus === s
+                ? 'bg-white text-neutral-950 shadow-sm'
+                : 'text-neutral-600 hover:text-neutral-950'
+            }`}
+          >
+            {s}
+          </button>
+        ))}
       </div>
 
       {/* Verification Applications Table */}

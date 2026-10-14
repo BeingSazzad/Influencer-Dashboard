@@ -228,9 +228,9 @@ export const OrdersPage: React.FC = () => {
           {/* Status Filter Tabs */}
           <div className="flex items-center gap-1.5 bg-neutral-100 p-1 rounded-xl self-start overflow-x-auto max-w-full">
             {[
-              { id: 'all', label: 'All', count: orders.length },
-              { id: 'active', label: 'Active', count: activeOrdersCount },
-              { id: 'completed', label: 'Completed', count: completedOrdersCount },
+              { id: 'all', label: 'All' },
+              { id: 'active', label: 'Active' },
+              { id: 'completed', label: 'Completed' },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -238,22 +238,13 @@ export const OrdersPage: React.FC = () => {
                   dispatch(setOrderStatusFilter(tab.id as any));
                   setCurrentPage(1);
                 }}
-                className={`flex items-center gap-2 px-3.5 py-2 text-sm font-bold rounded-lg transition-all cursor-pointer shrink-0 ${
+                className={`px-4 py-2 text-sm font-bold rounded-lg transition-all cursor-pointer shrink-0 ${
                   statusFilter === tab.id
                     ? 'bg-white text-neutral-950 shadow-sm'
                     : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >
-                <span>{tab.label}</span>
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                    statusFilter === tab.id
-                      ? 'bg-neutral-100 text-neutral-900'
-                      : 'bg-neutral-200/60 text-neutral-500'
-                  }`}
-                >
-                  {tab.count}
-                </span>
+                {tab.label}
               </button>
             ))}
           </div>

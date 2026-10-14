@@ -193,9 +193,9 @@ export const UsersPage: React.FC = () => {
           {/* Role Filter Tabs (All / Creators / Brands) */}
           <div className="flex items-center gap-1 bg-neutral-100 p-1 rounded-xl self-start">
             {[
-              { label: 'All', value: 'all' as const, count: users.length },
-              { label: 'Creators', value: 'creator' as const, count: users.filter((u) => u.role === 'creator').length },
-              { label: 'Brands', value: 'brand' as const, count: users.filter((u) => u.role === 'brand').length },
+              { label: 'All', value: 'all' as const },
+              { label: 'Creators', value: 'creator' as const },
+              { label: 'Brands', value: 'brand' as const },
             ].map((tab) => (
               <button
                 key={tab.value}
@@ -203,22 +203,13 @@ export const UsersPage: React.FC = () => {
                   dispatch(setRoleFilter(tab.value));
                   setCurrentPage(1);
                 }}
-                className={`flex items-center gap-2 px-3.5 py-2 text-sm font-bold rounded-lg transition-all cursor-pointer ${
+                className={`px-4 py-2 text-sm font-bold rounded-lg transition-all cursor-pointer ${
                   roleFilter === tab.value
                     ? 'bg-white text-neutral-950 shadow-sm'
                     : 'text-neutral-500 hover:text-neutral-900'
                 }`}
               >
-                <span>{tab.label}</span>
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                    roleFilter === tab.value
-                      ? 'bg-neutral-100 text-neutral-900'
-                      : 'bg-neutral-200/60 text-neutral-500'
-                  }`}
-                >
-                  {tab.count}
-                </span>
+                {tab.label}
               </button>
             ))}
           </div>
