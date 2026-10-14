@@ -53,3 +53,24 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #D2D2CA;
 }
+
+/* Auto-scroll marquee ticker for client brand logos */
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-scroll {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-speed, 26s) linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-scroll.pause-hover:hover {
+  animation-play-state: paused;
+}

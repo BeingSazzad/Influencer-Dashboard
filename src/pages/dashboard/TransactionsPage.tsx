@@ -178,21 +178,14 @@ export const TransactionsPage: React.FC = () => {
                     </span>
                   </TableCell>
 
-                  {/* Campaign & Counterparty Context */}
+                  {/* Campaign */}
                   <TableCell>
-                    <div>
-                      <span
-                        className="font-bold text-neutral-950 text-sm block truncate max-w-[320px]"
-                        title={txn.campaignTitle}
-                      >
-                        {txn.campaignTitle}
-                      </span>
-                      <span className="text-[11px] text-neutral-500 font-medium flex items-center gap-1.5 mt-0.5">
-                        <span className="text-neutral-700 font-semibold">{txn.brandName}</span>
-                        <span className="text-neutral-300">→</span>
-                        <span>@{txn.creatorName}</span>
-                      </span>
-                    </div>
+                    <span
+                      className="font-bold text-neutral-950 text-sm block truncate max-w-[380px]"
+                      title={txn.campaignTitle}
+                    >
+                      {txn.campaignTitle}
+                    </span>
                   </TableCell>
 
                   {/* Revenue */}
@@ -221,9 +214,9 @@ export const TransactionsPage: React.FC = () => {
                   {/* Action: View Receipt */}
                   <TableCell className="text-right">
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      className="text-xs h-7.5 px-2.5 font-bold text-neutral-800 hover:text-neutral-950 bg-white"
+                      className="text-xs h-7 px-2 font-bold text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100"
                       onClick={(e) => {
                         e.stopPropagation();
                         setInspectedTxn(txn);

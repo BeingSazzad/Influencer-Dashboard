@@ -6,6 +6,8 @@ import {
   CmsLegalDoc,
   CmsFaqItem,
   CmsBrandAssets,
+  PartnerBrandLogo,
+  BrandTickerSettings,
   MarketplaceTransaction,
   MarketplacePackage,
   MarketplaceOrder,
@@ -14,7 +16,7 @@ import {
 
 export const INITIAL_ADMIN_USER: AdminUser = {
   id: 'ADM-001',
-  name: 'Sazzad Hoshen',
+  name: 'Sazzad Chowdhury',
   email: 'sazzad.uiuxdesign@gmail.com',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
   role: 'super_admin',
@@ -70,6 +72,7 @@ export const INITIAL_USERS: MarketplaceUser[] = [
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
     role: 'creator',
     status: 'active',
+    isVerified: true,
     category: 'Beauty & Skincare',
     location: 'Los Angeles, CA',
     rating: 4.98,
@@ -420,7 +423,7 @@ export const INITIAL_USERS: MarketplaceUser[] = [
 export const INITIAL_VERIFICATIONS: VerificationRequest[] = [
   {
     id: 'VRF-401',
-    creatorId: 'USR-9001',
+    creatorId: 'USR-8916',
     creatorName: 'Aria Montclaire',
     email: 'aria@montclaire.studio',
     handle: 'ariamontclaire',
@@ -429,10 +432,23 @@ export const INITIAL_VERIFICATIONS: VerificationRequest[] = [
     platform: 'Instagram',
     submittedDate: '2026-09-26',
     status: 'pending',
+    followersTotal: '450K+',
+    avgViews: '82.5K',
+    location: 'Milan, Italy',
+    languages: ['Italian', 'English', 'French'],
+    collaborationPreferences: ['Haute Couture UGC', 'Reels & TikTok', 'Brand Ambassador'],
+    platforms: {
+      instagram: 'https://instagram.com/ariamontclaire',
+      tiktok: 'https://tiktok.com/@ariamontclaire',
+      youtube: 'https://youtube.com/@ariamontclaire',
+    },
+    sampleWorkTitle: 'Versace FW26 Milan Fashion Week Runway UGC',
+    sampleWorkViews: '94.2K views',
+    sampleWorkUrl: 'https://instagram.com/ariamontclaire',
   },
   {
     id: 'VRF-402',
-    creatorId: 'USR-9002',
+    creatorId: 'USR-8917',
     creatorName: 'Kaito Tanaka',
     email: 'kaito@tanaka-ugc.jp',
     handle: 'kaitotanaka',
@@ -441,10 +457,23 @@ export const INITIAL_VERIFICATIONS: VerificationRequest[] = [
     platform: 'YouTube',
     submittedDate: '2026-09-25',
     status: 'pending',
+    followersTotal: '320K+',
+    avgViews: '115K',
+    location: 'Tokyo, Japan',
+    languages: ['Japanese', 'English'],
+    collaborationPreferences: ['Culinary UGC', 'Product Review', 'Sponsored Stream'],
+    platforms: {
+      youtube: 'https://youtube.com/@kaitotanaka',
+      instagram: 'https://instagram.com/kaitotanaka',
+      tiktok: 'https://tiktok.com/@kaitotanaka',
+    },
+    sampleWorkTitle: 'Wagyu Beef Omurice Cinematic 4K Masterclass',
+    sampleWorkViews: '142K views',
+    sampleWorkUrl: 'https://youtube.com/@kaitotanaka',
   },
   {
     id: 'VRF-403',
-    creatorId: 'USR-8911',
+    creatorId: 'USR-8910',
     creatorName: 'Sophie Kim',
     email: 'sophie@sophiekim.com',
     handle: 'sophiekim',
@@ -453,6 +482,18 @@ export const INITIAL_VERIFICATIONS: VerificationRequest[] = [
     platform: 'TikTok',
     submittedDate: '2026-09-20',
     status: 'approved',
+    followersTotal: '780K+',
+    avgViews: '240K',
+    location: 'Los Angeles, CA',
+    languages: ['English', 'Korean'],
+    collaborationPreferences: ['Skincare Routine', 'Short-form UGC', 'Conversion Reels'],
+    platforms: {
+      tiktok: 'https://tiktok.com/@sophiekim',
+      instagram: 'https://instagram.com/sophiekim',
+    },
+    sampleWorkTitle: 'Aura Glow Hydrating Serum 60-Second Demo',
+    sampleWorkViews: '265K views',
+    sampleWorkUrl: 'https://tiktok.com/@sophiekim',
   },
 ];
 
@@ -615,7 +656,80 @@ export const INITIAL_BRAND_ASSETS: CmsBrandAssets = {
     twitter: 'https://twitter.com/influverse',
     linkedin: 'https://linkedin.com/company/influverse',
   },
+  socialList: [
+    { id: 'SOC-1', platform: 'Instagram', url: 'https://instagram.com/influverse' },
+    { id: 'SOC-2', platform: 'X / Twitter', url: 'https://twitter.com/influverse' },
+    { id: 'SOC-3', platform: 'LinkedIn', url: 'https://linkedin.com/company/influverse' },
+    { id: 'SOC-4', platform: 'YouTube', url: 'https://youtube.com/@influverse' },
+  ],
 };
+
+export const INITIAL_BRAND_TICKER_SETTINGS: BrandTickerSettings = {
+  headline: 'TRUSTED BY 500+ LEADING GLOBAL BRANDS & CREATOR AGENCIES',
+  speedSeconds: 26,
+  pauseOnHover: true,
+  direction: 'left',
+  isEnabled: true,
+};
+
+export const INITIAL_PARTNER_BRANDS: PartnerBrandLogo[] = [
+  {
+    id: 'BRD-01',
+    name: 'Nike',
+    logoUrl: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/nike.svg',
+    order: 1,
+    isActive: true,
+  },
+  {
+    id: 'BRD-02',
+    name: 'Spotify',
+    logoUrl: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/spotify.svg',
+    order: 2,
+    isActive: true,
+  },
+  {
+    id: 'BRD-03',
+    name: 'Sephora',
+    logoUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40"><text x="8" y="28" font-family="sans-serif" font-size="20" font-weight="900" letter-spacing="3" fill="%230A0A0A">SEPHORA</text></svg>',
+    order: 3,
+    isActive: true,
+  },
+  {
+    id: 'BRD-04',
+    name: 'L’Oréal',
+    logoUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40"><text x="8" y="28" font-family="sans-serif" font-size="20" font-weight="900" letter-spacing="3" fill="%230A0A0A">L%27ORÉAL</text></svg>',
+    order: 4,
+    isActive: true,
+  },
+  {
+    id: 'BRD-05',
+    name: 'Gymshark',
+    logoUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40"><text x="8" y="28" font-family="sans-serif" font-size="19" font-weight="900" letter-spacing="2" fill="%230A0A0A">GYMSHARK</text></svg>',
+    order: 5,
+    isActive: true,
+  },
+  {
+    id: 'BRD-06',
+    name: 'Red Bull',
+    logoUrl: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/redbull.svg',
+    order: 6,
+    isActive: true,
+  },
+  {
+    id: 'BRD-07',
+    name: 'Prada',
+    logoUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40"><text x="14" y="28" font-family="serif" font-size="22" font-weight="900" letter-spacing="4" fill="%230A0A0A">PRADA</text></svg>',
+    order: 7,
+    isActive: true,
+  },
+  {
+    id: 'BRD-08',
+    name: 'Apple',
+    logoUrl: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg',
+    order: 8,
+    isActive: true,
+  },
+];
 
 export const INITIAL_TRANSACTIONS: MarketplaceTransaction[] = [
   {
@@ -1360,7 +1474,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
   {
     id: 'TCK-501',
     type: 'user_report',
-    subject: 'Report: Suspected bot engagement / fake views on creator profile',
+    subject: 'Fake Views & Bot Activity',
     category: 'fraud_scam',
     userName: 'Nordica Botanicals',
     userEmail: 'partnerships@nordicabotanicals.com',
@@ -1391,7 +1505,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
   {
     id: 'TCK-502',
     type: 'support',
-    subject: 'SEPA Escrow Deposit verification confirmation delay',
+    subject: 'SEPA Deposit Confirmation Delay',
     category: 'billing_escrow',
     userName: 'Aura Skincare Paris',
     userEmail: 'marketing@auraskincare.fr',
@@ -1399,7 +1513,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
     userAvatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80',
     priority: 'high',
     status: 'in_progress',
-    assignedAdmin: 'Sazzad Hoshen',
+    assignedAdmin: 'Sazzad Chowdhury',
     messages: [
       {
         id: 'MSG-02',
@@ -1411,7 +1525,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
       },
       {
         id: 'MSG-03',
-        senderName: 'Sazzad Hoshen (Super Admin)',
+        senderName: 'Sazzad Chowdhury (Super Admin)',
         senderRole: 'admin',
         senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         message: 'Hello Aura team. Our banking partner Stripe SEPA Treasury processes clearing within 1-2 business days. We have escalated this to our settlement team for manual reconciliation.',
@@ -1425,7 +1539,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
   {
     id: 'TCK-503',
     type: 'user_report',
-    subject: 'Brand demanding 4th revision without paying add-on fee',
+    subject: 'Unpaid Revision Dispute',
     category: 'order_delivery',
     userName: 'Elena Rostova',
     userEmail: 'elena.rostova@creator.com',
@@ -1455,7 +1569,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
   {
     id: 'TCK-504',
     type: 'support',
-    subject: 'Request to update registered EU VAT ID for corporate invoicing',
+    subject: 'Update Corporate VAT ID',
     category: 'billing_escrow',
     userName: 'Kura Supplements',
     userEmail: 'billing@kurasupplements.com',
@@ -1463,7 +1577,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
     userAvatar: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=400&q=80',
     priority: 'normal',
     status: 'resolved',
-    assignedAdmin: 'Sazzad Hoshen',
+    assignedAdmin: 'Sazzad Chowdhury',
     messages: [
       {
         id: 'MSG-05',
@@ -1475,7 +1589,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
       },
       {
         id: 'MSG-06',
-        senderName: 'Sazzad Hoshen (Super Admin)',
+        senderName: 'Sazzad Chowdhury (Super Admin)',
         senderRole: 'admin',
         senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         message: 'Done! We have verified your new VAT registration with VIES database and updated your billing profile. All upcoming invoice PDFs will reflect DE992817.',
@@ -1489,7 +1603,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
   {
     id: 'TCK-505',
     type: 'user_report',
-    subject: 'Brand running whitelisted ad past the 6-month contract license',
+    subject: 'Expired Ad License Usage',
     category: 'copyright_ip',
     userName: 'Marcus Vance',
     userEmail: 'marcus.vance@creator.com',
@@ -1514,7 +1628,7 @@ export const INITIAL_TICKETS: SupportTicket[] = [
       },
       {
         id: 'MSG-08',
-        senderName: 'Sazzad Hoshen (Super Admin)',
+        senderName: 'Sazzad Chowdhury (Super Admin)',
         senderRole: 'admin',
         senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         message: 'We have reviewed the Meta Ad Library link and issued a formal cease-and-desist demand to the brands legal contact. Their account has been temporarily restricted until paid renewal is settled.',

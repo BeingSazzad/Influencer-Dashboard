@@ -22,6 +22,7 @@ export interface MarketplaceUser {
   avatar: string;
   role: 'creator' | 'brand';
   status: UserStatus;
+  isVerified?: boolean;
   category?: string;
   companyName?: string;
   location: string;
@@ -48,6 +49,10 @@ export interface VerificationRequest {
   status: 'pending' | 'approved' | 'rejected';
   rejectionReason?: string;
   followersTotal?: string;
+  avgViews?: string;
+  location?: string;
+  languages?: string[];
+  collaborationPreferences?: string[];
   platforms?: {
     instagram?: string;
     tiktok?: string;
@@ -95,6 +100,12 @@ export interface CmsFaqItem {
   isPublished: boolean;
 }
 
+export interface SocialMediaItem {
+  id: string;
+  platform: string;
+  url: string;
+}
+
 export interface CmsBrandAssets {
   logoLightUrl: string;
   logoDarkUrl: string;
@@ -107,6 +118,26 @@ export interface CmsBrandAssets {
     twitter: string;
     linkedin: string;
   };
+  socialList?: SocialMediaItem[];
+}
+
+export interface PartnerBrandLogo {
+  id: string;
+  name: string;
+  logoUrl: string;
+  order: number;
+  isActive?: boolean;
+  websiteUrl?: string;
+  category?: string;
+  createdAt?: string;
+}
+
+export interface BrandTickerSettings {
+  headline: string;
+  speedSeconds: number;
+  pauseOnHover: boolean;
+  direction: 'left' | 'right';
+  isEnabled: boolean;
 }
 
 export type TransactionType =

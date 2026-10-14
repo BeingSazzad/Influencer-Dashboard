@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { AlertTriangle, AlertCircle, Info } from 'lucide-react';
+import { AlertTriangle, AlertCircle, Info, CheckCircle2 } from 'lucide-react';
 
 export interface ConfirmDialogProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ export interface ConfirmDialogProps {
   description: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  variant?: 'danger' | 'warning' | 'info';
+  variant?: 'danger' | 'warning' | 'info' | 'success';
   isLoading?: boolean;
 }
 
@@ -30,12 +30,14 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     danger: <AlertCircle className="w-6 h-6 text-rose-600" />,
     warning: <AlertTriangle className="w-6 h-6 text-amber-600" />,
     info: <Info className="w-6 h-6 text-brand-black" />,
+    success: <CheckCircle2 className="w-6 h-6 text-emerald-600" />,
   };
 
   const buttonVariants = {
     danger: 'danger' as const,
     warning: 'accent' as const,
     info: 'primary' as const,
+    success: 'primary' as const,
   };
 
   return (
@@ -61,6 +63,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             size="sm"
             onClick={onConfirm}
             isLoading={isLoading}
+            className={variant === 'success' ? 'bg-emerald-600 hover:bg-emerald-700 text-white font-bold border-transparent' : undefined}
           >
             {confirmLabel}
           </Button>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { AppLogo } from '@/components/shared/AppLogo';
 
 export const AuthLayout: React.FC = () => {
   return (
@@ -7,8 +8,8 @@ export const AuthLayout: React.FC = () => {
       <div className="w-full max-w-sm space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-1">
-          <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-brand-black text-white text-lg font-black shadow-sm mb-1">
-            I
+          <div className="flex justify-center mb-1">
+            <AppLogo size="lg" />
           </div>
           <h1 className="text-xl font-bold tracking-tight text-neutral-900">
             Influverse

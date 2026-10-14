@@ -35,6 +35,7 @@ import {
   ArrowDown,
   X,
   ChevronDown,
+  BadgeCheck,
 } from 'lucide-react';
 
 type SortOption =
@@ -377,12 +378,19 @@ export const UsersPage: React.FC = () => {
                         title={`${user.name} (@${user.handle})`}
                       />
                       <div>
-                        <span
-                          className="font-bold text-neutral-900 text-sm block cursor-pointer hover:text-brand-pink transition-colors truncate max-w-[180px]"
-                          onClick={() => setInspectedUser(user)}
-                        >
-                          {user.name}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className="font-bold text-neutral-900 text-sm block cursor-pointer hover:text-brand-pink transition-colors truncate max-w-[170px]"
+                            onClick={() => setInspectedUser(user)}
+                          >
+                            {user.name}
+                          </span>
+                          {user.isVerified && (
+                            <span title="Verified Creator" className="inline-flex shrink-0">
+                              <BadgeCheck className="w-4 h-4 text-sky-500 fill-sky-500/15" />
+                            </span>
+                          )}
+                        </div>
                         <span className="text-xs text-neutral-500 font-medium">
                           @{user.handle}
                         </span>
@@ -592,6 +600,11 @@ export const UsersPage: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-base font-extrabold text-neutral-950">{inspectedUser.name}</h3>
+                  {inspectedUser.isVerified && (
+                    <span title="Verified Creator" className="inline-flex shrink-0">
+                      <BadgeCheck className="w-4 h-4 text-sky-500 fill-sky-500/15" />
+                    </span>
+                  )}
                   <Badge variant={inspectedUser.role === 'creator' ? 'pink' : 'neutral'} size="sm">
                     {inspectedUser.role}
                   </Badge>

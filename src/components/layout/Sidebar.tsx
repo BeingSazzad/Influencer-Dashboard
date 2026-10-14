@@ -19,6 +19,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AppLogo } from '@/components/shared/AppLogo';
 
 export const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -92,18 +93,13 @@ export const Sidebar: React.FC = () => {
       {/* Brand Header */}
       <div className="h-16 flex items-center justify-between px-6 border-b border-neutral-100">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-brand-black flex items-center justify-center font-black text-white text-base shadow-sm">
-            I
-          </div>
+          <AppLogo size="md" />
           <div>
-            <div className="font-black text-sm tracking-tight text-neutral-950 flex items-center gap-1.5">
-              <span>INFLUVERSE</span>
-              <span className="text-[9px] uppercase tracking-wider font-extrabold bg-neutral-100 text-neutral-700 px-1.5 py-0.5 rounded">
-                HQ
-              </span>
+            <div className="font-black text-sm tracking-tight text-neutral-950">
+              INFLUVERSE
             </div>
             <p className="text-[10px] text-neutral-400 font-semibold">
-              Admin & Escrow Back-Office
+              Dashboard
             </p>
           </div>
         </div>
@@ -111,9 +107,6 @@ export const Sidebar: React.FC = () => {
 
       {/* Navigation Links */}
       <div className="flex-1 py-4 px-3 overflow-y-auto space-y-1">
-        <div className="px-3 pb-2 text-[11px] font-black uppercase tracking-wider text-neutral-400">
-          Core Operations
-        </div>
         {navItems.map((item) => (
           <NavLink
             key={item.path}

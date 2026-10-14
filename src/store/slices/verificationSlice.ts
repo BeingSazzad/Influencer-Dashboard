@@ -8,8 +8,29 @@ interface VerificationState {
   selectedRequestId: string | null;
 }
 
+const loadSavedVerifications = (): VerificationRequest[] => {
+  try {
+    const raw = localStorage.getItem('influverse_verifications');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {
+    // ignore
+  }
+  return INITIAL_VERIFICATIONS;
+};
+
+const saveVerifications = (requests: VerificationRequest[]) => {
+  try {
+    localStorage.setItem('influverse_verifications', JSON.stringify(requests));
+  } catch (e) {
+    // ignore
+  }
+};
+
 const initialState: VerificationState = {
-  requests: INITIAL_VERIFICATIONS,
+  requests: loadSavedVerifications(),
   filterStatus: 'all',
   selectedRequestId: null,
 };
@@ -31,6 +52,7 @@ export const verificationSlice = createSlice({
       const item = state.requests.find((r) => r.id === action.payload);
       if (item) {
         item.status = 'approved';
+        saveVerifications(state.requests);
       }
     },
     rejectRequest: (
@@ -41,6 +63,7 @@ export const verificationSlice = createSlice({
       if (item) {
         item.status = 'rejected';
         item.rejectionReason = action.payload.reason;
+        saveVerifications(state.requests);
       }
     },
   },
