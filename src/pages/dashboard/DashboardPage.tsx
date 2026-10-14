@@ -514,20 +514,15 @@ export const DashboardPage: React.FC = () => {
         {/* Left Column (2 Cols): Priority Operations Queue */}
         <Card className="lg:col-span-2 p-5 space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-neutral-100 flex-wrap gap-2">
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-extrabold text-neutral-900">
-                  Priority Operations
-                </h3>
-                {(openDisputesCount > 0 || pendingVerificationsCount > 0) && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-50 text-rose-700 border border-rose-200">
-                    {openDisputesCount + pendingVerificationsCount} Attention Needed
-                  </span>
-                )}
-              </div>
-              <p className="text-[11px] text-neutral-400 font-medium mt-0.5">
-                Active dispute mediations, identity verifications, and contract milestones.
-              </p>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-extrabold text-neutral-900">
+                Priority Operations
+              </h3>
+              {(openDisputesCount > 0 || pendingVerificationsCount > 0) && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-50 text-rose-700 border border-rose-200">
+                  {openDisputesCount + pendingVerificationsCount} Attention Needed
+                </span>
+              )}
             </div>
             <button
               type="button"
@@ -542,9 +537,9 @@ export const DashboardPage: React.FC = () => {
           <div className="space-y-2.5">
             {/* Priority 1: Open Dispute */}
             {disputes.length > 0 && (
-              <div className="p-3.5 rounded-xl border border-rose-100 bg-rose-50/30 hover:bg-rose-50/60 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-3.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50/70 hover:border-neutral-300 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 border border-rose-100">
                     <Scale className="w-4 h-4" />
                   </div>
                   <div>
@@ -553,11 +548,11 @@ export const DashboardPage: React.FC = () => {
                         {disputes[0].campaignTitle}
                       </span>
                       <Badge variant="danger" size="sm" dot>
-                        Dispute Active
+                        Dispute
                       </Badge>
                     </div>
                     <p className="text-[11px] text-neutral-500 font-medium mt-0.5">
-                      {disputes[0].brandName} ↔ {disputes[0].creatorName} • Escrow: <strong className="text-neutral-900 font-bold">{formatCurrency(disputes[0].amountEur)}</strong>
+                      {disputes[0].brandName} • {disputes[0].creatorName} • <strong className="text-neutral-900 font-bold">{formatCurrency(disputes[0].amountEur)}</strong>
                     </p>
                   </div>
                 </div>
@@ -565,18 +560,18 @@ export const DashboardPage: React.FC = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => navigate(ROUTES.DASHBOARD.ESCROW)}
-                  className="text-xs font-bold text-rose-700 border-rose-200 hover:bg-rose-100 shrink-0 self-start sm:self-auto"
+                  className="text-xs font-bold text-rose-700 border-rose-200 hover:bg-rose-50 shrink-0 self-start sm:self-auto"
                 >
-                  Arbitrate Case
+                  Arbitrate
                 </Button>
               </div>
             )}
 
             {/* Priority 2: Pending Creator Verification */}
             {requests.length > 0 && (
-              <div className="p-3.5 rounded-xl border border-sky-100 bg-sky-50/30 hover:bg-sky-50/60 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-3.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50/70 hover:border-neutral-300 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5 border border-sky-100">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div>
@@ -584,15 +579,12 @@ export const DashboardPage: React.FC = () => {
                       <span className="text-xs font-extrabold text-neutral-950">
                         {requests[0].creatorName}
                       </span>
-                      <span className="text-xs text-brand-pink font-bold">
-                        @{requests[0].handle}
-                      </span>
                       <Badge variant="warning" size="sm" dot>
-                        Verification Pending
+                        Verification
                       </Badge>
                     </div>
                     <p className="text-[11px] text-neutral-500 font-medium mt-0.5">
-                      Category: <strong className="text-neutral-800 font-semibold">{requests[0].category}</strong> • Reach: <strong className="text-neutral-800 font-semibold">{requests[0].followersTotal || '125K'}</strong> • {requests[0].location || 'European Union'}
+                      {requests[0].category} • {requests[0].followersTotal || '125K'} • {requests[0].location || 'European Union'}
                     </p>
                   </div>
                 </div>
@@ -600,18 +592,18 @@ export const DashboardPage: React.FC = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => navigate(ROUTES.DASHBOARD.VERIFICATION)}
-                  className="text-xs font-bold text-sky-800 border-sky-200 hover:bg-sky-100 shrink-0 self-start sm:self-auto"
+                  className="text-xs font-bold text-sky-800 border-sky-200 hover:bg-sky-50 shrink-0 self-start sm:self-auto"
                 >
-                  View Application
+                  Review
                 </Button>
               </div>
             )}
 
             {/* Priority 3: Active Order Milestone */}
             {orders.length > 0 && (
-              <div className="p-3.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-3.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50/70 hover:border-neutral-300 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-100">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-100">
                     <ShoppingBag className="w-4 h-4" />
                   </div>
                   <div>
@@ -620,11 +612,11 @@ export const DashboardPage: React.FC = () => {
                         {orders[0].packageTitle}
                       </span>
                       <Badge variant="neutral" size="sm">
-                        {orders[0].status.replace('_', ' ')}
+                        {orders[0].status === 'in_progress' ? 'In Progress' : orders[0].status.replace('_', ' ')}
                       </Badge>
                     </div>
                     <p className="text-[11px] text-neutral-500 font-medium mt-0.5">
-                      {orders[0].brandName} ↔ {orders[0].creatorName} • Contract: <strong className="text-neutral-900 font-bold">{formatCurrency(orders[0].grossAmountEur)}</strong> • Due {orders[0].dueDate}
+                      {orders[0].brandName} • {orders[0].creatorName} • <strong className="text-neutral-900 font-bold">{formatCurrency(orders[0].grossAmountEur)}</strong> • Due {orders[0].dueDate}
                     </p>
                   </div>
                 </div>
@@ -645,11 +637,10 @@ export const DashboardPage: React.FC = () => {
         <div className="space-y-6">
           {/* Quick Actions Grid */}
           <Card className="p-5 space-y-3.5">
-            <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
+            <div className="pb-2 border-b border-neutral-100">
               <h3 className="text-sm font-extrabold text-neutral-900">
                 Quick Actions
               </h3>
-              <span className="text-[11px] font-bold text-neutral-400">Operations</span>
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
@@ -681,7 +672,7 @@ export const DashboardPage: React.FC = () => {
                   Disputes
                 </p>
                 <span className="text-[10px] text-neutral-500 font-bold block mt-0.5">
-                  {openDisputesCount} Active Case
+                  {openDisputesCount} Open
                 </span>
               </button>
 
@@ -733,16 +724,16 @@ export const DashboardPage: React.FC = () => {
 
             <div className="space-y-2 text-xs">
               <div className="flex items-center justify-between">
-                <span className="text-neutral-500 font-medium">Locked in Escrow:</span>
+                <span className="text-neutral-500 font-medium">In Escrow</span>
                 <span className="font-black text-neutral-950 tabular-nums">€148,500</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-neutral-500 font-medium">Milestone SLA Rate:</span>
+                <span className="text-neutral-500 font-medium">SLA Rate</span>
                 <span className="font-bold text-emerald-600">98.4% On-Time</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-neutral-500 font-medium">Payment Infrastructure:</span>
-                <span className="font-bold text-neutral-900">Stripe Connect Active</span>
+                <span className="text-neutral-500 font-medium">Payment Rail</span>
+                <span className="font-bold text-neutral-900">Stripe Connect</span>
               </div>
             </div>
 
