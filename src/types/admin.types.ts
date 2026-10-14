@@ -114,9 +114,11 @@ export interface CmsBrandAssets {
   heroSubtitle: string;
   supportEmail: string;
   socialLinks: {
+    facebook?: string;
     instagram: string;
     twitter: string;
     linkedin: string;
+    youtube?: string;
   };
   socialList?: SocialMediaItem[];
 }

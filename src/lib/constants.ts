@@ -652,15 +652,18 @@ export const INITIAL_BRAND_ASSETS: CmsBrandAssets = {
   heroSubtitle: 'The high-trust creator marketplace with 100% escrow protection and direct EUR pricing.',
   supportEmail: 'concierge@influverse.com',
   socialLinks: {
+    facebook: 'https://facebook.com/influverse',
     instagram: 'https://instagram.com/influverse',
-    twitter: 'https://twitter.com/influverse',
+    twitter: 'https://x.com/influverse',
     linkedin: 'https://linkedin.com/company/influverse',
+    youtube: 'https://youtube.com/@influverse',
   },
   socialList: [
-    { id: 'SOC-1', platform: 'Instagram', url: 'https://instagram.com/influverse' },
-    { id: 'SOC-2', platform: 'X / Twitter', url: 'https://twitter.com/influverse' },
-    { id: 'SOC-3', platform: 'LinkedIn', url: 'https://linkedin.com/company/influverse' },
-    { id: 'SOC-4', platform: 'YouTube', url: 'https://youtube.com/@influverse' },
+    { id: 'SOC-1', platform: 'Facebook', url: 'https://facebook.com/influverse' },
+    { id: 'SOC-2', platform: 'Instagram', url: 'https://instagram.com/influverse' },
+    { id: 'SOC-3', platform: 'X / Twitter', url: 'https://x.com/influverse' },
+    { id: 'SOC-4', platform: 'LinkedIn', url: 'https://linkedin.com/company/influverse' },
+    { id: 'SOC-5', platform: 'YouTube', url: 'https://youtube.com/@influverse' },
   ],
 };
 

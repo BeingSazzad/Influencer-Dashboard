@@ -38,6 +38,84 @@ import {
 } from 'lucide-react';
 import { PartnerBrandsSection } from './components/PartnerBrandsSection';
 
+interface OfficialSocialConfig {
+  key: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube';
+  name: string;
+  placeholder: string;
+  handleHint: string;
+  badge: React.ReactNode;
+}
+
+const OFFICIAL_SOCIAL_PLATFORMS: OfficialSocialConfig[] = [
+  {
+    key: 'facebook',
+    name: 'Facebook',
+    placeholder: 'https://facebook.com/influverse',
+    handleHint: 'facebook.com/...',
+    badge: (
+      <div className="w-8 h-8 rounded-xl bg-[#1877F2] flex items-center justify-center shrink-0 shadow-xs">
+        <svg className="w-4.5 h-4.5 fill-white" viewBox="0 0 24 24">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </div>
+    ),
+  },
+  {
+    key: 'instagram',
+    name: 'Instagram',
+    placeholder: 'https://instagram.com/influverse',
+    handleHint: 'instagram.com/...',
+    badge: (
+      <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#FFDC80] via-[#FD1D1D] to-[#833AB4] flex items-center justify-center shrink-0 shadow-xs">
+        <svg className="w-4.5 h-4.5 text-white stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </div>
+    ),
+  },
+  {
+    key: 'twitter',
+    name: 'X (Twitter)',
+    placeholder: 'https://x.com/influverse',
+    handleHint: 'x.com/...',
+    badge: (
+      <div className="w-8 h-8 rounded-xl bg-black flex items-center justify-center shrink-0 shadow-xs">
+        <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </div>
+    ),
+  },
+  {
+    key: 'linkedin',
+    name: 'LinkedIn',
+    placeholder: 'https://linkedin.com/company/influverse',
+    handleHint: 'linkedin.com/company/...',
+    badge: (
+      <div className="w-8 h-8 rounded-xl bg-[#0A66C2] flex items-center justify-center shrink-0 shadow-xs">
+        <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+        </svg>
+      </div>
+    ),
+  },
+  {
+    key: 'youtube',
+    name: 'YouTube',
+    placeholder: 'https://youtube.com/@influverse',
+    handleHint: 'youtube.com/@...',
+    badge: (
+      <div className="w-8 h-8 rounded-xl bg-[#FF0000] flex items-center justify-center shrink-0 shadow-xs">
+        <svg className="w-4.5 h-4.5 fill-white" viewBox="0 0 24 24">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </div>
+    ),
+  },
+];
+
 export const CmsPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { legalDocs, selectedLegalSlug, faqs, brandAssets, partnerBrands } =
@@ -138,72 +216,24 @@ export const CmsPage: React.FC = () => {
   const [supportEmail, setSupportEmail] = useState(brandAssets.supportEmail);
   const [brandSavedNotice, setBrandSavedNotice] = useState(false);
 
-  // Social Media Links State
-  const initialSocials: SocialMediaItem[] =
-    brandAssets.socialList && brandAssets.socialList.length > 0
-      ? brandAssets.socialList
-      : [
-          { id: 'SOC-1', platform: 'Instagram', url: brandAssets.socialLinks?.instagram || 'https://instagram.com/influverse' },
-          { id: 'SOC-2', platform: 'X / Twitter', url: brandAssets.socialLinks?.twitter || 'https://twitter.com/influverse' },
-          { id: 'SOC-3', platform: 'LinkedIn', url: brandAssets.socialLinks?.linkedin || 'https://linkedin.com/company/influverse' },
-          { id: 'SOC-4', platform: 'YouTube', url: 'https://youtube.com/@influverse' },
-        ];
-  const [socialList, setSocialList] = useState<SocialMediaItem[]>(initialSocials);
-  const [isAddingSocial, setIsAddingSocial] = useState(false);
-  const [newPlatform, setNewPlatform] = useState('');
-  const [newUrl, setNewUrl] = useState('');
-  const [editingSocialId, setEditingSocialId] = useState<string | null>(null);
-  const [editPlatform, setEditPlatform] = useState('');
-  const [editUrl, setEditUrl] = useState('');
-
-  const handleAddSocial = () => {
-    if (!newPlatform.trim() || !newUrl.trim()) return;
-    const newItem: SocialMediaItem = {
-      id: `SOC-${Date.now().toString().slice(-4)}`,
-      platform: newPlatform.trim(),
-      url: newUrl.trim(),
-    };
-    setSocialList((prev) => [...prev, newItem]);
-    setNewPlatform('');
-    setNewUrl('');
-    setIsAddingSocial(false);
-  };
-
-  const handleRemoveSocial = (id: string) => {
-    setSocialList((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const handleStartEditSocial = (item: SocialMediaItem) => {
-    setEditingSocialId(item.id);
-    setEditPlatform(item.platform);
-    setEditUrl(item.url);
-  };
-
-  const handleSaveEditSocial = () => {
-    if (!editingSocialId) return;
-    setSocialList((prev) =>
-      prev.map((item) =>
-        item.id === editingSocialId
-          ? {
-              ...item,
-              platform: editPlatform.trim() || item.platform,
-              url: editUrl.trim() || item.url,
-            }
-          : item
-      )
-    );
-    setEditingSocialId(null);
-    setEditPlatform('');
-    setEditUrl('');
-  };
-
-  const handleCancelEditSocial = () => {
-    setEditingSocialId(null);
-    setEditPlatform('');
-    setEditUrl('');
-  };
+  // Fixed Official Social Media Profiles State
+  const [socialLinks, setSocialLinks] = useState({
+    facebook: brandAssets.socialLinks?.facebook || 'https://facebook.com/influverse',
+    instagram: brandAssets.socialLinks?.instagram || 'https://instagram.com/influverse',
+    twitter: brandAssets.socialLinks?.twitter || 'https://x.com/influverse',
+    linkedin: brandAssets.socialLinks?.linkedin || 'https://linkedin.com/company/influverse',
+    youtube: brandAssets.socialLinks?.youtube || 'https://youtube.com/@influverse',
+  });
 
   const handleSaveBrand = () => {
+    const updatedSocialList: SocialMediaItem[] = [
+      { id: 'SOC-FB', platform: 'Facebook', url: socialLinks.facebook },
+      { id: 'SOC-IG', platform: 'Instagram', url: socialLinks.instagram },
+      { id: 'SOC-X', platform: 'X / Twitter', url: socialLinks.twitter },
+      { id: 'SOC-LI', platform: 'LinkedIn', url: socialLinks.linkedin },
+      { id: 'SOC-YT', platform: 'YouTube', url: socialLinks.youtube },
+    ];
+
     dispatch(
       updateBrandAssets({
         logoLightUrl: logoLight,
@@ -212,7 +242,8 @@ export const CmsPage: React.FC = () => {
         heroHeadline: headline,
         heroSubtitle: subtitle,
         supportEmail: supportEmail,
-        socialList: socialList,
+        socialLinks: socialLinks,
+        socialList: updatedSocialList,
       })
     );
     setBrandSavedNotice(true);
@@ -605,189 +636,72 @@ export const CmsPage: React.FC = () => {
 
             {/* Social Media Links Section */}
             <div className="pt-6 border-t border-neutral-100 space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-extrabold text-neutral-900 flex items-center gap-2">
-                    <Share2 className="w-4 h-4 text-brand-black" />
-                    <span>Social Media Profiles &amp; Links</span>
-                  </h3>
-                  <p className="text-xs text-neutral-500 mt-0.5">
-                    Official platform links displayed on website footer, contact, and bio touchpoints.
-                  </p>
-                </div>
-                {!isAddingSocial && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsAddingSocial(true)}
-                    leftIcon={<Plus className="w-3.5 h-3.5" />}
-                    className="text-xs font-bold"
-                  >
-                    Add Social Link
-                  </Button>
-                )}
+              <div>
+                <h3 className="text-sm font-extrabold text-neutral-900 flex items-center gap-2">
+                  <Share2 className="w-4 h-4 text-brand-black" />
+                  <span>Official Social Media Profiles</span>
+                </h3>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  Direct profile links to your official brand channels. Displayed across the website header, footer, and emails.
+                </p>
               </div>
 
-              {/* Add Social Link Form */}
-              {isAddingSocial && (
-                <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-xl space-y-3 animate-in fade-in">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-neutral-800">Add New Social Platform</span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsAddingSocial(false);
-                        setNewPlatform('');
-                        setNewUrl('');
-                      }}
-                      className="text-xs text-neutral-500 hover:text-neutral-700 cursor-pointer font-medium"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-neutral-700 mb-1">
-                        Social Media Name / Platform
-                      </label>
-                      <Input
-                        placeholder="e.g. Instagram, TikTok, YouTube, X / Twitter"
-                        value={newPlatform}
-                        onChange={(e) => setNewPlatform(e.target.value)}
-                        className="text-xs font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-neutral-700 mb-1">
-                        Profile / Channel URL
-                      </label>
-                      <Input
-                        placeholder="https://instagram.com/influverse"
-                        value={newUrl}
-                        onChange={(e) => setNewUrl(e.target.value)}
-                        className="text-xs"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-end gap-2 pt-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setIsAddingSocial(false);
-                        setNewPlatform('');
-                        setNewUrl('');
-                      }}
-                      className="text-xs font-bold"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="accent"
-                      size="sm"
-                      onClick={handleAddSocial}
-                      disabled={!newPlatform.trim() || !newUrl.trim()}
-                      leftIcon={<Plus className="w-3.5 h-3.5" />}
-                      className="text-xs font-bold"
-                    >
-                      Add to List
-                    </Button>
-                  </div>
-                </div>
-              )}
+              {/* Fixed 5 Platforms List with Official Logos */}
+              <div className="space-y-3">
+                {OFFICIAL_SOCIAL_PLATFORMS.map((platform) => {
+                  const currentUrl = socialLinks[platform.key];
+                  const hasUrl = Boolean(currentUrl && currentUrl.trim().length > 0);
 
-              {/* Social Media List */}
-              <div className="space-y-2">
-                {socialList.length === 0 ? (
-                  <div className="text-center py-6 border border-dashed border-neutral-200 rounded-xl text-xs text-neutral-500">
-                    No social media links added yet. Click &quot;Add Social Link&quot; above to add one.
-                  </div>
-                ) : (
-                  socialList.map((item) => (
+                  return (
                     <div
-                      key={item.id}
-                      className="flex items-center justify-between p-3 bg-white border border-neutral-200 rounded-xl hover:border-neutral-300 transition-all gap-3"
+                      key={platform.key}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-neutral-50/70 border border-neutral-200 rounded-xl hover:bg-neutral-50 hover:border-neutral-300 transition-all gap-3"
                     >
-                      {editingSocialId === item.id ? (
-                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div className="flex items-center gap-3 sm:w-44 shrink-0">
+                        {platform.badge}
+                        <div>
+                          <span className="block text-xs font-bold text-neutral-900">{platform.name}</span>
+                          <span className="block text-[10px] text-neutral-400 font-mono truncate">{platform.handleHint}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <div className="flex-1">
                           <Input
-                            placeholder="Platform name"
-                            value={editPlatform}
-                            onChange={(e) => setEditPlatform(e.target.value)}
-                            className="text-xs font-bold"
-                          />
-                          <Input
-                            placeholder="Profile URL"
-                            value={editUrl}
-                            onChange={(e) => setEditUrl(e.target.value)}
-                            className="text-xs"
+                            type="url"
+                            placeholder={platform.placeholder}
+                            value={currentUrl}
+                            onChange={(e) =>
+                              setSocialLinks((prev) => ({
+                                ...prev,
+                                [platform.key]: e.target.value,
+                              }))
+                            }
+                            className="text-xs font-mono bg-white"
                           />
                         </div>
-                      ) : (
-                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <Badge
-                            variant="outline"
-                            className="font-extrabold uppercase tracking-wider text-[11px] px-2.5 py-1 bg-neutral-100 text-neutral-800 border-neutral-200 shrink-0"
-                          >
-                            {item.platform}
-                          </Badge>
+                        {hasUrl ? (
                           <a
-                            href={item.url}
+                            href={currentUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs text-neutral-600 hover:text-brand-black hover:underline truncate flex items-center gap-1.5"
+                            title={`Open ${platform.name} profile in new tab`}
+                            className="p-2 rounded-lg border border-neutral-200 hover:border-brand-black text-neutral-500 hover:text-brand-black bg-white hover:bg-neutral-100 transition-all shrink-0 cursor-pointer"
                           >
-                            <span className="truncate">{item.url}</span>
-                            <ExternalLink className="w-3 h-3 text-neutral-400 shrink-0" />
+                            <ExternalLink className="w-4 h-4" />
                           </a>
-                        </div>
-                      )}
-
-                      <div className="flex items-center gap-1 shrink-0">
-                        {editingSocialId === item.id ? (
-                          <>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={handleCancelEditSocial}
-                              className="text-xs px-2.5 py-1 h-8"
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="accent"
-                              onClick={handleSaveEditSocial}
-                              disabled={!editPlatform.trim() || !editUrl.trim()}
-                              className="text-xs px-2.5 py-1 h-8 font-bold"
-                            >
-                              Save
-                            </Button>
-                          </>
                         ) : (
-                          <>
-                            <button
-                              type="button"
-                              onClick={() => handleStartEditSocial(item)}
-                              className="p-1.5 text-neutral-400 hover:text-brand-black rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
-                              title="Edit link"
-                            >
-                              <Edit2 className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveSocial(item.id)}
-                              className="p-1.5 text-neutral-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
-                              title="Remove link"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </>
+                          <div
+                            title="Enter URL to preview"
+                            className="p-2 rounded-lg border border-transparent text-neutral-300 bg-transparent shrink-0 cursor-not-allowed"
+                          >
+                            <ExternalLink className="w-4 h-4 opacity-40" />
+                          </div>
                         )}
                       </div>
                     </div>
-                  ))
-                )}
+                  );
+                })}
               </div>
             </div>
 
