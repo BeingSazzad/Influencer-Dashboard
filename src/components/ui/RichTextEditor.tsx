@@ -22,6 +22,7 @@ interface RichTextEditorProps {
   placeholder?: string;
   minHeight?: string;
   className?: string;
+  readOnly?: boolean;
 }
 
 export const RichTextEditor: React.FC<RichTextEditorProps> = ({
@@ -30,6 +31,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   placeholder = 'Start writing your document...',
   minHeight = '420px',
   className = '',
+  readOnly = false,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [history, setHistory] = useState<string[]>([value]);
@@ -146,147 +148,161 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       className={`border border-neutral-200 rounded-2xl overflow-hidden bg-white shadow-sm flex flex-col ${className}`}
     >
       {/* Formatting Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-1.5 p-2 px-3 border-b border-neutral-200 bg-neutral-50/80">
-        <div className="flex flex-wrap items-center gap-1">
-          {/* History */}
-          <button
-            type="button"
-            onClick={handleUndo}
-            disabled={historyIndex <= 0}
-            title="Undo (Ctrl+Z)"
-            className="p-1.5 text-neutral-600 hover:text-neutral-950 hover:bg-neutral-200/70 disabled:opacity-30 disabled:hover:bg-transparent rounded-lg transition-colors cursor-pointer"
-          >
-            <Undo2 className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={handleRedo}
-            disabled={historyIndex >= history.length - 1}
-            title="Redo (Ctrl+Y)"
-            className="p-1.5 text-neutral-600 hover:text-neutral-950 hover:bg-neutral-200/70 disabled:opacity-30 disabled:hover:bg-transparent rounded-lg transition-colors cursor-pointer"
-          >
-            <Redo2 className="w-4 h-4" />
-          </button>
-
-          <span className="w-px h-4 bg-neutral-300 mx-1" />
-
-          {/* Text Styles */}
-          <button
-            type="button"
-            onClick={() => wrapSelection('**', '**', 'bold text')}
-            title="Bold (**text**)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors font-bold cursor-pointer"
-          >
-            <Bold className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => wrapSelection('*', '*', 'italic text')}
-            title="Italic (*text*)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Italic className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => wrapSelection('~~', '~~', 'strikethrough')}
-            title="Strikethrough (~~text~~)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Strikethrough className="w-4 h-4" />
-          </button>
-
-          <span className="w-px h-4 bg-neutral-300 mx-1" />
-
-          {/* Headings */}
-          <button
-            type="button"
-            onClick={() => prefixLine('# ')}
-            title="Heading 1 (#)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Heading1 className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => prefixLine('## ')}
-            title="Heading 2 (##)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Heading2 className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => prefixLine('### ')}
-            title="Heading 3 (###)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Heading3 className="w-4 h-4" />
-          </button>
-
-          <span className="w-px h-4 bg-neutral-300 mx-1" />
-
-          {/* Lists */}
-          <button
-            type="button"
-            onClick={() => prefixLine('- ')}
-            title="Bullet List (- item)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <List className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => prefixLine('1. ')}
-            title="Numbered List (1. item)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <ListOrdered className="w-4 h-4" />
-          </button>
-
-          <span className="w-px h-4 bg-neutral-300 mx-1" />
-
-          {/* Quotes & Blocks */}
-          <button
-            type="button"
-            onClick={() => prefixLine('> ')}
-            title="Blockquote (> quote)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Quote className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => wrapSelection('`', '`', 'code')}
-            title="Inline Code (`code`)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Code className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => wrapSelection('[', '](https://example.com)', 'link text')}
-            title="Insert Link [text](url)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Link2 className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => insertBlock('---')}
-            title="Horizontal Divider (---)"
-            className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-          >
-            <Minus className="w-4 h-4" />
-          </button>
+      {readOnly ? (
+        <div className="flex flex-wrap items-center justify-between gap-1.5 p-2.5 px-3.5 border-b border-neutral-200 bg-neutral-50/80">
+          <div className="flex items-center gap-2 text-xs font-semibold text-neutral-500">
+            <span className="w-2 h-2 rounded-full bg-neutral-400" />
+            <span>Document Preview • Click &quot;Edit Policy&quot; above to modify</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase font-bold text-neutral-400 bg-neutral-200/60 px-2 py-0.5 rounded">
+              Read-Only
+            </span>
+          </div>
         </div>
+      ) : (
+        <div className="flex flex-wrap items-center justify-between gap-1.5 p-2 px-3 border-b border-neutral-200 bg-neutral-50/80">
+          <div className="flex flex-wrap items-center gap-1">
+            {/* History */}
+            <button
+              type="button"
+              onClick={handleUndo}
+              disabled={historyIndex <= 0}
+              title="Undo (Ctrl+Z)"
+              className="p-1.5 text-neutral-600 hover:text-neutral-950 hover:bg-neutral-200/70 disabled:opacity-30 disabled:hover:bg-transparent rounded-lg transition-colors cursor-pointer"
+            >
+              <Undo2 className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={handleRedo}
+              disabled={historyIndex >= history.length - 1}
+              title="Redo (Ctrl+Y)"
+              className="p-1.5 text-neutral-600 hover:text-neutral-950 hover:bg-neutral-200/70 disabled:opacity-30 disabled:hover:bg-transparent rounded-lg transition-colors cursor-pointer"
+            >
+              <Redo2 className="w-4 h-4" />
+            </button>
 
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase font-bold text-neutral-400 bg-neutral-200/60 px-2 py-0.5 rounded">
-            Markdown
-          </span>
+            <span className="w-px h-4 bg-neutral-300 mx-1" />
+
+            {/* Text Styles */}
+            <button
+              type="button"
+              onClick={() => wrapSelection('**', '**', 'bold text')}
+              title="Bold (**text**)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors font-bold cursor-pointer"
+            >
+              <Bold className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => wrapSelection('*', '*', 'italic text')}
+              title="Italic (*text*)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Italic className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => wrapSelection('~~', '~~', 'strikethrough')}
+              title="Strikethrough (~~text~~)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Strikethrough className="w-4 h-4" />
+            </button>
+
+            <span className="w-px h-4 bg-neutral-300 mx-1" />
+
+            {/* Headings */}
+            <button
+              type="button"
+              onClick={() => prefixLine('# ')}
+              title="Heading 1 (#)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Heading1 className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => prefixLine('## ')}
+              title="Heading 2 (##)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Heading2 className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => prefixLine('### ')}
+              title="Heading 3 (###)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Heading3 className="w-4 h-4" />
+            </button>
+
+            <span className="w-px h-4 bg-neutral-300 mx-1" />
+
+            {/* Lists */}
+            <button
+              type="button"
+              onClick={() => prefixLine('- ')}
+              title="Bullet List (- item)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <List className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => prefixLine('1. ')}
+              title="Numbered List (1. item)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <ListOrdered className="w-4 h-4" />
+            </button>
+
+            <span className="w-px h-4 bg-neutral-300 mx-1" />
+
+            {/* Quotes & Blocks */}
+            <button
+              type="button"
+              onClick={() => prefixLine('> ')}
+              title="Blockquote (> quote)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Quote className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => wrapSelection('`', '`', 'code')}
+              title="Inline Code (`code`)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Code className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => wrapSelection('[', '](https://example.com)', 'link text')}
+              title="Insert Link [text](url)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Link2 className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => insertBlock('---')}
+              title="Horizontal Divider (---)"
+              className="p-1.5 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
+            >
+              <Minus className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase font-bold text-neutral-400 bg-neutral-200/60 px-2 py-0.5 rounded">
+              Markdown
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Editor Body - Clean Full Width Textarea */}
       <div className="flex-1 min-h-[380px] flex">
@@ -295,8 +311,13 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           value={value}
           onChange={(e) => updateContent(e.target.value)}
           placeholder={placeholder}
+          readOnly={readOnly}
           style={{ minHeight }}
-          className="w-full h-full p-4 sm:p-5 font-sans text-sm text-neutral-900 bg-white outline-none resize-y leading-relaxed font-normal placeholder:text-neutral-400 focus:bg-neutral-50/10"
+          className={`w-full h-full p-4 sm:p-5 font-sans text-sm text-neutral-900 outline-none leading-relaxed font-normal placeholder:text-neutral-400 ${
+            readOnly
+              ? 'bg-neutral-50/30 cursor-default select-text resize-none text-neutral-800'
+              : 'bg-white resize-y focus:bg-neutral-50/10'
+          }`}
         />
       </div>
 
@@ -313,6 +334,11 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <span>•</span>
           <span>~{readingTimeMinutes} min read</span>
         </div>
+        {readOnly && (
+          <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">
+            Locked
+          </span>
+        )}
       </div>
     </div>
   );

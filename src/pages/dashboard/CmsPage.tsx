@@ -139,6 +139,7 @@ export const CmsPage: React.FC = () => {
   const [legalContent, setLegalContent] = useState(
     currentLegalDoc?.contentMarkdown || ''
   );
+  const [isEditingPolicy, setIsEditingPolicy] = useState(false);
   const [saveSuccessNotice, setSaveSuccessNotice] = useState(false);
 
   // Sync state if slug changes
@@ -148,6 +149,12 @@ export const CmsPage: React.FC = () => {
     if (doc) {
       setLegalContent(doc.contentMarkdown);
     }
+    setIsEditingPolicy(false);
+  };
+
+  const handleCancelEditPolicy = () => {
+    setLegalContent(currentLegalDoc?.contentMarkdown || '');
+    setIsEditingPolicy(false);
   };
 
   const handleSaveLegal = () => {
@@ -157,6 +164,7 @@ export const CmsPage: React.FC = () => {
         contentMarkdown: legalContent,
       })
     );
+    setIsEditingPolicy(false);
     setSaveSuccessNotice(true);
     setTimeout(() => setSaveSuccessNotice(false), 2500);
   };
@@ -382,8 +390,8 @@ export const CmsPage: React.FC = () => {
                   <div>
                     <h3 className="text-base font-extrabold text-neutral-950 flex items-center gap-2">
                       <span>{currentLegalDoc?.title}</span>
-                      <Badge variant="neutral" size="sm">
-                        Active
+                      <Badge variant={isEditingPolicy ? 'pink' : 'neutral'} size="sm">
+                        {isEditingPolicy ? 'Editing' : 'Active'}
                       </Badge>
                     </h3>
                     <p className="text-xs text-neutral-500 font-medium mt-0.5">
@@ -392,15 +400,37 @@ export const CmsPage: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Button
-                      variant="accent"
-                      size="sm"
-                      className="font-bold text-xs"
-                      onClick={handleSaveLegal}
-                      leftIcon={<Save className="w-3.5 h-3.5" />}
-                    >
-                      Save Policy
-                    </Button>
+                    {isEditingPolicy ? (
+                      <>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="font-bold text-xs"
+                          onClick={handleCancelEditPolicy}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="accent"
+                          size="sm"
+                          className="font-bold text-xs"
+                          onClick={handleSaveLegal}
+                          leftIcon={<Save className="w-3.5 h-3.5" />}
+                        >
+                          Save Policy
+                        </Button>
+                      </>
+                    ) : (
+                      <Button
+                        variant="accent"
+                        size="sm"
+                        className="font-bold text-xs"
+                        onClick={() => setIsEditingPolicy(true)}
+                        leftIcon={<Edit2 className="w-3.5 h-3.5" />}
+                      >
+                        Edit Policy
+                      </Button>
+                    )}
                   </div>
                 </div>
 
@@ -410,6 +440,7 @@ export const CmsPage: React.FC = () => {
                   onChange={setLegalContent}
                   placeholder="Write policy content here..."
                   minHeight="440px"
+                  readOnly={!isEditingPolicy}
                 />
               </Card>
             </div>
