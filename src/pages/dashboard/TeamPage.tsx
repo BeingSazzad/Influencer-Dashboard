@@ -152,7 +152,7 @@ export const TeamPage: React.FC = () => {
             placeholder="Search by name or email..."
             value={searchQuery}
             onChange={(e) => dispatch(setTeamSearch(e.target.value))}
-            className="w-full h-9 pl-9 pr-3 text-xs bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 text-neutral-900 font-medium"
+            className="w-full h-10 pl-9 pr-3 text-sm bg-neutral-50 border border-neutral-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-pink/20 text-neutral-900 font-medium"
           />
         </div>
       </Card>
@@ -175,18 +175,18 @@ export const TeamPage: React.FC = () => {
                 key={member.id}
                 className={member.status === 'suspended' ? 'opacity-60 bg-neutral-50/50' : ''}
               >
-                <TableCell>
+                <TableCell className="py-4">
                   <div className="flex items-center gap-3">
-                    <Avatar src={member.avatar} name={member.name} size="sm" />
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-extrabold text-neutral-950 text-xs">{member.name}</span>
+                    <Avatar src={member.avatar} name={member.name} size="md" />
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-neutral-950 text-sm">{member.name}</span>
                       {member.id === currentUser?.id && (
-                        <span className="text-[10px] bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded font-bold">
+                        <span className="text-xs bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-md font-bold">
                           You
                         </span>
                       )}
                       {member.status === 'suspended' && (
-                        <span className="text-[10px] bg-rose-50 text-rose-600 px-1.5 py-0.5 rounded font-bold">
+                        <span className="text-xs bg-rose-50 text-rose-600 px-2 py-0.5 rounded-md font-bold">
                           Suspended
                         </span>
                       )}
@@ -194,11 +194,11 @@ export const TeamPage: React.FC = () => {
                   </div>
                 </TableCell>
 
-                <TableCell>
-                  <span className="text-xs text-neutral-700 font-semibold">{member.email}</span>
+                <TableCell className="py-4">
+                  <span className="text-sm text-neutral-800 font-semibold">{member.email}</span>
                 </TableCell>
 
-                <TableCell>
+                <TableCell className="py-4">
                   <Badge
                     variant={
                       member.role === 'super_admin'
@@ -207,7 +207,8 @@ export const TeamPage: React.FC = () => {
                         ? 'neutral'
                         : 'pink'
                     }
-                    size="sm"
+                    size="md"
+                    className="text-xs font-bold"
                   >
                     {member.role === 'super_admin'
                       ? 'Super Admin'
@@ -217,31 +218,31 @@ export const TeamPage: React.FC = () => {
                   </Badge>
                 </TableCell>
 
-                <TableCell>
-                  <span className="text-xs text-neutral-500 font-medium">
+                <TableCell className="py-4">
+                  <span className="text-sm text-neutral-600 font-medium">
                     {formatDate(member.createdAt || '2025-01-10')}
                   </span>
                 </TableCell>
 
-                <TableCell className="text-right">
+                <TableCell className="text-right py-4">
                   {member.id !== currentUser?.id && (
-                    <div className="flex items-center justify-end gap-1.5">
+                    <div className="flex items-center justify-end gap-2">
                       {isSuperAdmin && (
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-xs font-bold text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100 p-1.5 gap-1.5"
+                          className="text-sm font-bold text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100 p-2 gap-1.5"
                           onClick={() => handleOpenEdit(member)}
                           title="Edit administrator details and replace email"
                         >
-                          <Edit2 className="w-3.5 h-3.5" />
+                          <Edit2 className="w-4 h-4 text-neutral-500" />
                           <span className="hidden sm:inline">Replace Email</span>
                         </Button>
                       )}
                       <Button
                         variant="ghost"
                         size="sm"
-                        className={`text-xs font-bold ${
+                        className={`text-sm font-bold px-3 py-1.5 ${
                           member.status === 'active'
                             ? 'text-amber-700 hover:text-amber-800 hover:bg-amber-50'
                             : 'text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50'
@@ -259,11 +260,11 @@ export const TeamPage: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-rose-600 hover:bg-rose-50 p-1.5"
+                        className="text-rose-600 hover:bg-rose-50 p-2"
                         onClick={() => setMemberToDelete({ id: member.id, name: member.name })}
                         title="Remove admin seat"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   )}
