@@ -348,24 +348,17 @@ export const TicketsPage: React.FC = () => {
                     </span>
                   </TableCell>
 
-                  {/* Subject & Description */}
+                  {/* Subject */}
                   <TableCell className="max-w-md">
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-center gap-2">
                       {ticket.type === 'user_report' && (
-                        <span className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 mt-0.5">
+                        <span className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200">
                           Report
                         </span>
                       )}
-                      <div className="flex-1 min-w-0">
-                        <span className="text-sm font-bold text-neutral-950 block truncate">
-                          {ticket.subject}
-                        </span>
-                        {ticket.messages?.[0]?.message && (
-                          <p className="text-xs text-neutral-500 font-medium truncate mt-0.5 max-w-[280px] lg:max-w-[420px]">
-                            {ticket.messages[0].message}
-                          </p>
-                        )}
-                      </div>
+                      <span className="text-sm font-bold text-neutral-950 truncate">
+                        {ticket.subject}
+                      </span>
                     </div>
                   </TableCell>
 
