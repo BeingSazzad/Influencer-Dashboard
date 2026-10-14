@@ -32,6 +32,7 @@ import {
   Search,
   ExternalLink,
   Building2,
+  Sparkles,
   ChevronUp,
   ChevronDown,
   Share2,
@@ -160,7 +161,9 @@ export const CmsPage: React.FC = () => {
     setTimeout(() => setSaveSuccessNotice(false), 2500);
   };
 
-  // FAQ State (Unified without category fragmentation)
+  // FAQ State (Separate tabs for Brands and Creators)
+  const [activeFaqAudience, setActiveFaqAudience] = useState<'brands' | 'creators'>('brands');
+  const [faqCategory, setFaqCategory] = useState<'brands' | 'creators'>('brands');
   const [faqSearchQuery, setFaqSearchQuery] = useState('');
   const [isFaqModalOpen, setIsFaqModalOpen] = useState(false);
   const [editingFaq, setEditingFaq] = useState<CmsFaqItem | null>(null);
@@ -171,6 +174,7 @@ export const CmsPage: React.FC = () => {
     setEditingFaq(null);
     setFaqQuestion('');
     setFaqAnswer('');
+    setFaqCategory(activeFaqAudience);
     setIsFaqModalOpen(true);
   };
 
@@ -178,6 +182,7 @@ export const CmsPage: React.FC = () => {
     setEditingFaq(faq);
     setFaqQuestion(faq.question);
     setFaqAnswer(faq.answer);
+    setFaqCategory(faq.category === 'creators' ? 'creators' : 'brands');
     setIsFaqModalOpen(true);
   };
 
@@ -190,15 +195,19 @@ export const CmsPage: React.FC = () => {
           ...editingFaq,
           question: faqQuestion.trim(),
           answer: faqAnswer.trim(),
+          category: faqCategory,
         })
       );
     } else {
+      const countInCategory = faqs.filter(
+        (f) => (f.category || 'brands') === faqCategory
+      ).length;
       dispatch(
         addFaq({
           question: faqQuestion.trim(),
           answer: faqAnswer.trim(),
-          category: 'general',
-          order: faqs.length + 1,
+          category: faqCategory,
+          order: countInCategory + 1,
           isPublished: true,
         })
       );
@@ -207,7 +216,11 @@ export const CmsPage: React.FC = () => {
     setIsFaqModalOpen(false);
   };
 
-  const filteredFaqs = faqs.filter((f) => {
+  const brandFaqs = faqs.filter((f) => (f.category || 'brands') === 'brands');
+  const creatorFaqs = faqs.filter((f) => f.category === 'creators');
+  const audienceFaqs = activeFaqAudience === 'brands' ? brandFaqs : creatorFaqs;
+
+  const filteredFaqs = audienceFaqs.filter((f) => {
     if (!faqSearchQuery.trim()) return true;
     const query = faqSearchQuery.toLowerCase();
     return (
@@ -404,36 +417,90 @@ export const CmsPage: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 2: UNIFIED DYNAMIC FAQS (NO CATEGORY FRAGMENTATION) */}
+      {/* TAB 2: SEPARATE FAQS FOR BRANDS & CREATORS */}
       {activeTab === 'faqs' && (
         <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
-              <input
-                type="text"
-                value={faqSearchQuery}
-                onChange={(e) => setFaqSearchQuery(e.target.value)}
-                placeholder="Search FAQ questions or explanations..."
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-neutral-200 rounded-xl text-xs font-semibold placeholder:text-neutral-400 focus:outline-none focus:border-brand-pink focus:ring-2 focus:ring-brand-pink/20"
-              />
+          {/* Header Controls: Segmented Audience Switcher & Search / Add */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-white border border-neutral-200 rounded-2xl shadow-xs">
+            {/* Segmented Brand vs Creator Switcher */}
+            <div className="flex items-center gap-1.5 p-1 bg-neutral-100 rounded-xl">
+              <button
+                type="button"
+                onClick={() => setActiveFaqAudience('brands')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeFaqAudience === 'brands'
+                    ? 'bg-white text-brand-black shadow-xs font-extrabold'
+                    : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                <Building2 className="w-3.5 h-3.5" />
+                <span>For Brands</span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${
+                    activeFaqAudience === 'brands'
+                      ? 'bg-brand-black text-white'
+                      : 'bg-neutral-200 text-neutral-600'
+                  }`}
+                >
+                  {brandFaqs.length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveFaqAudience('creators')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeFaqAudience === 'creators'
+                    ? 'bg-white text-brand-black shadow-xs font-extrabold'
+                    : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>For Creators</span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${
+                    activeFaqAudience === 'creators'
+                      ? 'bg-brand-black text-white'
+                      : 'bg-neutral-200 text-neutral-600'
+                  }`}
+                >
+                  {creatorFaqs.length}
+                </span>
+              </button>
             </div>
 
-            <Button
-              variant="accent"
-              size="sm"
-              className="font-bold self-start sm:self-auto"
-              onClick={handleOpenNewFaq}
-              leftIcon={<Plus className="w-4 h-4" />}
-            >
-              Add Question
-            </Button>
+            {/* Search & Add Action */}
+            <div className="flex items-center gap-3 flex-1 max-w-md">
+              <div className="relative flex-1">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                <input
+                  type="text"
+                  value={faqSearchQuery}
+                  onChange={(e) => setFaqSearchQuery(e.target.value)}
+                  placeholder={`Search ${activeFaqAudience === 'brands' ? 'Brand' : 'Creator'} FAQs...`}
+                  className="w-full pl-10 pr-4 py-2 bg-neutral-50 border border-neutral-200 rounded-xl text-xs font-semibold placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:border-brand-pink focus:ring-2 focus:ring-brand-pink/20"
+                />
+              </div>
+
+              <Button
+                variant="accent"
+                size="sm"
+                className="font-bold shrink-0 text-xs"
+                onClick={handleOpenNewFaq}
+                leftIcon={<Plus className="w-3.5 h-3.5" />}
+              >
+                Add Question
+              </Button>
+            </div>
           </div>
 
+          {/* FAQ List for Active Audience */}
           <div className="space-y-3">
             {filteredFaqs.length === 0 ? (
               <div className="p-12 text-center bg-white rounded-2xl border border-neutral-200 text-neutral-500 text-xs font-medium">
-                No FAQ items found matching "{faqSearchQuery}".
+                {faqSearchQuery
+                  ? `No ${activeFaqAudience === 'brands' ? 'Brand' : 'Creator'} FAQ items found matching "${faqSearchQuery}".`
+                  : `No FAQ items added for ${activeFaqAudience === 'brands' ? 'Brands' : 'Creators'} yet.`}
               </div>
             ) : (
               filteredFaqs.map((faq, index) => (
@@ -441,7 +508,7 @@ export const CmsPage: React.FC = () => {
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1.5 flex-1">
                       <div className="flex items-center gap-2">
-                        {/* Simple & Clean Up / Down Arrow Controls */}
+                        {/* Clean Up / Down Arrow Controls within Category */}
                         <div className="inline-flex items-center bg-neutral-100 rounded-lg border border-neutral-200 p-0.5 shadow-2xs">
                           <button
                             type="button"
@@ -451,7 +518,7 @@ export const CmsPage: React.FC = () => {
                               dispatch(reorderFaq({ id: faq.id, direction: 'up' }));
                             }}
                             title="Move question up"
-                            className="p-1 rounded text-neutral-600 hover:text-neutral-950 hover:bg-white disabled:opacity-25 disabled:cursor-not-allowed transition-all"
+                            className="p-1 rounded text-neutral-600 hover:text-neutral-950 hover:bg-white disabled:opacity-25 disabled:cursor-not-allowed transition-all cursor-pointer"
                           >
                             <ChevronUp className="w-3.5 h-3.5" />
                           </button>
@@ -462,7 +529,7 @@ export const CmsPage: React.FC = () => {
 
                           <button
                             type="button"
-                            disabled={index === faqs.length - 1}
+                            disabled={index === filteredFaqs.length - 1}
                             onClick={(e) => {
                               e.stopPropagation();
                               dispatch(reorderFaq({ id: faq.id, direction: 'down' }));
@@ -531,17 +598,54 @@ export const CmsPage: React.FC = () => {
                     className="font-bold"
                     onClick={handleSaveFaq}
                   >
-                    {editingFaq ? 'Save' : 'Add Question'}
+                    {editingFaq ? 'Save Changes' : 'Add Question'}
                   </Button>
                 </>
               }
             >
               <div className="space-y-4">
+                {/* Target Audience Selector */}
+                <div>
+                  <label className="block text-xs font-bold text-neutral-700 mb-1.5">
+                    Target Audience
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setFaqCategory('brands')}
+                      className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                        faqCategory === 'brands'
+                          ? 'border-brand-black bg-brand-black text-white shadow-2xs font-extrabold'
+                          : 'border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50'
+                      }`}
+                    >
+                      <Building2 className="w-3.5 h-3.5" />
+                      <span>For Brands</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFaqCategory('creators')}
+                      className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                        faqCategory === 'creators'
+                          ? 'border-brand-black bg-brand-black text-white shadow-2xs font-extrabold'
+                          : 'border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50'
+                      }`}
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>For Creators</span>
+                    </button>
+                  </div>
+                </div>
+
                 <Input
                   label="Question"
                   value={faqQuestion}
                   onChange={(e) => setFaqQuestion(e.target.value)}
-                  placeholder="e.g. When are funds released from escrow?"
+                  placeholder={
+                    faqCategory === 'brands'
+                      ? 'e.g. How does the escrow protection work for hiring brands?'
+                      : 'e.g. When and how do creators receive payments?'
+                  }
                   className="font-bold"
                   required
                 />
@@ -550,7 +654,7 @@ export const CmsPage: React.FC = () => {
                   label="Answer"
                   value={faqAnswer}
                   onChange={(e) => setFaqAnswer(e.target.value)}
-                  placeholder="Provide a concise, direct explanation visible to both brands and creators..."
+                  placeholder="Provide a clear, helpful explanation..."
                   rows={4}
                   required
                 />

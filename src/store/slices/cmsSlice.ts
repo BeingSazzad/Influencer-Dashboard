@@ -120,17 +120,25 @@ export const cmsSlice = createSlice({
       state,
       action: PayloadAction<{ id: string; direction: 'up' | 'down' }>
     ) => {
-      const index = state.faqs.findIndex((f) => f.id === action.payload.id);
-      if (index === -1) return;
-      const targetIndex =
-        action.payload.direction === 'up' ? index - 1 : index + 1;
-      if (targetIndex < 0 || targetIndex >= state.faqs.length) return;
+      const currentItem = state.faqs.find((f) => f.id === action.payload.id);
+      if (!currentItem) return;
+      const category = currentItem.category || 'brands';
+      const categoryFaqs = state.faqs.filter(
+        (f) => (f.category || 'brands') === category
+      );
+      const catIndex = categoryFaqs.findIndex((f) => f.id === action.payload.id);
+      if (catIndex === -1) return;
+      const targetCatIndex =
+        action.payload.direction === 'up' ? catIndex - 1 : catIndex + 1;
+      if (targetCatIndex < 0 || targetCatIndex >= categoryFaqs.length) return;
 
-      const [removed] = state.faqs.splice(index, 1);
-      state.faqs.splice(targetIndex, 0, removed);
-      state.faqs.forEach((item, idx) => {
-        item.order = idx + 1;
-      });
+      const targetItem = categoryFaqs[targetCatIndex];
+      const indexA = state.faqs.findIndex((f) => f.id === currentItem.id);
+      const indexB = state.faqs.findIndex((f) => f.id === targetItem.id);
+      if (indexA !== -1 && indexB !== -1) {
+        state.faqs[indexA] = targetItem;
+        state.faqs[indexB] = currentItem;
+      }
     },
     changeFaqPosition: (
       state,
